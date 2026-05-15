@@ -21,7 +21,8 @@
     }
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "src/shared/ports/user.repository.ts"
   ],
   "exclude": [
     "node_modules"

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { CreateUserUseCase, type PasswordHasher } from '../src/features/v1/auth/create-user/create-user.usecase';
 import type { CreateUserDto } from '../src/features/v1/auth/create-user/create-user.dto';
-import type { UserRepository } from '../src/features/v1/auth/create-user/user.repository';
+import type { UserRepository } from '../src/shared/ports/user.repository';
 
 type StoredUser = {
     user_id: number;
@@ -13,6 +13,10 @@ type StoredUser = {
 
 class InMemoryUserRepository implements UserRepository {
     public users: StoredUser[] = [];
+
+    async findByEmailWithPassword(email: string) {
+        return this.users.find((user) => user.email === email) ?? null;
+    }
 
     async findByEmail(email: string) {
         return this.users.find((user) => user.email === email) ?? null;
