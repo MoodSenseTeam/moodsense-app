@@ -3,11 +3,10 @@ const spec = {
     info: {
         title: 'MoodSense API',
         version: '1.0.0',
-        description: 'Authentication and mood tracking API for the MoodSense application.',
+        description:
+            'Authentication and mood tracking API for the MoodSense application.',
     },
-    tags: [
-        { name: 'Auth', description: 'Authentication endpoints' },
-    ],
+    tags: [{ name: 'Auth', description: 'Authentication endpoints' }],
     paths: {
         '/auth/register': {
             post: {
@@ -20,14 +19,43 @@ const spec = {
                         'application/json': {
                             schema: {
                                 type: 'object',
-                                required: ['name', 'email', 'password', 'gender', 'tanggal_lahir'],
+                                required: [
+                                    'name',
+                                    'email',
+                                    'password',
+                                    'gender',
+                                    'tanggal_lahir',
+                                ],
                                 properties: {
-                                    name: { type: 'string', example: 'John Doe' },
-                                    email: { type: 'string', format: 'email', example: 'john@example.com' },
-                                    password: { type: 'string', format: 'password', minLength: 8, example: 'password123' },
-                                    gender: { type: 'string', enum: ['MALE', 'FEMALE', 'OTHER'], example: 'OTHER' },
-                                    tanggal_lahir: { type: 'string', format: 'date', example: '1990-01-01' },
-                                    usage_reason: { type: 'string', example: 'Personal use' },
+                                    name: {
+                                        type: 'string',
+                                        example: 'John Doe',
+                                    },
+                                    email: {
+                                        type: 'string',
+                                        format: 'email',
+                                        example: 'john@example.com',
+                                    },
+                                    password: {
+                                        type: 'string',
+                                        format: 'password',
+                                        minLength: 8,
+                                        example: 'password123',
+                                    },
+                                    gender: {
+                                        type: 'string',
+                                        enum: ['MALE', 'FEMALE', 'OTHER'],
+                                        example: 'OTHER',
+                                    },
+                                    tanggal_lahir: {
+                                        type: 'string',
+                                        format: 'date',
+                                        example: '1990-01-01',
+                                    },
+                                    usage_reason: {
+                                        type: 'string',
+                                        example: 'Personal use',
+                                    },
                                 },
                             },
                         },
@@ -41,13 +69,26 @@ const spec = {
                                 schema: {
                                     type: 'object',
                                     properties: {
-                                        message: { type: 'string', example: 'User created successfully' },
+                                        message: {
+                                            type: 'string',
+                                            example:
+                                                'User created successfully',
+                                        },
                                         data: {
                                             type: 'object',
                                             properties: {
-                                                user_id: { type: 'number', example: 1 },
-                                                name: { type: 'string', example: 'John Doe' },
-                                                email: { type: 'string', example: 'john@example.com' },
+                                                user_id: {
+                                                    type: 'number',
+                                                    example: 1,
+                                                },
+                                                name: {
+                                                    type: 'string',
+                                                    example: 'John Doe',
+                                                },
+                                                email: {
+                                                    type: 'string',
+                                                    example: 'john@example.com',
+                                                },
                                             },
                                         },
                                     },
@@ -62,7 +103,10 @@ const spec = {
                                 schema: {
                                     type: 'object',
                                     properties: {
-                                        message: { type: 'string', example: 'Email already in use' },
+                                        message: {
+                                            type: 'string',
+                                            example: 'Email already in use',
+                                        },
                                     },
                                 },
                             },
@@ -84,8 +128,16 @@ const spec = {
                                 type: 'object',
                                 required: ['email', 'password'],
                                 properties: {
-                                    email: { type: 'string', format: 'email', example: 'john@example.com' },
-                                    password: { type: 'string', format: 'password', minLength: 8 },
+                                    email: {
+                                        type: 'string',
+                                        format: 'email',
+                                        example: 'john@example.com',
+                                    },
+                                    password: {
+                                        type: 'string',
+                                        format: 'password',
+                                        minLength: 8,
+                                    },
                                 },
                             },
                         },
@@ -99,18 +151,29 @@ const spec = {
                                 schema: {
                                     type: 'object',
                                     properties: {
-                                        message: { type: 'string', example: 'Login successful' },
+                                        message: {
+                                            type: 'string',
+                                            example: 'Login successful',
+                                        },
                                         data: {
                                             type: 'object',
                                             properties: {
                                                 accessToken: { type: 'string' },
-                                                refreshToken: { type: 'string' },
+                                                refreshToken: {
+                                                    type: 'string',
+                                                },
                                                 user: {
                                                     type: 'object',
                                                     properties: {
-                                                        user_id: { type: 'number' },
-                                                        name: { type: 'string' },
-                                                        email: { type: 'string' },
+                                                        user_id: {
+                                                            type: 'number',
+                                                        },
+                                                        name: {
+                                                            type: 'string',
+                                                        },
+                                                        email: {
+                                                            type: 'string',
+                                                        },
                                                     },
                                                 },
                                             },
@@ -127,7 +190,10 @@ const spec = {
                                 schema: {
                                     type: 'object',
                                     properties: {
-                                        message: { type: 'string', example: 'Invalid credentials.' },
+                                        message: {
+                                            type: 'string',
+                                            example: 'Invalid credentials.',
+                                        },
                                     },
                                 },
                             },
@@ -163,18 +229,30 @@ const spec = {
                                 schema: {
                                     type: 'object',
                                     properties: {
-                                        message: { type: 'string', example: 'Token refreshed successfully' },
+                                        message: {
+                                            type: 'string',
+                                            example:
+                                                'Token refreshed successfully',
+                                        },
                                         data: {
                                             type: 'object',
                                             properties: {
                                                 accessToken: { type: 'string' },
-                                                refreshToken: { type: 'string' },
+                                                refreshToken: {
+                                                    type: 'string',
+                                                },
                                                 user: {
                                                     type: 'object',
                                                     properties: {
-                                                        user_id: { type: 'number' },
-                                                        name: { type: 'string' },
-                                                        email: { type: 'string' },
+                                                        user_id: {
+                                                            type: 'number',
+                                                        },
+                                                        name: {
+                                                            type: 'string',
+                                                        },
+                                                        email: {
+                                                            type: 'string',
+                                                        },
                                                     },
                                                 },
                                             },
@@ -191,7 +269,10 @@ const spec = {
                                 schema: {
                                     type: 'object',
                                     properties: {
-                                        message: { type: 'string', example: 'Invalid refresh token.' },
+                                        message: {
+                                            type: 'string',
+                                            example: 'Invalid refresh token.',
+                                        },
                                     },
                                 },
                             },
@@ -227,7 +308,10 @@ const spec = {
                                 schema: {
                                     type: 'object',
                                     properties: {
-                                        message: { type: 'string', example: 'Logged out successfully' },
+                                        message: {
+                                            type: 'string',
+                                            example: 'Logged out successfully',
+                                        },
                                     },
                                 },
                             },
@@ -240,7 +324,10 @@ const spec = {
                                 schema: {
                                     type: 'object',
                                     properties: {
-                                        message: { type: 'string', example: 'Invalid refresh token.' },
+                                        message: {
+                                            type: 'string',
+                                            example: 'Invalid refresh token.',
+                                        },
                                     },
                                 },
                             },
@@ -263,13 +350,26 @@ const spec = {
                                 schema: {
                                     type: 'object',
                                     properties: {
-                                        message: { type: 'string', example: 'Current user fetched successfully' },
+                                        message: {
+                                            type: 'string',
+                                            example:
+                                                'Current user fetched successfully',
+                                        },
                                         data: {
                                             type: 'object',
                                             properties: {
-                                                user_id: { type: 'number', example: 1 },
-                                                name: { type: 'string', example: 'John Doe' },
-                                                email: { type: 'string', example: 'john@example.com' },
+                                                user_id: {
+                                                    type: 'number',
+                                                    example: 1,
+                                                },
+                                                name: {
+                                                    type: 'string',
+                                                    example: 'John Doe',
+                                                },
+                                                email: {
+                                                    type: 'string',
+                                                    example: 'john@example.com',
+                                                },
                                             },
                                         },
                                     },
@@ -284,7 +384,10 @@ const spec = {
                                 schema: {
                                     type: 'object',
                                     properties: {
-                                        message: { type: 'string', example: 'Missing access token' },
+                                        message: {
+                                            type: 'string',
+                                            example: 'Missing access token',
+                                        },
                                     },
                                 },
                             },
@@ -300,7 +403,8 @@ const spec = {
                 type: 'http',
                 scheme: 'bearer',
                 bearerFormat: 'JWT',
-                description: 'Provide your access token as a Bearer token in the Authorization header.',
+                description:
+                    'Provide your access token as a Bearer token in the Authorization header.',
             },
         },
     },

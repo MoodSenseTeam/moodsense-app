@@ -9,6 +9,6 @@ export const createUserSchema = z.object({
         message: 'Invalid date format',
     }),
     usage_reason: z.string().optional(),
-})
+});
 
 export type CreateUserDto = z.infer<typeof createUserSchema>;

@@ -49,7 +49,14 @@ class InMemoryUserRepository implements UserRepository {
         return this.users.find((user) => user.email === email) ?? null;
     }
 
-    async create(data: { name: string; email: string; password: string; gender: string; tanggal_lahir: string; usage_reason?: string }) {
+    async create(data: {
+        name: string;
+        email: string;
+        password: string;
+        gender: string;
+        tanggal_lahir: string;
+        usage_reason?: string;
+    }) {
         const user: StoredUser = {
             user_id: this.users.length + 1,
             name: data.name,
@@ -69,8 +76,14 @@ class InMemoryUserRepository implements UserRepository {
         };
     }
 
-    async upsertCredentials(userId: number, refreshToken: string, expiresAt: Date) {
-        const existing = this.credentials.find((item) => item.user_id === userId);
+    async upsertCredentials(
+        userId: number,
+        refreshToken: string,
+        expiresAt: Date,
+    ) {
+        const existing = this.credentials.find(
+            (item) => item.user_id === userId,
+        );
         if (existing) {
             existing.refresh_token = refreshToken;
             existing.token_expires = expiresAt;
@@ -95,7 +108,9 @@ class InMemoryUserRepository implements UserRepository {
     }
 
     async revokeCredentials(userId: number) {
-        const existing = this.credentials.find((item) => item.user_id === userId);
+        const existing = this.credentials.find(
+            (item) => item.user_id === userId,
+        );
         if (!existing) return;
         existing.refresh_token = null;
         existing.token_expires = null;
@@ -125,8 +140,14 @@ describe('Auth lifecycle', () => {
 
         const tokenService = makeTokenService({
             issueAccessToken: async () => 'new-access-token',
-            issueRefreshToken: async () => ({ token: 'new-refresh-token', expiresAt: futureDate }),
-            verifyRefreshToken: async (token: string) => token === 'refresh-token' ? { sub: 1, email: 'stezi@example.com' } : null,
+            issueRefreshToken: async () => ({
+                token: 'new-refresh-token',
+                expiresAt: futureDate,
+            }),
+            verifyRefreshToken: async (token: string) =>
+                token === 'refresh-token'
+                    ? { sub: 1, email: 'stezi@example.com' }
+                    : null,
         });
 
         const useCase = new RefreshUseCase(userRepository, tokenService);
@@ -141,7 +162,9 @@ describe('Auth lifecycle', () => {
                 email: 'stezi@example.com',
             },
         });
-        expect(userRepository.credentials[0]?.refresh_token).toBe('new-refresh-token');
+        expect(userRepository.credentials[0]?.refresh_token).toBe(
+            'new-refresh-token',
+        );
     });
 
     it('rejects invalid refresh tokens', async () => {
@@ -168,7 +191,10 @@ describe('Auth lifecycle', () => {
         });
 
         const tokenService = makeTokenService({
-            verifyRefreshToken: async (token: string) => token === 'refresh-token' ? { sub: 1, email: 'stezi@example.com' } : null,
+            verifyRefreshToken: async (token: string) =>
+                token === 'refresh-token'
+                    ? { sub: 1, email: 'stezi@example.com' }
+                    : null,
         });
 
         const useCase = new LogoutUseCase(userRepository, tokenService);
@@ -204,7 +230,10 @@ describe('Auth lifecycle', () => {
         });
 
         const tokenService = makeTokenService({
-            verifyAccessToken: async (token: string) => token === 'access-token' ? { sub: 1, email: 'stezi@example.com' } : null,
+            verifyAccessToken: async (token: string) =>
+                token === 'access-token'
+                    ? { sub: 1, email: 'stezi@example.com' }
+                    : null,
         });
 
         const controller = new MeController(userRepository, tokenService);
@@ -214,7 +243,9 @@ describe('Auth lifecycle', () => {
         await controller.handle(
             {
                 header(name: string) {
-                    return name === 'authorization' ? 'Bearer access-token' : undefined;
+                    return name === 'authorization'
+                        ? 'Bearer access-token'
+                        : undefined;
                 },
             } as never,
             { status, json } as never,

@@ -1,6 +1,9 @@
 import type { Request, Response } from 'express';
 import type { UserRepository } from '@/shared/ports/user.repository';
-import type { TokenService, JwtTokenPayload } from '@/infrastructure/security/token-service';
+import type {
+    TokenService,
+    JwtTokenPayload,
+} from '@/infrastructure/security/token-service';
 
 function extractBearerToken(authorizationHeader: string | undefined) {
     if (!authorizationHeader?.startsWith('Bearer ')) return null;
@@ -11,7 +14,7 @@ export class MeController {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly tokenService: TokenService,
-    ) { }
+    ) {}
 
     async handle(req: Request, res: Response) {
         const token = extractBearerToken(req.header('authorization'));
@@ -19,7 +22,9 @@ export class MeController {
             return res.status(401).json({ message: 'Missing access token' });
         }
 
-        const payload = await this.tokenService.verifyAccessToken(token) as JwtTokenPayload | null;
+        const payload = (await this.tokenService.verifyAccessToken(
+            token,
+        )) as JwtTokenPayload | null;
         if (!payload?.sub || !payload.email) {
             return res.status(401).json({ message: 'Invalid access token' });
         }

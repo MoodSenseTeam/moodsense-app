@@ -1,4 +1,8 @@
-import jwt, { type Secret, type JwtPayload, type SignOptions } from 'jsonwebtoken';
+import jwt, {
+    type Secret,
+    type JwtPayload,
+    type SignOptions,
+} from 'jsonwebtoken';
 import { parseDurationToMs } from '@/shared/utils/parse-duration';
 
 export type JwtTokenPayload = {
@@ -8,7 +12,9 @@ export type JwtTokenPayload = {
 
 export interface TokenService {
     issueAccessToken(payload: object): Promise<string>;
-    issueRefreshToken(payload: object): Promise<{ token: string; expiresAt: Date }>;
+    issueRefreshToken(
+        payload: object,
+    ): Promise<{ token: string; expiresAt: Date }>;
     verifyRefreshToken(token: string): Promise<object | null>;
     verifyAccessToken(token: string): Promise<object | null>;
 }
@@ -25,11 +31,17 @@ export class JwtTokenService implements TokenService {
     }
 
     async issueAccessToken(payload: object): Promise<string> {
-        return jwt.sign(payload as JwtPayload, this.secret, { expiresIn: this.accessExpires } as SignOptions);
+        return jwt.sign(payload as JwtPayload, this.secret, {
+            expiresIn: this.accessExpires,
+        } as SignOptions);
     }
 
-    async issueRefreshToken(payload: object): Promise<{ token: string; expiresAt: Date }> {
-        const token = jwt.sign(payload as JwtPayload, this.secret, { expiresIn: this.refreshExpires } as SignOptions);
+    async issueRefreshToken(
+        payload: object,
+    ): Promise<{ token: string; expiresAt: Date }> {
+        const token = jwt.sign(payload as JwtPayload, this.secret, {
+            expiresIn: this.refreshExpires,
+        } as SignOptions);
 
         const ms = parseDurationToMs(this.refreshExpires);
         const expiresAt = new Date(Date.now() + ms);

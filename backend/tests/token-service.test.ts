@@ -18,8 +18,13 @@ describe('JwtTokenService', () => {
     it('issues and verifies tokens', async () => {
         const svc = new JwtTokenService();
 
-        const access = await svc.issueAccessToken({ sub: 1, email: 'dev@example.com' });
-        const { token: refresh, expiresAt } = await svc.issueRefreshToken({ sub: 1 });
+        const access = await svc.issueAccessToken({
+            sub: 1,
+            email: 'dev@example.com',
+        });
+        const { token: refresh, expiresAt } = await svc.issueRefreshToken({
+            sub: 1,
+        });
 
         expect(typeof access).toBe('string');
         expect(typeof refresh).toBe('string');

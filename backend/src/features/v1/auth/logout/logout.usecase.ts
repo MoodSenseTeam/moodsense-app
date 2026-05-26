@@ -7,10 +7,14 @@ export class LogoutUseCase {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly tokenService: TokenService,
-    ) { }
+    ) {}
 
     async execute(input: LogoutDto): Promise<{ message: string }> {
-        const { userId } = await verifyRefreshToken(this.tokenService, this.userRepository, input.refreshToken);
+        const { userId } = await verifyRefreshToken(
+            this.tokenService,
+            this.userRepository,
+            input.refreshToken,
+        );
 
         await this.userRepository.revokeCredentials(userId);
 

@@ -1,9 +1,12 @@
 import type { PrismaClient } from '@/shared/db/generated/client/client';
 import type { SummaryRepository } from '@/shared/ports/summary.repository';
-import type { SummaryDto, SummaryInsightsDto } from '@/features/v1/dashboard/summary/summary.dto';
+import type {
+    SummaryDto,
+    SummaryInsightsDto,
+} from '@/features/v1/dashboard/summary/summary.dto';
 
 export class PrismaSummaryRepository implements SummaryRepository {
-    constructor(private readonly prisma: PrismaClient) { }
+    constructor(private readonly prisma: PrismaClient) {}
 
     async getSummaryForUser(userId: number): Promise<SummaryDto> {
         const logs = await this.prisma.mood_logs.findMany({
@@ -23,17 +26,31 @@ export class PrismaSummaryRepository implements SummaryRepository {
             },
         });
 
-        const moodScores = logs.map((log) => this.toMoodScore(log.prediction?.mood_result ?? null, log.sentiment_score));
+        const moodScores = logs.map((log) =>
+            this.toMoodScore(
+                log.prediction?.mood_result ?? null,
+                log.sentiment_score,
+            ),
+        );
         const sleepHours = logs.map((log) => log.sleep_hours);
 
         return {
             overview: {
-                check_in_streak: this.getCheckInStreak(logs.map((log) => log.logged_at)),
+                check_in_streak: this.getCheckInStreak(
+                    logs.map((log) => log.logged_at),
+                ),
                 average_mood: this.roundToTwo(this.getAverage(moodScores)),
-                sleep_quality: this.roundToTwo(this.normalizeSleepQuality(this.getAverage(sleepHours))),
+                sleep_quality: this.roundToTwo(
+                    this.normalizeSleepQuality(this.getAverage(sleepHours)),
+                ),
             },
             recent_mood_entries: logs.slice(0, 5).map((log) => ({
-                mood_value: this.roundToTwo(this.toMoodScore(log.prediction?.mood_result ?? null, log.sentiment_score)),
+                mood_value: this.roundToTwo(
+                    this.toMoodScore(
+                        log.prediction?.mood_result ?? null,
+                        log.sentiment_score,
+                    ),
+                ),
                 created_at: log.created_at.toISOString(),
                 notes: log.notes,
             })),
@@ -66,22 +83,35 @@ export class PrismaSummaryRepository implements SummaryRepository {
             new Set(
                 logsWithPredictions
                     .map((log) => log.prediction?.activity_suggestion?.trim())
-                    .filter((suggestion): suggestion is string => Boolean(suggestion)),
+                    .filter((suggestion): suggestion is string =>
+                        Boolean(suggestion),
+                    ),
             ),
         ).slice(0, 3);
 
         return {
             mood_prediction: latestPrediction
                 ? {
-                    predicted_mood: this.toMoodScore(latestPrediction.mood_result, null),
-                    confidence_score: this.roundToTwo(latestPrediction.confidence_score),
-                }
+                      predicted_mood: this.toMoodScore(
+                          latestPrediction.mood_result,
+                          null,
+                      ),
+                      confidence_score: this.roundToTwo(
+                          latestPrediction.confidence_score,
+                      ),
+                  }
                 : null,
             recommendations,
         };
     }
 
-    private buildWeeklyTrend(logs: Array<{ logged_at: Date; sentiment_score: number | null; prediction: { mood_result: string } | null }>) {
+    private buildWeeklyTrend(
+        logs: Array<{
+            logged_at: Date;
+            sentiment_score: number | null;
+            prediction: { mood_result: string } | null;
+        }>,
+    ) {
         const sevenDaysAgo = new Date();
         sevenDaysAgo.setUTCHours(0, 0, 0, 0);
         sevenDaysAgo.setUTCDate(sevenDaysAgo.getUTCDate() - 6);
@@ -95,7 +125,10 @@ export class PrismaSummaryRepository implements SummaryRepository {
 
             const dayKey = this.toDayKey(log.logged_at);
             const current = buckets.get(dayKey) ?? { total: 0, count: 0 };
-            current.total += this.toMoodScore(log.prediction?.mood_result ?? null, log.sentiment_score);
+            current.total += this.toMoodScore(
+                log.prediction?.mood_result ?? null,
+                log.sentiment_score,
+            );
             current.count += 1;
             buckets.set(dayKey, current);
         }
@@ -109,7 +142,9 @@ export class PrismaSummaryRepository implements SummaryRepository {
     }
 
     private getCheckInStreak(logDates: Date[]) {
-        const uniqueDays = Array.from(new Set(logDates.map((date) => this.toDayKey(date)))).sort((left, right) => right.localeCompare(left));
+        const uniqueDays = Array.from(
+            new Set(logDates.map((date) => this.toDayKey(date))),
+        ).sort((left, right) => right.localeCompare(left));
 
         if (uniqueDays.length === 0) {
             return 0;
@@ -142,7 +177,10 @@ export class PrismaSummaryRepository implements SummaryRepository {
         return Math.max(0, Math.min(10, (averageSleepHours / 8) * 10));
     }
 
-    private toMoodScore(moodResult: string | null, sentimentScore: number | null) {
+    private toMoodScore(
+        moodResult: string | null,
+        sentimentScore: number | null,
+    ) {
         if (moodResult === 'HAPPY') {
             return 10;
         }

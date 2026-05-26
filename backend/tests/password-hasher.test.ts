@@ -9,7 +9,11 @@ describe('ScryptPasswordHasher', () => {
         const hashedPassword = await hasher.hash('supersecret');
 
         expect(hashedPassword).toContain(':');
-        await expect(hasher.compare('supersecret', hashedPassword)).resolves.toBe(true);
-        await expect(hasher.compare('wrong-password', hashedPassword)).resolves.toBe(false);
+        await expect(
+            hasher.compare('supersecret', hashedPassword),
+        ).resolves.toBe(true);
+        await expect(
+            hasher.compare('wrong-password', hashedPassword),
+        ).resolves.toBe(false);
     });
 });

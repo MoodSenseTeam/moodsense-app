@@ -3,7 +3,7 @@ import { createUserSchema } from './create-user.dto';
 import type { CreateUserUseCase } from './create-user.usecase';
 
 export class CreateUserController {
-    constructor(private readonly createUserUseCase: CreateUserUseCase) { }
+    constructor(private readonly createUserUseCase: CreateUserUseCase) {}
 
     async handle(req: Request, res: Response) {
         const input = createUserSchema.parse(req.body);

@@ -3,7 +3,7 @@ import { refreshTokenSchema } from './refresh.dto';
 import type { RefreshUseCase } from './refresh.usecase';
 
 export class RefreshController {
-    constructor(private readonly refreshUseCase: RefreshUseCase) { }
+    constructor(private readonly refreshUseCase: RefreshUseCase) {}
 
     async handle(req: Request, res: Response) {
         const input = refreshTokenSchema.parse(req.body);

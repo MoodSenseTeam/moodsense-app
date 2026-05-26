@@ -48,10 +48,18 @@ class InMemoryUserRepository implements UserRepository {
         };
     }
 
-    async upsertCredentials() { return; }
-    async updateLastLogin() { return; }
-    async findCredentialsByUserId() { return null; }
-    async revokeCredentials() { return; }
+    async upsertCredentials() {
+        return;
+    }
+    async updateLastLogin() {
+        return;
+    }
+    async findCredentialsByUserId() {
+        return null;
+    }
+    async revokeCredentials() {
+        return;
+    }
 }
 
 describe('CreateUserUseCase', () => {
@@ -82,7 +90,9 @@ describe('CreateUserUseCase', () => {
         expect(userRepository.users[0]?.password).toBe('hashed:supersecret');
         expect(userRepository.users[0]?.gender).toBe('FEMALE');
         expect(userRepository.users[0]?.tanggal_lahir).toBe('2000-01-01');
-        expect(userRepository.users[0]?.usage_reason).toBe('mental health tracking');
+        expect(userRepository.users[0]?.usage_reason).toBe(
+            'mental health tracking',
+        );
     });
 
     it('rejects duplicate emails', async () => {
