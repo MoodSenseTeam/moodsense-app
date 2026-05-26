@@ -1,6 +1,7 @@
 import type { LogoutDto } from './logout.dto';
 import type { UserRepository } from '@/shared/ports/user.repository';
-import type { TokenService, JwtTokenPayload } from '@/infrastructure/security/token-service';
+import type { TokenService } from '@/infrastructure/security/token-service';
+import { verifyRefreshToken } from '@/shared/utils/verify-refresh-token';
 
 export class LogoutUseCase {
     constructor(
@@ -9,21 +10,7 @@ export class LogoutUseCase {
     ) { }
 
     async execute(input: LogoutDto): Promise<{ message: string }> {
-        const payload = await this.tokenService.verifyRefreshToken(input.refreshToken) as JwtTokenPayload | null;
-
-        if (!payload?.sub || !payload.email) {
-            throw new Error('Invalid refresh token.');
-        }
-
-        const userId = Number(payload.sub);
-        if (!Number.isFinite(userId)) {
-            throw new Error('Invalid refresh token.');
-        }
-
-        const credentials = await this.userRepository.findCredentialsByUserId(userId);
-        if (!credentials || !credentials.is_active || credentials.refresh_token !== input.refreshToken) {
-            throw new Error('Invalid refresh token.');
-        }
+        const { userId } = await verifyRefreshToken(this.tokenService, this.userRepository, input.refreshToken);
 
         await this.userRepository.revokeCredentials(userId);
 

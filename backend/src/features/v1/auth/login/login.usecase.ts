@@ -3,7 +3,7 @@ import type { UserRepository } from '@/shared/ports/user.repository';
 import type { PasswordHasher } from '@/infrastructure/security/password-hasher';
 import type { TokenService } from '@/infrastructure/security/token-service';
 
-export type LoginResult = {
+type LoginResult = {
     accessToken: string;
     refreshToken: string;
     user: { user_id: number; name: string; email: string };
