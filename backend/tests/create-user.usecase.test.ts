@@ -10,6 +10,9 @@ type StoredUser = {
     name: string;
     email: string;
     password: string;
+    gender: string;
+    tanggal_lahir: string;
+    usage_reason: string | null;
 };
 
 class InMemoryUserRepository implements UserRepository {
@@ -31,6 +34,9 @@ class InMemoryUserRepository implements UserRepository {
             name: data.name,
             email: data.email,
             password: data.password,
+            gender: data.gender,
+            tanggal_lahir: data.tanggal_lahir,
+            usage_reason: data.usage_reason ?? null,
         };
 
         this.users.push(user);
@@ -63,6 +69,9 @@ describe('CreateUserUseCase', () => {
             name: 'Stezi',
             email: 'stezi@example.com',
             password: 'supersecret',
+            gender: 'FEMALE',
+            tanggal_lahir: '2000-01-01',
+            usage_reason: 'mental health tracking',
         });
 
         expect(result).toEqual({
@@ -71,6 +80,9 @@ describe('CreateUserUseCase', () => {
             email: 'stezi@example.com',
         });
         expect(userRepository.users[0]?.password).toBe('hashed:supersecret');
+        expect(userRepository.users[0]?.gender).toBe('FEMALE');
+        expect(userRepository.users[0]?.tanggal_lahir).toBe('2000-01-01');
+        expect(userRepository.users[0]?.usage_reason).toBe('mental health tracking');
     });
 
     it('rejects duplicate emails', async () => {
@@ -80,6 +92,9 @@ describe('CreateUserUseCase', () => {
             name: 'Existing',
             email: 'stezi@example.com',
             password: 'hashed:password',
+            gender: 'MALE',
+            tanggal_lahir: '1999-05-15',
+            usage_reason: null,
         });
 
         const passwordHasher: PasswordHasher = {
@@ -95,6 +110,8 @@ describe('CreateUserUseCase', () => {
                 name: 'Stezi',
                 email: 'stezi@example.com',
                 password: 'supersecret',
+                gender: 'FEMALE',
+                tanggal_lahir: '2000-01-01',
             }),
         ).rejects.toThrow('Email already in use');
     });

@@ -10,6 +10,9 @@ type StoredUser = {
     name: string;
     email: string;
     password: string;
+    gender: string;
+    tanggal_lahir: string;
+    usage_reason: string | null;
 };
 
 class InMemoryUserRepository implements UserRepository {
@@ -24,7 +27,7 @@ class InMemoryUserRepository implements UserRepository {
         return this.user;
     }
 
-    async create(data: { name: string; email: string; password: string }) {
+    async create(data: { name: string; email: string; password: string; gender: string; tanggal_lahir: string; usage_reason?: string }) {
         return {
             user_id: this.user?.user_id ?? 1,
             name: data.name,
@@ -88,6 +91,9 @@ describe('LoginUseCase', () => {
             name: 'Stezi',
             email: 'stezi@example.com',
             password: 'hashed:secret',
+            gender: 'MALE',
+            tanggal_lahir: '2000-01-01',
+            usage_reason: null,
         });
 
         const passwordHasher: PasswordHasher = {
