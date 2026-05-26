@@ -16,18 +16,29 @@ type StoredUser = {
 };
 
 class InMemoryUserRepository implements UserRepository {
-    constructor(private readonly user: StoredUser | null) { }
+    constructor(private readonly user: StoredUser | null) {}
 
     async findByEmail() {
         if (!this.user) return null;
-        return { user_id: this.user.user_id, name: this.user.name, email: this.user.email };
+        return {
+            user_id: this.user.user_id,
+            name: this.user.name,
+            email: this.user.email,
+        };
     }
 
     async findByEmailWithPassword() {
         return this.user;
     }
 
-    async create(data: { name: string; email: string; password: string; gender: string; tanggal_lahir: string; usage_reason?: string }) {
+    async create(data: {
+        name: string;
+        email: string;
+        password: string;
+        gender: string;
+        tanggal_lahir: string;
+        usage_reason?: string;
+    }) {
         return {
             user_id: this.user?.user_id ?? 1,
             name: data.name,
@@ -35,10 +46,18 @@ class InMemoryUserRepository implements UserRepository {
         };
     }
 
-    async upsertCredentials() { return; }
-    async updateLastLogin() { return; }
-    async findCredentialsByUserId() { return null; }
-    async revokeCredentials() { return; }
+    async upsertCredentials() {
+        return;
+    }
+    async updateLastLogin() {
+        return;
+    }
+    async findCredentialsByUserId() {
+        return null;
+    }
+    async revokeCredentials() {
+        return;
+    }
 }
 
 describe('LoginUseCase', () => {
@@ -52,7 +71,10 @@ describe('LoginUseCase', () => {
 
         const passwordHasher: PasswordHasher = {
             async compare(password: string, hashedPassword: string) {
-                return password === 'supersecret' && hashedPassword === 'hashed:secret';
+                return (
+                    password === 'supersecret' &&
+                    hashedPassword === 'hashed:secret'
+                );
             },
         };
 
@@ -61,13 +83,24 @@ describe('LoginUseCase', () => {
                 return 'access-token';
             },
             async issueRefreshToken() {
-                return { token: 'refresh-token', expiresAt: new Date('2026-05-16T00:00:00.000Z') };
+                return {
+                    token: 'refresh-token',
+                    expiresAt: new Date('2026-05-16T00:00:00.000Z'),
+                };
             },
-            async verifyRefreshToken() { return null; },
-            async verifyAccessToken() { return null; },
+            async verifyRefreshToken() {
+                return null;
+            },
+            async verifyAccessToken() {
+                return null;
+            },
         };
 
-        const useCase = new LoginUseCase(userRepository, passwordHasher, tokenService);
+        const useCase = new LoginUseCase(
+            userRepository,
+            passwordHasher,
+            tokenService,
+        );
 
         const result = await useCase.execute({
             email: 'stezi@example.com',
@@ -107,13 +140,24 @@ describe('LoginUseCase', () => {
                 return 'access-token';
             },
             async issueRefreshToken() {
-                return { token: 'refresh-token', expiresAt: new Date('2026-05-16T00:00:00.000Z') };
+                return {
+                    token: 'refresh-token',
+                    expiresAt: new Date('2026-05-16T00:00:00.000Z'),
+                };
             },
-            async verifyRefreshToken() { return null; },
-            async verifyAccessToken() { return null; },
+            async verifyRefreshToken() {
+                return null;
+            },
+            async verifyAccessToken() {
+                return null;
+            },
         };
 
-        const useCase = new LoginUseCase(userRepository, passwordHasher, tokenService);
+        const useCase = new LoginUseCase(
+            userRepository,
+            passwordHasher,
+            tokenService,
+        );
 
         await expect(
             useCase.execute({
@@ -137,13 +181,24 @@ describe('LoginUseCase', () => {
                 return 'access-token';
             },
             async issueRefreshToken() {
-                return { token: 'refresh-token', expiresAt: new Date('2026-05-16T00:00:00.000Z') };
+                return {
+                    token: 'refresh-token',
+                    expiresAt: new Date('2026-05-16T00:00:00.000Z'),
+                };
             },
-            async verifyRefreshToken() { return null; },
-            async verifyAccessToken() { return null; },
+            async verifyRefreshToken() {
+                return null;
+            },
+            async verifyAccessToken() {
+                return null;
+            },
         };
 
-        const useCase = new LoginUseCase(userRepository, passwordHasher, tokenService);
+        const useCase = new LoginUseCase(
+            userRepository,
+            passwordHasher,
+            tokenService,
+        );
 
         await expect(
             useCase.execute({

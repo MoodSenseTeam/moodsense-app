@@ -3,7 +3,7 @@ import type { CreateUserDto } from '@/features/v1/auth/create-user/create-user.d
 import type { UserRepository } from '@/shared/ports/user.repository';
 
 export class PrismaUserRepository implements UserRepository {
-    constructor(private readonly prisma: PrismaClient) { }
+    constructor(private readonly prisma: PrismaClient) {}
 
     async findByEmail(email: string) {
         return this.prisma.users.findUnique({
@@ -16,7 +16,12 @@ export class PrismaUserRepository implements UserRepository {
         });
     }
 
-    async findByEmailWithPassword(email: string): Promise<{ user_id: number; name: string; email: string; password: string } | null> {
+    async findByEmailWithPassword(email: string): Promise<{
+        user_id: number;
+        name: string;
+        email: string;
+        password: string;
+    } | null> {
         return this.prisma.users.findUnique({
             where: { email },
             select: {
@@ -25,7 +30,7 @@ export class PrismaUserRepository implements UserRepository {
                 name: true,
                 password: true,
             },
-        })
+        });
     }
 
     async create(data: CreateUserDto) {
@@ -48,7 +53,11 @@ export class PrismaUserRepository implements UserRepository {
         return user;
     }
 
-    async upsertCredentials(userId: number, refreshToken: string, expiresAt: Date) {
+    async upsertCredentials(
+        userId: number,
+        refreshToken: string,
+        expiresAt: Date,
+    ) {
         await this.prisma.user_credentials.upsert({
             where: { user_id: userId },
             create: {

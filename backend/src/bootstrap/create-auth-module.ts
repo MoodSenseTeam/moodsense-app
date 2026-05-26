@@ -26,13 +26,20 @@ export function createAuthModule(prisma: PrismaClient) {
     const passwordHasher = new ScryptPasswordHasher();
 
     // Create user (register)
-    const createUserUseCase = new CreateUserUseCase(userRepository, passwordHasher);
+    const createUserUseCase = new CreateUserUseCase(
+        userRepository,
+        passwordHasher,
+    );
     const createUserController = new CreateUserController(createUserUseCase);
     router.use(createUserRoutes(createUserController));
 
     // Login
     const tokenService = new JwtTokenService();
-    const loginUseCase = new LoginUseCase(userRepository, passwordHasher, tokenService);
+    const loginUseCase = new LoginUseCase(
+        userRepository,
+        passwordHasher,
+        tokenService,
+    );
     const loginController = new LoginController(loginUseCase);
     router.use(createLoginRoutes(loginController));
 

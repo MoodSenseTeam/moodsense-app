@@ -13,12 +13,19 @@ export class RefreshUseCase {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly tokenService: TokenService,
-    ) { }
+    ) {}
 
     async execute(input: RefreshTokenDto): Promise<RefreshResult> {
-        const { email, credentials } = await verifyRefreshToken(this.tokenService, this.userRepository, input.refreshToken);
+        const { email, credentials } = await verifyRefreshToken(
+            this.tokenService,
+            this.userRepository,
+            input.refreshToken,
+        );
 
-        if (credentials.token_expires && credentials.token_expires.getTime() <= Date.now()) {
+        if (
+            credentials.token_expires &&
+            credentials.token_expires.getTime() <= Date.now()
+        ) {
             throw new Error('Refresh token expired.');
         }
 
@@ -32,12 +39,17 @@ export class RefreshUseCase {
             email: user.email,
         });
 
-        const { token: refreshToken, expiresAt } = await this.tokenService.issueRefreshToken({
-            sub: user.user_id,
-            email: user.email,
-        });
+        const { token: refreshToken, expiresAt } =
+            await this.tokenService.issueRefreshToken({
+                sub: user.user_id,
+                email: user.email,
+            });
 
-        await this.userRepository.upsertCredentials(user.user_id, refreshToken, expiresAt);
+        await this.userRepository.upsertCredentials(
+            user.user_id,
+            refreshToken,
+            expiresAt,
+        );
 
         return {
             accessToken,

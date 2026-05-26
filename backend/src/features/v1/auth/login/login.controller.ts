@@ -3,7 +3,7 @@ import { loginUserSchema } from './login.dto';
 import type { LoginUseCase } from './login.usecase';
 
 export class LoginController {
-    constructor(private readonly loginUseCase: LoginUseCase) { }
+    constructor(private readonly loginUseCase: LoginUseCase) {}
 
     async handle(req: Request, res: Response) {
         const input = loginUserSchema.parse(req.body);

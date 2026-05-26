@@ -6,9 +6,13 @@ export function createOpenApiRoutes() {
     const router = Router();
     const spec = getOpenApiSpec();
 
-    router.use('/', swaggerUi.serve, swaggerUi.setup(spec, {
-        customCss: '.swagger-ui .topbar { display: none }',
-    }));
+    router.use(
+        '/',
+        swaggerUi.serve,
+        swaggerUi.setup(spec, {
+            customCss: '.swagger-ui .topbar { display: none }',
+        }),
+    );
 
     router.get('/json', (_req, res) => {
         res.json(getOpenApiSpec());
