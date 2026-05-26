@@ -1,16 +1,11 @@
 import type { RefreshTokenDto } from './refresh.dto';
 import type { UserRepository } from '@/shared/ports/user.repository';
-import type { TokenService } from '../login/login.usecase';
+import type { TokenService, JwtTokenPayload } from '@/infrastructure/security/token-service';
 
 export type RefreshResult = {
     accessToken: string;
     refreshToken: string;
     user: { user_id: number; name: string; email: string };
-};
-
-type RefreshPayload = {
-    sub?: string | number;
-    email?: string;
 };
 
 export class RefreshUseCase {
@@ -20,7 +15,7 @@ export class RefreshUseCase {
     ) { }
 
     async execute(input: RefreshTokenDto): Promise<RefreshResult> {
-        const payload = (await this.tokenService.verifyRefreshToken?.(input.refreshToken)) as RefreshPayload | null;
+        const payload = await this.tokenService.verifyRefreshToken(input.refreshToken) as JwtTokenPayload | null;
 
         if (!payload?.sub || !payload.email) {
             throw new Error('Invalid refresh token.');
@@ -31,7 +26,7 @@ export class RefreshUseCase {
             throw new Error('Invalid refresh token.');
         }
 
-        const credentials = await this.userRepository.findCredentialsByUserId?.(userId);
+        const credentials = await this.userRepository.findCredentialsByUserId(userId);
         if (!credentials || !credentials.is_active || credentials.refresh_token !== input.refreshToken) {
             throw new Error('Invalid refresh token.');
         }
@@ -55,7 +50,7 @@ export class RefreshUseCase {
             email: user.email,
         });
 
-        await this.userRepository.upsertCredentials?.(user.user_id, refreshToken, expiresAt);
+        await this.userRepository.upsertCredentials(user.user_id, refreshToken, expiresAt);
 
         return {
             accessToken,

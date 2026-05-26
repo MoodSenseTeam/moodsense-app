@@ -1,17 +1,7 @@
 import type { LoginUserDto } from './login.dto';
 import type { UserRepository } from '@/shared/ports/user.repository';
-
-export interface PasswordHasher {
-    compare(password: string, hashedPassword: string): Promise<boolean>;
-}
-
-export interface TokenService {
-    issueAccessToken(payload: object): Promise<string>;
-    /** returns token string and expiry date */
-    issueRefreshToken(payload: object): Promise<{ token: string; expiresAt: Date }>;
-    verifyRefreshToken?(token: string): Promise<object | null>;
-    verifyAccessToken?(token: string): Promise<object | null>;
-}
+import type { PasswordHasher } from '@/infrastructure/security/password-hasher';
+import type { TokenService } from '@/infrastructure/security/token-service';
 
 export type LoginResult = {
     accessToken: string;
@@ -48,19 +38,10 @@ export class LoginUseCase {
             email: existingUser.email,
         });
 
-        if (this.userRepository.upsertCredentials) {
-            try {
-                await this.userRepository.upsertCredentials(existingUser.user_id, refreshToken, expiresAt);
-            } catch {
-                // Intentionally swallow persistence errors for now; log in production.
-            }
-        }
-
-        if (this.userRepository.updateLastLogin) {
-            try {
-                await this.userRepository.updateLastLogin(existingUser.user_id, new Date());
-            } catch {
-            }
+        try {
+            await this.userRepository.upsertCredentials(existingUser.user_id, refreshToken, expiresAt);
+        } catch {
+            // Intentionally swallow persistence errors for now; log in production.
         }
 
         return {

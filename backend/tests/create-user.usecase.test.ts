@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { CreateUserUseCase, type PasswordHasher } from '../src/features/v1/auth/create-user/create-user.usecase';
+import { CreateUserUseCase } from '../src/features/v1/auth/create-user/create-user.usecase';
 import type { CreateUserDto } from '../src/features/v1/auth/create-user/create-user.dto';
+import type { PasswordHasher } from '../src/infrastructure/security/password-hasher';
 import type { UserRepository } from '../src/shared/ports/user.repository';
 
 type StoredUser = {
@@ -19,7 +20,9 @@ class InMemoryUserRepository implements UserRepository {
     }
 
     async findByEmail(email: string) {
-        return this.users.find((user) => user.email === email) ?? null;
+        const user = this.users.find((user) => user.email === email);
+        if (!user) return null;
+        return { user_id: user.user_id, name: user.name, email: user.email };
     }
 
     async create(data: CreateUserDto & { password: string }) {
@@ -38,6 +41,11 @@ class InMemoryUserRepository implements UserRepository {
             email: user.email,
         };
     }
+
+    async upsertCredentials() { return; }
+    async updateLastLogin() { return; }
+    async findCredentialsByUserId() { return null; }
+    async revokeCredentials() { return; }
 }
 
 describe('CreateUserUseCase', () => {

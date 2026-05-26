@@ -21,10 +21,10 @@
     }
   },
   "include": [
-    "src/**/*.ts",
-    "src/shared/ports/user.repository.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "prisma.config.ts"
   ]
 }

@@ -1,7 +1,8 @@
-import express, { type Request, type Response } from 'express';
+import express, { type Request, type Response, type NextFunction } from 'express';
 import cors from 'cors';
 import { createPrismaClient } from '@/bootstrap/create-prisma-client';
 import { createAuthModule } from '@/bootstrap/create-auth-module';
+import { createOpenApiRoutes } from '@/shared/openapi/openapi.route';
 
 export function createApp() {
     const app = express();
@@ -17,11 +18,28 @@ export function createApp() {
 
     const prisma = createPrismaClient();
     app.use('/auth', createAuthModule(prisma));
+    app.use('/api-docs', createOpenApiRoutes());
 
     app.get('/', (req: Request, res: Response) => {
         res.json({
             message: 'MoodSense API Running',
         });
+    });
+
+    app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+        console.error(err);
+
+        if (err instanceof Error) {
+            const prismaError = err as { code?: string; meta?: Record<string, unknown> };
+            res.status(500).json({
+                message: err.message,
+                ...(prismaError.code && { code: prismaError.code }),
+                ...(prismaError.meta && { meta: prismaError.meta }),
+            });
+            return;
+        }
+
+        res.status(500).json({ message: 'Internal server error' });
     });
 
     return app;

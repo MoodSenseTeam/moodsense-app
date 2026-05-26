@@ -1,11 +1,6 @@
 import type { Request, Response } from 'express';
-import type { TokenService } from '../login/login.usecase';
 import type { UserRepository } from '@/shared/ports/user.repository';
-
-type AccessPayload = {
-    sub?: string | number;
-    email?: string;
-};
+import type { TokenService, JwtTokenPayload } from '@/infrastructure/security/token-service';
 
 function extractBearerToken(authorizationHeader: string | undefined) {
     if (!authorizationHeader?.startsWith('Bearer ')) return null;
@@ -24,12 +19,12 @@ export class MeController {
             return res.status(401).json({ message: 'Missing access token' });
         }
 
-        const payload = (await this.tokenService.verifyAccessToken?.(token)) as AccessPayload | null;
+        const payload = await this.tokenService.verifyAccessToken(token) as JwtTokenPayload | null;
         if (!payload?.sub || !payload.email) {
             return res.status(401).json({ message: 'Invalid access token' });
         }
 
-        const user = await this.userRepository.findByEmailWithPassword(payload.email);
+        const user = await this.userRepository.findByEmail(payload.email);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

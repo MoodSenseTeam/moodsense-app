@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { RefreshUseCase } from '../src/features/v1/auth/refresh/refresh.usecase';
 import { LogoutUseCase } from '../src/features/v1/auth/logout/logout.usecase';
 import { MeController } from '../src/features/v1/auth/me/me.controller';
-import type { TokenService } from '../src/features/v1/auth/login/login.usecase';
+import type { TokenService } from '../src/infrastructure/security/token-service';
 import type { UserRepository } from '../src/shared/ports/user.repository';
 
 type StoredUser = {
@@ -19,12 +19,27 @@ type StoredCredentials = {
     is_active: boolean;
 };
 
+function makeTokenService(overrides: Partial<TokenService> = {}): TokenService {
+    return {
+        issueAccessToken: async () => 'access-token',
+        issueRefreshToken: async () => {
+            const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+            return { token: 'refresh-token', expiresAt };
+        },
+        verifyRefreshToken: async () => null,
+        verifyAccessToken: async () => null,
+        ...overrides,
+    };
+}
+
 class InMemoryUserRepository implements UserRepository {
     public users: StoredUser[] = [];
     public credentials: StoredCredentials[] = [];
 
     async findByEmail(email: string) {
-        return this.users.find((user) => user.email === email) ?? null;
+        const user = this.users.find((user) => user.email === email);
+        if (!user) return null;
+        return { user_id: user.user_id, name: user.name, email: user.email };
     }
 
     async findByEmailWithPassword(email: string) {
@@ -91,24 +106,19 @@ describe('Auth lifecycle', () => {
             email: 'stezi@example.com',
             password: 'hashed:secret',
         });
+        const futureDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
         userRepository.credentials.push({
             user_id: 1,
             refresh_token: 'refresh-token',
-            token_expires: new Date('2026-05-16T00:00:00.000Z'),
+            token_expires: futureDate,
             is_active: true,
         });
 
-        const tokenService: TokenService = {
-            async issueAccessToken() {
-                return 'new-access-token';
-            },
-            async issueRefreshToken() {
-                return { token: 'new-refresh-token', expiresAt: new Date('2026-05-17T00:00:00.000Z') };
-            },
-            async verifyRefreshToken(token: string) {
-                return token === 'refresh-token' ? { sub: 1, email: 'stezi@example.com' } : null;
-            },
-        };
+        const tokenService = makeTokenService({
+            issueAccessToken: async () => 'new-access-token',
+            issueRefreshToken: async () => ({ token: 'new-refresh-token', expiresAt: futureDate }),
+            verifyRefreshToken: async (token: string) => token === 'refresh-token' ? { sub: 1, email: 'stezi@example.com' } : null,
+        });
 
         const useCase = new RefreshUseCase(userRepository, tokenService);
         const result = await useCase.execute({ refreshToken: 'refresh-token' });
@@ -128,17 +138,9 @@ describe('Auth lifecycle', () => {
     it('rejects invalid refresh tokens', async () => {
         const userRepository = new InMemoryUserRepository();
 
-        const tokenService: TokenService = {
-            async issueAccessToken() {
-                return 'new-access-token';
-            },
-            async issueRefreshToken() {
-                return { token: 'new-refresh-token', expiresAt: new Date('2026-05-17T00:00:00.000Z') };
-            },
-            async verifyRefreshToken() {
-                return null;
-            },
-        };
+        const tokenService = makeTokenService({
+            issueAccessToken: async () => 'new-access-token',
+        });
 
         const useCase = new RefreshUseCase(userRepository, tokenService);
 
@@ -152,21 +154,13 @@ describe('Auth lifecycle', () => {
         userRepository.credentials.push({
             user_id: 1,
             refresh_token: 'refresh-token',
-            token_expires: new Date('2026-05-16T00:00:00.000Z'),
+            token_expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             is_active: true,
         });
 
-        const tokenService: TokenService = {
-            async issueAccessToken() {
-                return 'access-token';
-            },
-            async issueRefreshToken() {
-                return { token: 'refresh-token', expiresAt: new Date('2026-05-17T00:00:00.000Z') };
-            },
-            async verifyRefreshToken(token: string) {
-                return token === 'refresh-token' ? { sub: 1, email: 'stezi@example.com' } : null;
-            },
-        };
+        const tokenService = makeTokenService({
+            verifyRefreshToken: async (token: string) => token === 'refresh-token' ? { sub: 1, email: 'stezi@example.com' } : null,
+        });
 
         const useCase = new LogoutUseCase(userRepository, tokenService);
         const result = await useCase.execute({ refreshToken: 'refresh-token' });
@@ -179,17 +173,7 @@ describe('Auth lifecycle', () => {
     it('rejects invalid logout tokens', async () => {
         const userRepository = new InMemoryUserRepository();
 
-        const tokenService: TokenService = {
-            async issueAccessToken() {
-                return 'access-token';
-            },
-            async issueRefreshToken() {
-                return { token: 'refresh-token', expiresAt: new Date('2026-05-17T00:00:00.000Z') };
-            },
-            async verifyRefreshToken() {
-                return null;
-            },
-        };
+        const tokenService = makeTokenService();
 
         const useCase = new LogoutUseCase(userRepository, tokenService);
 
@@ -207,17 +191,9 @@ describe('Auth lifecycle', () => {
             password: 'hashed:secret',
         });
 
-        const tokenService: TokenService = {
-            async issueAccessToken() {
-                return 'access-token';
-            },
-            async issueRefreshToken() {
-                return { token: 'refresh-token', expiresAt: new Date('2026-05-17T00:00:00.000Z') };
-            },
-            async verifyAccessToken(token: string) {
-                return token === 'access-token' ? { sub: 1, email: 'stezi@example.com' } : null;
-            },
-        };
+        const tokenService = makeTokenService({
+            verifyAccessToken: async (token: string) => token === 'access-token' ? { sub: 1, email: 'stezi@example.com' } : null,
+        });
 
         const controller = new MeController(userRepository, tokenService);
         const status = vi.fn().mockReturnThis();
@@ -246,17 +222,7 @@ describe('Auth lifecycle', () => {
     it('rejects missing access token on me endpoint', async () => {
         const userRepository = new InMemoryUserRepository();
 
-        const tokenService: TokenService = {
-            async issueAccessToken() {
-                return 'access-token';
-            },
-            async issueRefreshToken() {
-                return { token: 'refresh-token', expiresAt: new Date('2026-05-17T00:00:00.000Z') };
-            },
-            async verifyAccessToken() {
-                return null;
-            },
-        };
+        const tokenService = makeTokenService();
 
         const controller = new MeController(userRepository, tokenService);
         const status = vi.fn().mockReturnThis();

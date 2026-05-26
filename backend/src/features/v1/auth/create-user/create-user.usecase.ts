@@ -1,9 +1,6 @@
 import type { CreateUserDto } from './create-user.dto';
 import type { UserRepository } from '@/shared/ports/user.repository';
-
-export interface PasswordHasher {
-    hash(password: string): Promise<string>;
-}
+import type { PasswordHasher } from '@/infrastructure/security/password-hasher';
 
 export class CreateUserUseCase {
     constructor(
