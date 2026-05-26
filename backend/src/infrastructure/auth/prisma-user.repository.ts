@@ -34,6 +34,9 @@ export class PrismaUserRepository implements UserRepository {
                 name: data.name,
                 email: data.email,
                 password: data.password,
+                gender: data.gender,
+                tanggal_lahir: new Date(data.tanggal_lahir),
+                usage_reason: data.usage_reason,
             },
             select: {
                 user_id: true,

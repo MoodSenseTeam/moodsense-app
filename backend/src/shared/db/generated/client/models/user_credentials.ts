@@ -457,10 +457,6 @@ export type user_credentialsUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.user_credentialsUpdateToOneWithWhereWithoutUserInput, Prisma.user_credentialsUpdateWithoutUserInput>, Prisma.user_credentialsUncheckedUpdateWithoutUserInput>
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }

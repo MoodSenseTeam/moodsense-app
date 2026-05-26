@@ -10,6 +10,9 @@ type StoredUser = {
     name: string;
     email: string;
     password: string;
+    gender: string;
+    tanggal_lahir: string;
+    usage_reason: string | null;
 };
 
 type StoredCredentials = {
@@ -46,12 +49,15 @@ class InMemoryUserRepository implements UserRepository {
         return this.users.find((user) => user.email === email) ?? null;
     }
 
-    async create(data: { name: string; email: string; password: string }) {
+    async create(data: { name: string; email: string; password: string; gender: string; tanggal_lahir: string; usage_reason?: string }) {
         const user: StoredUser = {
             user_id: this.users.length + 1,
             name: data.name,
             email: data.email,
             password: data.password,
+            gender: data.gender,
+            tanggal_lahir: data.tanggal_lahir,
+            usage_reason: data.usage_reason ?? null,
         };
 
         this.users.push(user);
@@ -105,6 +111,9 @@ describe('Auth lifecycle', () => {
             name: 'Stezi',
             email: 'stezi@example.com',
             password: 'hashed:secret',
+            gender: 'MALE',
+            tanggal_lahir: '2000-01-01',
+            usage_reason: null,
         });
         const futureDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
         userRepository.credentials.push({
@@ -189,6 +198,9 @@ describe('Auth lifecycle', () => {
             name: 'Stezi',
             email: 'stezi@example.com',
             password: 'hashed:secret',
+            gender: 'MALE',
+            tanggal_lahir: '2000-01-01',
+            usage_reason: null,
         });
 
         const tokenService = makeTokenService({

@@ -13,15 +13,18 @@ datasource db {
 }
 
 model users {
-  user_id     Int               @id @default(autoincrement())
-  created_at  DateTime          @default(now())
-  updated_at  DateTime          @updatedAt
-  email       String            @unique
-  name        String
-  password    String
-  role        Role              @default(USER)
-  credentials user_credentials?
-  mood_logs   mood_logs[]
+  user_id       Int               @id @default(autoincrement())
+  created_at    DateTime          @default(now())
+  updated_at    DateTime          @updatedAt
+  email         String            @unique
+  name          String
+  password      String
+  gender        Gender            @default(OTHER)
+  tanggal_lahir DateTime          @default(now())
+  usage_reason  String?
+  role          Role              @default(USER)
+  credentials   user_credentials?
+  mood_logs     mood_logs[]
 }
 
 model user_credentials {
@@ -73,6 +76,12 @@ model mood_predictions {
 enum Role {
   USER
   ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
 }
 
 enum ActivityLevel {

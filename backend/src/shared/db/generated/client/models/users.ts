@@ -41,6 +41,9 @@ export type UsersMinAggregateOutputType = {
   email: string | null
   name: string | null
   password: string | null
+  gender: $Enums.Gender | null
+  tanggal_lahir: Date | null
+  usage_reason: string | null
   role: $Enums.Role | null
 }
 
@@ -51,6 +54,9 @@ export type UsersMaxAggregateOutputType = {
   email: string | null
   name: string | null
   password: string | null
+  gender: $Enums.Gender | null
+  tanggal_lahir: Date | null
+  usage_reason: string | null
   role: $Enums.Role | null
 }
 
@@ -61,6 +67,9 @@ export type UsersCountAggregateOutputType = {
   email: number
   name: number
   password: number
+  gender: number
+  tanggal_lahir: number
+  usage_reason: number
   role: number
   _all: number
 }
@@ -81,6 +90,9 @@ export type UsersMinAggregateInputType = {
   email?: true
   name?: true
   password?: true
+  gender?: true
+  tanggal_lahir?: true
+  usage_reason?: true
   role?: true
 }
 
@@ -91,6 +103,9 @@ export type UsersMaxAggregateInputType = {
   email?: true
   name?: true
   password?: true
+  gender?: true
+  tanggal_lahir?: true
+  usage_reason?: true
   role?: true
 }
 
@@ -101,6 +116,9 @@ export type UsersCountAggregateInputType = {
   email?: true
   name?: true
   password?: true
+  gender?: true
+  tanggal_lahir?: true
+  usage_reason?: true
   role?: true
   _all?: true
 }
@@ -198,6 +216,9 @@ export type UsersGroupByOutputType = {
   email: string
   name: string
   password: string
+  gender: $Enums.Gender
+  tanggal_lahir: Date
+  usage_reason: string | null
   role: $Enums.Role
   _count: UsersCountAggregateOutputType | null
   _avg: UsersAvgAggregateOutputType | null
@@ -231,6 +252,9 @@ export type usersWhereInput = {
   email?: Prisma.StringFilter<"users"> | string
   name?: Prisma.StringFilter<"users"> | string
   password?: Prisma.StringFilter<"users"> | string
+  gender?: Prisma.EnumGenderFilter<"users"> | $Enums.Gender
+  tanggal_lahir?: Prisma.DateTimeFilter<"users"> | Date | string
+  usage_reason?: Prisma.StringNullableFilter<"users"> | string | null
   role?: Prisma.EnumRoleFilter<"users"> | $Enums.Role
   credentials?: Prisma.XOR<Prisma.User_credentialsNullableScalarRelationFilter, Prisma.user_credentialsWhereInput> | null
   mood_logs?: Prisma.Mood_logsListRelationFilter
@@ -243,6 +267,9 @@ export type usersOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  tanggal_lahir?: Prisma.SortOrder
+  usage_reason?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   credentials?: Prisma.user_credentialsOrderByWithRelationInput
   mood_logs?: Prisma.mood_logsOrderByRelationAggregateInput
@@ -258,6 +285,9 @@ export type usersWhereUniqueInput = Prisma.AtLeast<{
   updated_at?: Prisma.DateTimeFilter<"users"> | Date | string
   name?: Prisma.StringFilter<"users"> | string
   password?: Prisma.StringFilter<"users"> | string
+  gender?: Prisma.EnumGenderFilter<"users"> | $Enums.Gender
+  tanggal_lahir?: Prisma.DateTimeFilter<"users"> | Date | string
+  usage_reason?: Prisma.StringNullableFilter<"users"> | string | null
   role?: Prisma.EnumRoleFilter<"users"> | $Enums.Role
   credentials?: Prisma.XOR<Prisma.User_credentialsNullableScalarRelationFilter, Prisma.user_credentialsWhereInput> | null
   mood_logs?: Prisma.Mood_logsListRelationFilter
@@ -270,6 +300,9 @@ export type usersOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  tanggal_lahir?: Prisma.SortOrder
+  usage_reason?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   _count?: Prisma.usersCountOrderByAggregateInput
   _avg?: Prisma.usersAvgOrderByAggregateInput
@@ -288,6 +321,9 @@ export type usersScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"users"> | string
   name?: Prisma.StringWithAggregatesFilter<"users"> | string
   password?: Prisma.StringWithAggregatesFilter<"users"> | string
+  gender?: Prisma.EnumGenderWithAggregatesFilter<"users"> | $Enums.Gender
+  tanggal_lahir?: Prisma.DateTimeWithAggregatesFilter<"users"> | Date | string
+  usage_reason?: Prisma.StringNullableWithAggregatesFilter<"users"> | string | null
   role?: Prisma.EnumRoleWithAggregatesFilter<"users"> | $Enums.Role
 }
 
@@ -297,6 +333,9 @@ export type usersCreateInput = {
   email: string
   name: string
   password: string
+  gender?: $Enums.Gender
+  tanggal_lahir?: Date | string
+  usage_reason?: string | null
   role?: $Enums.Role
   credentials?: Prisma.user_credentialsCreateNestedOneWithoutUserInput
   mood_logs?: Prisma.mood_logsCreateNestedManyWithoutUserInput
@@ -309,6 +348,9 @@ export type usersUncheckedCreateInput = {
   email: string
   name: string
   password: string
+  gender?: $Enums.Gender
+  tanggal_lahir?: Date | string
+  usage_reason?: string | null
   role?: $Enums.Role
   credentials?: Prisma.user_credentialsUncheckedCreateNestedOneWithoutUserInput
   mood_logs?: Prisma.mood_logsUncheckedCreateNestedManyWithoutUserInput
@@ -320,6 +362,9 @@ export type usersUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  tanggal_lahir?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usage_reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   credentials?: Prisma.user_credentialsUpdateOneWithoutUserNestedInput
   mood_logs?: Prisma.mood_logsUpdateManyWithoutUserNestedInput
@@ -332,6 +377,9 @@ export type usersUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  tanggal_lahir?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usage_reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   credentials?: Prisma.user_credentialsUncheckedUpdateOneWithoutUserNestedInput
   mood_logs?: Prisma.mood_logsUncheckedUpdateManyWithoutUserNestedInput
@@ -344,6 +392,9 @@ export type usersCreateManyInput = {
   email: string
   name: string
   password: string
+  gender?: $Enums.Gender
+  tanggal_lahir?: Date | string
+  usage_reason?: string | null
   role?: $Enums.Role
 }
 
@@ -353,6 +404,9 @@ export type usersUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  tanggal_lahir?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usage_reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
 }
 
@@ -363,6 +417,9 @@ export type usersUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  tanggal_lahir?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usage_reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
 }
 
@@ -373,6 +430,9 @@ export type usersCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  tanggal_lahir?: Prisma.SortOrder
+  usage_reason?: Prisma.SortOrder
   role?: Prisma.SortOrder
 }
 
@@ -387,6 +447,9 @@ export type usersMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  tanggal_lahir?: Prisma.SortOrder
+  usage_reason?: Prisma.SortOrder
   role?: Prisma.SortOrder
 }
 
@@ -397,6 +460,9 @@ export type usersMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  tanggal_lahir?: Prisma.SortOrder
+  usage_reason?: Prisma.SortOrder
   role?: Prisma.SortOrder
 }
 
@@ -415,6 +481,14 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type StringFieldUpdateOperationsInput = {
   set?: string
+}
+
+export type EnumGenderFieldUpdateOperationsInput = {
+  set?: $Enums.Gender
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 export type EnumRoleFieldUpdateOperationsInput = {
@@ -463,6 +537,9 @@ export type usersCreateWithoutCredentialsInput = {
   email: string
   name: string
   password: string
+  gender?: $Enums.Gender
+  tanggal_lahir?: Date | string
+  usage_reason?: string | null
   role?: $Enums.Role
   mood_logs?: Prisma.mood_logsCreateNestedManyWithoutUserInput
 }
@@ -474,6 +551,9 @@ export type usersUncheckedCreateWithoutCredentialsInput = {
   email: string
   name: string
   password: string
+  gender?: $Enums.Gender
+  tanggal_lahir?: Date | string
+  usage_reason?: string | null
   role?: $Enums.Role
   mood_logs?: Prisma.mood_logsUncheckedCreateNestedManyWithoutUserInput
 }
@@ -500,6 +580,9 @@ export type usersUpdateWithoutCredentialsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  tanggal_lahir?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usage_reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   mood_logs?: Prisma.mood_logsUpdateManyWithoutUserNestedInput
 }
@@ -511,6 +594,9 @@ export type usersUncheckedUpdateWithoutCredentialsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  tanggal_lahir?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usage_reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   mood_logs?: Prisma.mood_logsUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -521,6 +607,9 @@ export type usersCreateWithoutMood_logsInput = {
   email: string
   name: string
   password: string
+  gender?: $Enums.Gender
+  tanggal_lahir?: Date | string
+  usage_reason?: string | null
   role?: $Enums.Role
   credentials?: Prisma.user_credentialsCreateNestedOneWithoutUserInput
 }
@@ -532,6 +621,9 @@ export type usersUncheckedCreateWithoutMood_logsInput = {
   email: string
   name: string
   password: string
+  gender?: $Enums.Gender
+  tanggal_lahir?: Date | string
+  usage_reason?: string | null
   role?: $Enums.Role
   credentials?: Prisma.user_credentialsUncheckedCreateNestedOneWithoutUserInput
 }
@@ -558,6 +650,9 @@ export type usersUpdateWithoutMood_logsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  tanggal_lahir?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usage_reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   credentials?: Prisma.user_credentialsUpdateOneWithoutUserNestedInput
 }
@@ -569,6 +664,9 @@ export type usersUncheckedUpdateWithoutMood_logsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  tanggal_lahir?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usage_reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   credentials?: Prisma.user_credentialsUncheckedUpdateOneWithoutUserNestedInput
 }
@@ -611,6 +709,9 @@ export type usersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   email?: boolean
   name?: boolean
   password?: boolean
+  gender?: boolean
+  tanggal_lahir?: boolean
+  usage_reason?: boolean
   role?: boolean
   credentials?: boolean | Prisma.users$credentialsArgs<ExtArgs>
   mood_logs?: boolean | Prisma.users$mood_logsArgs<ExtArgs>
@@ -624,6 +725,9 @@ export type usersSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   email?: boolean
   name?: boolean
   password?: boolean
+  gender?: boolean
+  tanggal_lahir?: boolean
+  usage_reason?: boolean
   role?: boolean
 }, ExtArgs["result"]["users"]>
 
@@ -634,6 +738,9 @@ export type usersSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   email?: boolean
   name?: boolean
   password?: boolean
+  gender?: boolean
+  tanggal_lahir?: boolean
+  usage_reason?: boolean
   role?: boolean
 }, ExtArgs["result"]["users"]>
 
@@ -644,10 +751,13 @@ export type usersSelectScalar = {
   email?: boolean
   name?: boolean
   password?: boolean
+  gender?: boolean
+  tanggal_lahir?: boolean
+  usage_reason?: boolean
   role?: boolean
 }
 
-export type usersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"user_id" | "created_at" | "updated_at" | "email" | "name" | "password" | "role", ExtArgs["result"]["users"]>
+export type usersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"user_id" | "created_at" | "updated_at" | "email" | "name" | "password" | "gender" | "tanggal_lahir" | "usage_reason" | "role", ExtArgs["result"]["users"]>
 export type usersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   credentials?: boolean | Prisma.users$credentialsArgs<ExtArgs>
   mood_logs?: boolean | Prisma.users$mood_logsArgs<ExtArgs>
@@ -669,6 +779,9 @@ export type $usersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     email: string
     name: string
     password: string
+    gender: $Enums.Gender
+    tanggal_lahir: Date
+    usage_reason: string | null
     role: $Enums.Role
   }, ExtArgs["result"]["users"]>
   composites: {}
@@ -1101,6 +1214,9 @@ export interface usersFieldRefs {
   readonly email: Prisma.FieldRef<"users", 'String'>
   readonly name: Prisma.FieldRef<"users", 'String'>
   readonly password: Prisma.FieldRef<"users", 'String'>
+  readonly gender: Prisma.FieldRef<"users", 'Gender'>
+  readonly tanggal_lahir: Prisma.FieldRef<"users", 'DateTime'>
+  readonly usage_reason: Prisma.FieldRef<"users", 'String'>
   readonly role: Prisma.FieldRef<"users", 'Role'>
 }
     

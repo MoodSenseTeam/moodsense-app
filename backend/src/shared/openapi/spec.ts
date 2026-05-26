@@ -20,11 +20,14 @@ const spec = {
                         'application/json': {
                             schema: {
                                 type: 'object',
-                                required: ['name', 'email', 'password'],
+                                required: ['name', 'email', 'password', 'gender', 'tanggal_lahir'],
                                 properties: {
                                     name: { type: 'string', example: 'John Doe' },
                                     email: { type: 'string', format: 'email', example: 'john@example.com' },
                                     password: { type: 'string', format: 'password', minLength: 8, example: 'password123' },
+                                    gender: { type: 'string', enum: ['MALE', 'FEMALE', 'OTHER'], example: 'OTHER' },
+                                    tanggal_lahir: { type: 'string', format: 'date', example: '1990-01-01' },
+                                    usage_reason: { type: 'string', example: 'Personal use' },
                                 },
                             },
                         },
