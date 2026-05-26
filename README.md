@@ -1,105 +1,59 @@
 # MoodSense App
 
-MoodSense is a full-stack app with a React frontend and an Express backend.
+Full-stack app — React frontend, Express backend.
 
-## Project Structure
+## Quick start
 
-- `frontend/` - Vite + React app
-- `backend/` - Express API
-
-## Requirements
-
-- Node.js installed
-- npm installed
-
-## Run the Backend
+### Option A — everything in Docker
 
 ```bash
 cd backend
-npm install
-npm run dev
+docker compose -f docker-compose.full.yml up -d
 ```
 
-The API runs on `http://localhost:5000`.
+Backend runs on `http://localhost:5000`, database on `localhost:5432`.
 
-### Environment
-
-The backend expects configuration in a `.env` file located in the `backend/` folder. You can copy the example file `backend/.env.example` and adjust values as needed.
-
-Example `.env` (in `backend/.env`):
-
-```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/moodsense"
-PORT=5000
-ALLOWED_ORIGINS=http://localhost:5173
-```
-
-If you use the included Docker Compose, start the database first from the `backend/` folder:
+### Option B — Docker database, local backend
 
 ```bash
 cd backend
-docker compose up -d db
-```
-
-Then start the backend (this script preloads environment variables):
-
-```bash
+docker compose up -d              # starts PostgreSQL only
+cp .env.example .env              # edit if needed
 pnpm install
-pnpm dev
+pnpm dev                          # http://localhost:5000
 ```
 
-For production, build and start with:
-
-```bash
-pnpm build
-pnpm start
-```
-
-### Backend Start Script
-
-```bash
-npm start
-```
-
-## Run the Frontend
-
-Open a second terminal:
+### Frontend (either option)
 
 ```bash
 cd frontend
-npm install
-npm run dev
+pnpm install
+pnpm dev                          # http://localhost:5173
 ```
 
-The frontend runs on `http://localhost:5173` by default.
+## Environment
 
-## API Status
+Copy `backend/.env.example` to `backend/.env` and adjust values. The full Docker Compose sets these automatically.
 
-The backend exposes a basic health check at:
+| Variable | Default |
+|---|---|
+| `DATABASE_URL` | `postgresql://postgres:postgres@localhost:5432/moodsense` |
+| `PORT` | `5000` |
+| `ALLOWED_ORIGINS` | `http://localhost:5173` |
+| `JWT_SECRET` | `change-me` |
+| `ACCESS_TOKEN_EXPIRES` | `15m` |
+| `REFRESH_TOKEN_EXPIRES` | `7d` |
+
+## Project structure
+
+| Directory | Stack |
+|---|---|
+| `frontend/` | Vite + React |
+| `backend/` | Express + Prisma + JWT |
+
+## Testing
 
 ```bash
-GET /
+cd backend
+pnpm test
 ```
-
-Response:
-
-```json
-{
-	"message": "MoodSense API Running"
-}
-```
-
-## Build for Frontend Production
-
-```bash
-cd frontend
-npm run build
-```
-
-## Notes
-
-- Start the backend before using the frontend if the UI depends on the API.
-- If needed, adjust the frontend API base URL to point to `http://localhost:5000`.
-
-Files added for convenience:
-- `backend/.env.example` — example environment variables for local development

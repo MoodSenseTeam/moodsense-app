@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { LoginUseCase, type PasswordHasher, type TokenService } from '../src/features/v1/auth/login/login.usecase';
+import { LoginUseCase } from '../src/features/v1/auth/login/login.usecase';
+import type { PasswordHasher } from '../src/infrastructure/security/password-hasher';
+import type { TokenService } from '../src/infrastructure/security/token-service';
 import type { UserRepository } from '../src/shared/ports/user.repository';
 
 type StoredUser = {
@@ -13,12 +15,12 @@ type StoredUser = {
 class InMemoryUserRepository implements UserRepository {
     constructor(private readonly user: StoredUser | null) { }
 
-    async findByEmail(): Promise<{ user_id: number; email: string } | null> {
+    async findByEmail() {
         if (!this.user) return null;
-        return { user_id: this.user.user_id, email: this.user.email };
+        return { user_id: this.user.user_id, name: this.user.name, email: this.user.email };
     }
 
-    async findByEmailWithPassword(): Promise<StoredUser | null> {
+    async findByEmailWithPassword() {
         return this.user;
     }
 
@@ -29,6 +31,11 @@ class InMemoryUserRepository implements UserRepository {
             email: data.email,
         };
     }
+
+    async upsertCredentials() { return; }
+    async updateLastLogin() { return; }
+    async findCredentialsByUserId() { return null; }
+    async revokeCredentials() { return; }
 }
 
 describe('LoginUseCase', () => {
@@ -53,6 +60,8 @@ describe('LoginUseCase', () => {
             async issueRefreshToken() {
                 return { token: 'refresh-token', expiresAt: new Date('2026-05-16T00:00:00.000Z') };
             },
+            async verifyRefreshToken() { return null; },
+            async verifyAccessToken() { return null; },
         };
 
         const useCase = new LoginUseCase(userRepository, passwordHasher, tokenService);
@@ -94,6 +103,8 @@ describe('LoginUseCase', () => {
             async issueRefreshToken() {
                 return { token: 'refresh-token', expiresAt: new Date('2026-05-16T00:00:00.000Z') };
             },
+            async verifyRefreshToken() { return null; },
+            async verifyAccessToken() { return null; },
         };
 
         const useCase = new LoginUseCase(userRepository, passwordHasher, tokenService);
@@ -122,6 +133,8 @@ describe('LoginUseCase', () => {
             async issueRefreshToken() {
                 return { token: 'refresh-token', expiresAt: new Date('2026-05-16T00:00:00.000Z') };
             },
+            async verifyRefreshToken() { return null; },
+            async verifyAccessToken() { return null; },
         };
 
         const useCase = new LoginUseCase(userRepository, passwordHasher, tokenService);

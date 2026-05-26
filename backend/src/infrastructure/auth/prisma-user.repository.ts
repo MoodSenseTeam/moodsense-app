@@ -1,6 +1,6 @@
 import type { PrismaClient } from '@/shared/db/generated/client/client';
-import type { CreateUserDto } from '../../features/v1/auth/create-user/create-user.dto';
-import type { UserRepository } from '../../shared/ports/user.repository';
+import type { CreateUserDto } from '@/features/v1/auth/create-user/create-user.dto';
+import type { UserRepository } from '@/shared/ports/user.repository';
 
 export class PrismaUserRepository implements UserRepository {
     constructor(private readonly prisma: PrismaClient) { }
@@ -10,6 +10,7 @@ export class PrismaUserRepository implements UserRepository {
             where: { email },
             select: {
                 user_id: true,
+                name: true,
                 email: true,
             },
         });
