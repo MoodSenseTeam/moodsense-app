@@ -19,7 +19,7 @@ import { createLogoutRoutes } from '@/features/v1/auth/logout/logout.route';
 import { MeController } from '@/features/v1/auth/me/me.controller';
 import { createMeRoutes } from '@/features/v1/auth/me/me.route';
 
-export function createAuthModule(prisma: PrismaClient) {
+export function createAuthModule(prisma: PrismaClient): Router {
     const router = Router();
 
     const userRepository = new PrismaUserRepository(prisma);

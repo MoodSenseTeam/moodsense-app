@@ -7,6 +7,7 @@ import cors from 'cors';
 import { createPrismaClient } from '@/bootstrap/create-prisma-client';
 import { createAuthModule } from '@/bootstrap/create-auth-module';
 import { createOpenApiRoutes } from '@/shared/openapi/openapi.route';
+import { createDashboardModule } from '@/bootstrap/create-dashboard-module';
 
 export function createApp() {
     const app = express();
@@ -24,6 +25,7 @@ export function createApp() {
 
     const prisma = createPrismaClient();
     app.use('/auth', createAuthModule(prisma));
+    app.use('/dashboard', createDashboardModule(prisma));
     app.use('/api-docs', createOpenApiRoutes());
 
     app.get('/', (req: Request, res: Response) => {
