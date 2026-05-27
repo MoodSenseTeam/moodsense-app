@@ -10,7 +10,10 @@ const spec = {
     },
     tags: [
         { name: 'Auth', description: 'Authentication endpoints' },
-        { name: 'Dashboard', description: 'Dashboard summary endpoints' },
+        {
+            name: 'Dashboard',
+            description: 'Dashboard summary and check-in endpoints',
+        },
     ],
     paths: {
         '/auth/register': {
@@ -547,6 +550,172 @@ const spec = {
                                         message: {
                                             type: 'string',
                                             example: 'Unauthorized',
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+        '/dashboard/checkin': {
+            post: {
+                tags: ['Dashboard'],
+                summary: 'Create a daily mood check-in',
+                description:
+                    'Submit a daily mood check-in with sleep, activity, study, and social data. Only one check-in per day is allowed.',
+                operationId: 'createCheckin',
+                security: [{ bearerAuth: [] }],
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                required: [
+                                    'sleep_hours',
+                                    'activity_level',
+                                    'study_hours',
+                                    'social_score',
+                                ],
+                                properties: {
+                                    sleep_hours: {
+                                        type: 'number',
+                                        minimum: 0,
+                                        maximum: 24,
+                                        example: 7.5,
+                                        description:
+                                            'Hours of sleep (0–24)',
+                                    },
+                                    activity_level: {
+                                        type: 'string',
+                                        enum: [
+                                            'NONE',
+                                            'LOW',
+                                            'MODERATE',
+                                            'HIGH',
+                                        ],
+                                        example: 'MODERATE',
+                                        description:
+                                            'Physical activity level for the day',
+                                    },
+                                    study_hours: {
+                                        type: 'number',
+                                        minimum: 0,
+                                        maximum: 24,
+                                        example: 4,
+                                        description:
+                                            'Hours spent studying (0–24)',
+                                    },
+                                    social_score: {
+                                        type: 'integer',
+                                        minimum: 1,
+                                        maximum: 10,
+                                        example: 6,
+                                        description:
+                                            'Self-rated social interaction score (1–10)',
+                                    },
+                                    notes: {
+                                        type: 'string',
+                                        maxLength: 500,
+                                        example: 'Felt great after a morning run',
+                                        description:
+                                            'Optional free-text notes (max 500 chars)',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                responses: {
+                    '201': {
+                        description: 'Check-in created successfully',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        message: {
+                                            type: 'string',
+                                            example:
+                                                'Check-in created successfully',
+                                        },
+                                        data: {
+                                            type: 'object',
+                                            properties: {
+                                                log_id: {
+                                                    type: 'number',
+                                                    example: 1,
+                                                },
+                                                user_id: {
+                                                    type: 'number',
+                                                    example: 15,
+                                                },
+                                                sleep_hours: {
+                                                    type: 'number',
+                                                    example: 7.5,
+                                                },
+                                                activity_level: {
+                                                    type: 'string',
+                                                    example: 'MODERATE',
+                                                },
+                                                study_hours: {
+                                                    type: 'number',
+                                                    example: 4,
+                                                },
+                                                social_score: {
+                                                    type: 'integer',
+                                                    example: 6,
+                                                },
+                                                notes: {
+                                                    type: 'string',
+                                                    nullable: true,
+                                                    example:
+                                                        'Felt great after a morning run',
+                                                },
+                                                logged_at: {
+                                                    type: 'string',
+                                                    format: 'date-time',
+                                                },
+                                                created_at: {
+                                                    type: 'string',
+                                                    format: 'date-time',
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    '401': {
+                        description: 'Missing or invalid access token',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        message: {
+                                            type: 'string',
+                                            example: 'Unauthorized',
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    '409': {
+                        description: 'Already checked in today',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        message: {
+                                            type: 'string',
+                                            example:
+                                                'You have already checked in today',
                                         },
                                     },
                                 },
