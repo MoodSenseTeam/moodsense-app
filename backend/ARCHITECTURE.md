@@ -25,7 +25,7 @@ Key points:
 
 1. Add DTO (Zod schema) under `src/features/v1/<feature>/`
 2. Add use-case, controller, and route
-3. Wire into `src/bootstrap/create-auth-module.ts`
+3. Wire into the relevant bootstrap module, such as `src/bootstrap/create-auth-module.ts` for auth or `src/bootstrap/create-dashboard-module.ts` for dashboard features
 4. Add tests under `tests/`
 
 ## Testing
