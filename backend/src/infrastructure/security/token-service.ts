@@ -4,6 +4,7 @@ import jwt, {
     type SignOptions,
 } from 'jsonwebtoken';
 import { parseDurationToMs } from '@/shared/utils/parse-duration';
+import { getConfig } from '@/shared/config';
 
 export type JwtTokenPayload = {
     sub?: string | number;
@@ -25,9 +26,10 @@ export class JwtTokenService implements TokenService {
     private readonly refreshExpires: string;
 
     constructor() {
-        this.secret = (process.env.JWT_SECRET || 'change-me') as Secret;
-        this.accessExpires = process.env.ACCESS_TOKEN_EXPIRES || '15m';
-        this.refreshExpires = process.env.REFRESH_TOKEN_EXPIRES || '7d';
+        const { jwtSecret, accessTokenExpires, refreshTokenExpires } = getConfig();
+        this.secret = jwtSecret as Secret;
+        this.accessExpires = accessTokenExpires;
+        this.refreshExpires = refreshTokenExpires;
     }
 
     async issueAccessToken(payload: object): Promise<string> {

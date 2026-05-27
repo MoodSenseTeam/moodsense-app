@@ -1,9 +1,7 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
 import app from './app';
+import { getConfig } from '@/shared/config';
 
-const PORT = parseInt(process.env.PORT || '5000', 10);
+const { port: PORT } = getConfig();
 
 app.listen(PORT, () => {
     console.log(`Server berjalan di port ${PORT}`);
