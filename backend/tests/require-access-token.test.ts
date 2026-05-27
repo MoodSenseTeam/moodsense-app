@@ -76,4 +76,34 @@ describe('requireAccessToken', () => {
         expect(response.status).toHaveBeenCalledWith(401);
         expect(response.json).toHaveBeenCalledWith({ message: 'Missing access token' });
     });
+
+    it('rejects invalid bearer tokens', async () => {
+        const tokenService: TokenService = {
+            issueAccessToken: async () => 'access-token',
+            issueRefreshToken: async () => ({
+                token: 'refresh-token',
+                expiresAt: new Date('2026-05-27T00:00:00.000Z'),
+            }),
+            verifyRefreshToken: async () => null,
+            verifyAccessToken: async () => null,
+        };
+
+        const middleware = requireAccessToken(tokenService);
+        const next = vi.fn();
+        const response = createResponseMock();
+
+        await middleware(
+            {
+                header(name: string) {
+                    return name === 'authorization' ? 'Bearer bad-token' : undefined;
+                },
+            } as never,
+            response as never,
+            next,
+        );
+
+        expect(next).not.toHaveBeenCalled();
+        expect(response.status).toHaveBeenCalledWith(401);
+        expect(response.json).toHaveBeenCalledWith({ message: 'Invalid access token' });
+    });
 });
