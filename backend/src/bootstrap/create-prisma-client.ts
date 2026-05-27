@@ -1,13 +1,10 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 
 import { PrismaClient } from '@/shared/db/generated/client/client';
+import { getConfig } from '@/shared/config';
 
 export function createPrismaClient() {
-    const databaseUrl = process.env.DATABASE_URL;
-
-    if (!databaseUrl) {
-        throw new Error('DATABASE_URL is required');
-    }
+    const { databaseUrl } = getConfig();
 
     return new PrismaClient({
         adapter: new PrismaPg({ connectionString: databaseUrl }),

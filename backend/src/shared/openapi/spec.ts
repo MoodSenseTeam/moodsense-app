@@ -1,3 +1,5 @@
+import { getConfig } from '@/shared/config';
+
 const spec = {
     openapi: '3.0.3',
     info: {
@@ -6,7 +8,10 @@ const spec = {
         description:
             'Authentication and mood tracking API for the MoodSense application.',
     },
-    tags: [{ name: 'Auth', description: 'Authentication endpoints' }],
+    tags: [
+        { name: 'Auth', description: 'Authentication endpoints' },
+        { name: 'Dashboard', description: 'Dashboard summary endpoints' },
+    ],
     paths: {
         '/auth/register': {
             post: {
@@ -396,6 +401,161 @@ const spec = {
                 },
             },
         },
+        '/dashboard/summary': {
+            get: {
+                tags: ['Dashboard'],
+                summary: 'Get the dashboard summary',
+                operationId: 'getDashboardSummary',
+                security: [{ bearerAuth: [] }],
+                responses: {
+                    '200': {
+                        description: 'Dashboard summary fetched successfully',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        overview: {
+                                            type: 'object',
+                                            properties: {
+                                                check_in_streak: {
+                                                    type: 'number',
+                                                    example: 5,
+                                                },
+                                                average_mood: {
+                                                    type: 'number',
+                                                    example: 6.4,
+                                                },
+                                                sleep_quality: {
+                                                    type: 'number',
+                                                    example: 7.8,
+                                                },
+                                            },
+                                        },
+                                        recent_mood_entries: {
+                                            type: 'array',
+                                            items: {
+                                                type: 'object',
+                                                properties: {
+                                                    mood_value: {
+                                                        type: 'number',
+                                                        example: 6,
+                                                    },
+                                                    created_at: {
+                                                        type: 'string',
+                                                        format: 'date-time',
+                                                    },
+                                                    notes: {
+                                                        type: 'string',
+                                                        nullable: true,
+                                                    },
+                                                },
+                                            },
+                                        },
+                                        weekly_mood_trend: {
+                                            type: 'array',
+                                            items: {
+                                                type: 'object',
+                                                properties: {
+                                                    date: {
+                                                        type: 'string',
+                                                        example: '2026-05-27',
+                                                    },
+                                                    average_mood: {
+                                                        type: 'number',
+                                                        example: 6.1,
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    '401': {
+                        description: 'Missing or invalid access token',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        message: {
+                                            type: 'string',
+                                            example: 'Unauthorized',
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+        '/dashboard/summary/insights': {
+            get: {
+                tags: ['Dashboard'],
+                summary: 'Get dashboard insights',
+                operationId: 'getDashboardInsights',
+                security: [{ bearerAuth: [] }],
+                responses: {
+                    '200': {
+                        description: 'Dashboard insights fetched successfully',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        mood_prediction: {
+                                            oneOf: [
+                                                {
+                                                    type: 'object',
+                                                    properties: {
+                                                        predicted_mood: {
+                                                            type: 'number',
+                                                            example: 6,
+                                                        },
+                                                        confidence_score: {
+                                                            type: 'number',
+                                                            example: 0.88,
+                                                        },
+                                                    },
+                                                },
+                                                { type: 'null' },
+                                            ],
+                                        },
+                                        recommendations: {
+                                            type: 'array',
+                                            items: { type: 'string' },
+                                            example: [
+                                                'Take a short walk',
+                                                'Drink water',
+                                            ],
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    '401': {
+                        description: 'Missing or invalid access token',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        message: {
+                                            type: 'string',
+                                            example: 'Unauthorized',
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
     },
     components: {
         securitySchemes: {
@@ -411,7 +571,7 @@ const spec = {
 } as const;
 
 export function getOpenApiSpec() {
-    const port = process.env.PORT ?? '5000';
+    const { port } = getConfig();
     return {
         ...spec,
         servers: [

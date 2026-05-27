@@ -8,14 +8,14 @@ import { createPrismaClient } from '@/bootstrap/create-prisma-client';
 import { createAuthModule } from '@/bootstrap/create-auth-module';
 import { createOpenApiRoutes } from '@/shared/openapi/openapi.route';
 import { createDashboardModule } from '@/bootstrap/create-dashboard-module';
+import { getConfig } from '@/shared/config';
 
 export function createApp() {
     const app = express();
+    const { allowedOrigins } = getConfig();
 
     const corsOptions: cors.CorsOptions = {
-        origin: process.env.ALLOWED_ORIGINS
-            ? process.env.ALLOWED_ORIGINS.split(',')
-            : ['http://localhost:5173'],
+        origin: allowedOrigins,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization'],
     };
