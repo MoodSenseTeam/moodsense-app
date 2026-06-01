@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/shared/db/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model users {
+  user_id       Int               @id @default(autoincrement())
+  created_at    DateTime          @default(now())
+  updated_at    DateTime          @updatedAt
+  email         String            @unique
+  name          String
+  password      String
+  gender        Gender            @default(OTHER)
+  tanggal_lahir DateTime          @default(now())
+  usage_reason  String?
+  role          Role              @default(USER)
+  credentials   user_credentials?
+  mood_logs     mood_logs[]
+}
+
+model user_credentials {
+  credential_id Int   @id @default(autoincrement())
+  user_id       Int   @unique
+  user          users @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  refresh_token String? // JWT refresh token
+  token_expires DateTime? // kapan refresh token expired
+  last_login    DateTime? // last login timestamp
+  is_active     Boolean   @default(true)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model mood_logs {
+  log_id  Int   @id @default(autoincrement())
+  user_id Int
+  user    users @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  // Input dari user
+  sleep_hours     Float
+  activity_level  ActivityLevel
+  study_hours     Float
+  social_score    Int
+  notes           String?
+  sentiment_score Float? // tetap di sini, hasil pre-processing sebelum dikirim ke ML
+
+  prediction mood_predictions? // ← relasi ke tabel prediksi
+
+  logged_at  DateTime @default(now())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model mood_predictions {
+  prediction_id Int       @id @default(autoincrement())
+  log_id        Int       @unique
+  log           mood_logs @relation(fields: [log_id], references: [log_id], onDelete: Cascade)
+
+  mood_result         Mood
+  activity_suggestion String
+  confidence_score    Float // 0.0 - 1.0
+
+  created_at DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum ActivityLevel {
+  NONE
+  LOW
+  MODERATE
+  HIGH
+}
+
+enum Mood {
+  HAPPY
+  NORMAL
+  STRESS
+}
