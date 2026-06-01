@@ -7,6 +7,7 @@ const validCheckin = {
     activity_level: 'MODERATE',
     study_hours: 4,
     social_score: 6,
+    how_you_feeling: 'NORMAL',
 };
 
 describe('createCheckinSchema', () => {

@@ -43,3 +43,14 @@ export const Mood = {
 } as const
 
 export type Mood = (typeof Mood)[keyof typeof Mood]
+
+
+export const MoodExtended = {
+  VERY_HAPPY: 'VERY_HAPPY',
+  HAPPY: 'HAPPY',
+  NORMAL: 'NORMAL',
+  STRESS: 'STRESS',
+  VERY_STRESS: 'VERY_STRESS'
+} as const
+
+export type MoodExtended = (typeof MoodExtended)[keyof typeof MoodExtended]

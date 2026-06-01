@@ -7,8 +7,11 @@ import { GetSummaryUseCase } from '@/features/v1/dashboard/summary/summary.useca
 import { SummaryController } from '@/features/v1/dashboard/summary/summary.controller';
 import { createSummaryRoutes } from '@/features/v1/dashboard/summary/summary.router';
 import { PrismaCheckinRepository } from '@/infrastructure/dashboard/prisma-checkin.repository';
+import { HttpPredictionService } from '@/infrastructure/prediction/http-prediction.service';
 import { CreateCheckinUseCase } from '@/features/v1/dashboard/checkin/checkin.usecase';
+import { GetCheckinHistoryUseCase } from '@/features/v1/dashboard/checkin/checkin-history.usecase';
 import { CheckinController } from '@/features/v1/dashboard/checkin/checkin.controller';
+import { CheckinHistoryController } from '@/features/v1/dashboard/checkin/checkin-history.controller';
 import { createCheckinRoutes } from '@/features/v1/dashboard/checkin/checkin.router';
 import { requireAccessToken } from '@/shared/middleware/require-access-token';
 
@@ -25,10 +28,16 @@ export function createDashboardModule(prisma: PrismaClient): Router {
     router.use(createSummaryRoutes(summaryController));
 
     // Check-in
+    const predictionService = new HttpPredictionService();
     const checkinRepository = new PrismaCheckinRepository(prisma);
-    const createCheckinUseCase = new CreateCheckinUseCase(checkinRepository);
+    
+    const createCheckinUseCase = new CreateCheckinUseCase(checkinRepository, predictionService);
     const checkinController = new CheckinController(createCheckinUseCase);
-    router.use(createCheckinRoutes(checkinController));
+    
+    const getCheckinHistoryUseCase = new GetCheckinHistoryUseCase(checkinRepository);
+    const checkinHistoryController = new CheckinHistoryController(getCheckinHistoryUseCase);
+    
+    router.use(createCheckinRoutes(checkinController, checkinHistoryController));
 
     return router;
 }
