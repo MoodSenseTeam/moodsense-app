@@ -1,15 +1,26 @@
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { moodChartData } from "../../data/dashboardData";
 
-const moodLabels = {
-  1: "Buruk",
-  2: "Kurang",
-  3: "Biasa",
-  4: "Baik",
-  5: "Luar Biasa",
-};
+function getMoodLabel(value) {
+  if (value <= 2.5) {
+    return "Buruk";
+  }
 
-function MoodChart() {
+  if (value <= 4.5) {
+    return "Kurang";
+  }
+
+  if (value <= 6.5) {
+    return "Biasa";
+  }
+
+  if (value <= 8.5) {
+    return "Baik";
+  }
+
+  return "Luar Biasa";
+}
+
+function MoodChart({ data = [] }) {
   return (
     <section className="rounded-2xl border border-[#e2e8e4] bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
       <div className="mb-6 flex items-start justify-between gap-4">
@@ -25,10 +36,15 @@ function MoodChart() {
         </div>
       </div>
 
+      {data.length === 0 ? (
+        <div className="flex h-80 items-center justify-center rounded-2xl border border-dashed border-[#e2e8e4] text-sm text-[#60766b] dark:border-slate-700 dark:text-slate-400">
+          Belum ada data tren untuk ditampilkan.
+        </div>
+      ) : (
       <div className="h-80 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
-            data={moodChartData}
+            data={data}
             margin={{
               top: 10,
               right: 10,
@@ -57,20 +73,20 @@ function MoodChart() {
             />
 
             <YAxis
-              domain={[1, 5]}
-              ticks={[1, 2, 3, 4, 5]}
-              tickFormatter={(value) => moodLabels[value]}
+              domain={[1, 10]}
+              ticks={[2, 4, 6, 8, 10]}
+              tickFormatter={(value) => getMoodLabel(value)}
               axisLine={false}
               tickLine={false}
               tick={{
                 fill: "#94a3b8",
                 fontSize: 12,
               }}
-              width={85}
+              width={100}
             />
 
             <Tooltip
-              formatter={(value) => [moodLabels[value], "Mood"]}
+              formatter={(value) => [`${value}/10`, "Mood"]}
               labelStyle={{
                 color: "#1f3f31",
                 fontWeight: 600,
@@ -102,6 +118,7 @@ function MoodChart() {
           </AreaChart>
         </ResponsiveContainer>
       </div>
+      )}
     </section>
   );
 }
