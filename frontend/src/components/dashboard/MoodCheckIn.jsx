@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Clock3 } from "lucide-react";
 import { moodOptions } from "../../data/dashboardData";
 
-function MoodCheckIn() {
+function MoodCheckIn({ hasCheckedInToday = false }) {
   const navigate = useNavigate();
   const [selectedMood, setSelectedMood] = useState("Baik");
 
@@ -16,9 +16,9 @@ function MoodCheckIn() {
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-lg font-medium text-[#1f3f31] dark:text-white">Check-in Cepat</h2>
 
-        <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[#ffd6d6] bg-[#fff1f1] px-4 py-2 text-sm font-semibold text-[#ef4444] dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
+        <div className={`inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${hasCheckedInToday ? "border border-[#c7f1dc] bg-[#edf8f2] text-[#2b6a4f] dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-300" : "border border-[#ffd6d6] bg-[#fff1f1] text-[#ef4444] dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300"}`}>
           <Clock3 size={16} />
-          Belum check-in
+          {hasCheckedInToday ? "Sudah check-in hari ini" : "Belum check-in"}
         </div>
       </div>
 

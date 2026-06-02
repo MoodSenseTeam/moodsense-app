@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { recentLogs } from "../../data/dashboardData";
 
-function RecentLogs() {
+function RecentLogs({ logs = [] }) {
   return (
     <section className="rounded-2xl border border-[#e2e8e4] bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
       <div className="mb-6 flex items-center justify-between">
@@ -12,8 +11,13 @@ function RecentLogs() {
         </Link>
       </div>
 
-      <div className="space-y-5">
-        {recentLogs.map((log) => (
+      {logs.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-[#e2e8e4] px-4 py-6 text-sm text-[#60766b] dark:border-slate-700 dark:text-slate-400">
+          Belum ada log terbaru.
+        </div>
+      ) : (
+        <div className="space-y-5">
+        {logs.map((log) => (
           <div key={log.id} className="flex items-center justify-between gap-4 border-b border-[#e6ece8] pb-4 last:border-none last:pb-0 dark:border-slate-700">
             <div className="flex items-start gap-4">
               <span className={`mt-2 h-2.5 w-2.5 shrink-0 rounded-full ${log.color}`} />
@@ -28,7 +32,8 @@ function RecentLogs() {
             <span className="shrink-0 text-xs text-[#375446] dark:text-slate-400">{log.time}</span>
           </div>
         ))}
-      </div>
+        </div>
+      )}
     </section>
   );
 }

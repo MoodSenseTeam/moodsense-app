@@ -725,6 +725,77 @@ const spec = {
                 },
             },
         },
+        '/dashboard/checkin/history': {
+            get: {
+                tags: ['Dashboard'],
+                summary: 'Get all daily mood check-in logs history',
+                description:
+                    'Retrieve the history of all daily mood check-ins for the authenticated user, ordered from newest to oldest. Includes predictions and localized Indonesian recommendations.',
+                operationId: 'getCheckinHistory',
+                security: [{ bearerAuth: [] }],
+                responses: {
+                    '200': {
+                        description: 'Check-in log history retrieved successfully',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        message: {
+                                            type: 'string',
+                                            example:
+                                                'Check-in log history retrieved successfully',
+                                        },
+                                        data: {
+                                            type: 'array',
+                                            items: {
+                                                type: 'object',
+                                                properties: {
+                                                    log_id: { type: 'number', example: 2 },
+                                                    user_id: { type: 'number', example: 15 },
+                                                    sleep_hours: { type: 'number', example: 8.0 },
+                                                    activity_level: { type: 'string', example: 'HIGH' },
+                                                    study_hours: { type: 'number', example: 6.0 },
+                                                    social_score: { type: 'integer', example: 8 },
+                                                    how_you_feeling: { type: 'string', example: 'HAPPY' },
+                                                    notes: { type: 'string', nullable: true, example: 'Had a wonderful day' },
+                                                    logged_at: { type: 'string', format: 'date-time' },
+                                                    created_at: { type: 'string', format: 'date-time' },
+                                                    prediction: {
+                                                        type: 'object',
+                                                        properties: {
+                                                            mood_result: { type: 'string', example: 'HAPPY' },
+                                                            confidence_score: { type: 'number', example: 0.95 },
+                                                            activity_suggestion: { type: 'string', example: 'Luar biasa! Salurkan energi positifmu...' },
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    '401': {
+                        description: 'Missing or invalid access token',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        message: {
+                                            type: 'string',
+                                            example: 'Unauthorized',
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
     },
     components: {
         securitySchemes: {

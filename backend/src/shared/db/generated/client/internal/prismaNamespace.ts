@@ -779,6 +779,7 @@ export const Mood_logsScalarFieldEnum = {
   activity_level: 'activity_level',
   study_hours: 'study_hours',
   social_score: 'social_score',
+  how_you_feeling: 'how_you_feeling',
   notes: 'notes',
   sentiment_score: 'sentiment_score',
   logged_at: 'logged_at',
@@ -933,6 +934,20 @@ export type EnumActivityLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'ActivityLevel[]'
  */
 export type ListEnumActivityLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ActivityLevel[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MoodExtended'
+ */
+export type EnumMoodExtendedFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MoodExtended'>
+    
+
+
+/**
+ * Reference to a field of type 'MoodExtended[]'
+ */
+export type ListEnumMoodExtendedFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MoodExtended[]'>
     
 
 

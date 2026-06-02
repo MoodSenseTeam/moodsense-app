@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
-import { recommendations } from "../../data/dashboardData";
 
-function RecommendationCard() {
+function RecommendationCard({ recommendations = [] }) {
   const navigate = useNavigate();
+  const items = recommendations.length > 0
+    ? recommendations
+    : ["Tambahkan beberapa check-in untuk melihat rekomendasi yang lebih personal."];
 
   return (
     <section className="rounded-2xl border border-[#e2e8e4] bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
@@ -12,7 +14,7 @@ function RecommendationCard() {
       <p className="mt-3 text-sm text-[#60766b] dark:text-slate-300">Saran personal untuk menjaga keseimbangan Anda.</p>
 
       <div className="mt-6 space-y-4">
-        {recommendations.map((item) => (
+        {items.map((item) => (
           <div key={item} className="flex items-center gap-3">
             <CheckCircle2 size={19} className="shrink-0 text-[#19c58f] dark:text-emerald-300" />
 

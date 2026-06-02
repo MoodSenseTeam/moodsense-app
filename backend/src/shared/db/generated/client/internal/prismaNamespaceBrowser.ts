@@ -110,6 +110,7 @@ export const Mood_logsScalarFieldEnum = {
   activity_level: 'activity_level',
   study_hours: 'study_hours',
   social_score: 'social_score',
+  how_you_feeling: 'how_you_feeling',
   notes: 'notes',
   sentiment_score: 'sentiment_score',
   logged_at: 'logged_at',

@@ -16,6 +16,7 @@ const validBody = {
     activity_level: 'MODERATE',
     study_hours: 4,
     social_score: 6,
+    how_you_feeling: 'NORMAL',
     notes: 'Good day',
 };
 
@@ -26,6 +27,7 @@ const createdCheckin: CreatedCheckinDto = {
     activity_level: 'MODERATE',
     study_hours: 4,
     social_score: 6,
+    how_you_feeling: 'NORMAL',
     notes: 'Good day',
     logged_at: '2026-05-27T10:00:00.000Z',
     created_at: '2026-05-27T10:00:00.000Z',

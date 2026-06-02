@@ -51,6 +51,7 @@ export type Mood_logsMinAggregateOutputType = {
   activity_level: $Enums.ActivityLevel | null
   study_hours: number | null
   social_score: number | null
+  how_you_feeling: $Enums.MoodExtended | null
   notes: string | null
   sentiment_score: number | null
   logged_at: Date | null
@@ -65,6 +66,7 @@ export type Mood_logsMaxAggregateOutputType = {
   activity_level: $Enums.ActivityLevel | null
   study_hours: number | null
   social_score: number | null
+  how_you_feeling: $Enums.MoodExtended | null
   notes: string | null
   sentiment_score: number | null
   logged_at: Date | null
@@ -79,6 +81,7 @@ export type Mood_logsCountAggregateOutputType = {
   activity_level: number
   study_hours: number
   social_score: number
+  how_you_feeling: number
   notes: number
   sentiment_score: number
   logged_at: number
@@ -113,6 +116,7 @@ export type Mood_logsMinAggregateInputType = {
   activity_level?: true
   study_hours?: true
   social_score?: true
+  how_you_feeling?: true
   notes?: true
   sentiment_score?: true
   logged_at?: true
@@ -127,6 +131,7 @@ export type Mood_logsMaxAggregateInputType = {
   activity_level?: true
   study_hours?: true
   social_score?: true
+  how_you_feeling?: true
   notes?: true
   sentiment_score?: true
   logged_at?: true
@@ -141,6 +146,7 @@ export type Mood_logsCountAggregateInputType = {
   activity_level?: true
   study_hours?: true
   social_score?: true
+  how_you_feeling?: true
   notes?: true
   sentiment_score?: true
   logged_at?: true
@@ -242,6 +248,7 @@ export type Mood_logsGroupByOutputType = {
   activity_level: $Enums.ActivityLevel
   study_hours: number
   social_score: number
+  how_you_feeling: $Enums.MoodExtended
   notes: string | null
   sentiment_score: number | null
   logged_at: Date
@@ -279,6 +286,7 @@ export type mood_logsWhereInput = {
   activity_level?: Prisma.EnumActivityLevelFilter<"mood_logs"> | $Enums.ActivityLevel
   study_hours?: Prisma.FloatFilter<"mood_logs"> | number
   social_score?: Prisma.IntFilter<"mood_logs"> | number
+  how_you_feeling?: Prisma.EnumMoodExtendedFilter<"mood_logs"> | $Enums.MoodExtended
   notes?: Prisma.StringNullableFilter<"mood_logs"> | string | null
   sentiment_score?: Prisma.FloatNullableFilter<"mood_logs"> | number | null
   logged_at?: Prisma.DateTimeFilter<"mood_logs"> | Date | string
@@ -295,6 +303,7 @@ export type mood_logsOrderByWithRelationInput = {
   activity_level?: Prisma.SortOrder
   study_hours?: Prisma.SortOrder
   social_score?: Prisma.SortOrder
+  how_you_feeling?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   sentiment_score?: Prisma.SortOrderInput | Prisma.SortOrder
   logged_at?: Prisma.SortOrder
@@ -314,6 +323,7 @@ export type mood_logsWhereUniqueInput = Prisma.AtLeast<{
   activity_level?: Prisma.EnumActivityLevelFilter<"mood_logs"> | $Enums.ActivityLevel
   study_hours?: Prisma.FloatFilter<"mood_logs"> | number
   social_score?: Prisma.IntFilter<"mood_logs"> | number
+  how_you_feeling?: Prisma.EnumMoodExtendedFilter<"mood_logs"> | $Enums.MoodExtended
   notes?: Prisma.StringNullableFilter<"mood_logs"> | string | null
   sentiment_score?: Prisma.FloatNullableFilter<"mood_logs"> | number | null
   logged_at?: Prisma.DateTimeFilter<"mood_logs"> | Date | string
@@ -330,6 +340,7 @@ export type mood_logsOrderByWithAggregationInput = {
   activity_level?: Prisma.SortOrder
   study_hours?: Prisma.SortOrder
   social_score?: Prisma.SortOrder
+  how_you_feeling?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   sentiment_score?: Prisma.SortOrderInput | Prisma.SortOrder
   logged_at?: Prisma.SortOrder
@@ -352,6 +363,7 @@ export type mood_logsScalarWhereWithAggregatesInput = {
   activity_level?: Prisma.EnumActivityLevelWithAggregatesFilter<"mood_logs"> | $Enums.ActivityLevel
   study_hours?: Prisma.FloatWithAggregatesFilter<"mood_logs"> | number
   social_score?: Prisma.IntWithAggregatesFilter<"mood_logs"> | number
+  how_you_feeling?: Prisma.EnumMoodExtendedWithAggregatesFilter<"mood_logs"> | $Enums.MoodExtended
   notes?: Prisma.StringNullableWithAggregatesFilter<"mood_logs"> | string | null
   sentiment_score?: Prisma.FloatNullableWithAggregatesFilter<"mood_logs"> | number | null
   logged_at?: Prisma.DateTimeWithAggregatesFilter<"mood_logs"> | Date | string
@@ -364,6 +376,7 @@ export type mood_logsCreateInput = {
   activity_level: $Enums.ActivityLevel
   study_hours: number
   social_score: number
+  how_you_feeling: $Enums.MoodExtended
   notes?: string | null
   sentiment_score?: number | null
   logged_at?: Date | string
@@ -380,6 +393,7 @@ export type mood_logsUncheckedCreateInput = {
   activity_level: $Enums.ActivityLevel
   study_hours: number
   social_score: number
+  how_you_feeling: $Enums.MoodExtended
   notes?: string | null
   sentiment_score?: number | null
   logged_at?: Date | string
@@ -393,6 +407,7 @@ export type mood_logsUpdateInput = {
   activity_level?: Prisma.EnumActivityLevelFieldUpdateOperationsInput | $Enums.ActivityLevel
   study_hours?: Prisma.FloatFieldUpdateOperationsInput | number
   social_score?: Prisma.IntFieldUpdateOperationsInput | number
+  how_you_feeling?: Prisma.EnumMoodExtendedFieldUpdateOperationsInput | $Enums.MoodExtended
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentiment_score?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   logged_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -409,6 +424,7 @@ export type mood_logsUncheckedUpdateInput = {
   activity_level?: Prisma.EnumActivityLevelFieldUpdateOperationsInput | $Enums.ActivityLevel
   study_hours?: Prisma.FloatFieldUpdateOperationsInput | number
   social_score?: Prisma.IntFieldUpdateOperationsInput | number
+  how_you_feeling?: Prisma.EnumMoodExtendedFieldUpdateOperationsInput | $Enums.MoodExtended
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentiment_score?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   logged_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -424,6 +440,7 @@ export type mood_logsCreateManyInput = {
   activity_level: $Enums.ActivityLevel
   study_hours: number
   social_score: number
+  how_you_feeling: $Enums.MoodExtended
   notes?: string | null
   sentiment_score?: number | null
   logged_at?: Date | string
@@ -436,6 +453,7 @@ export type mood_logsUpdateManyMutationInput = {
   activity_level?: Prisma.EnumActivityLevelFieldUpdateOperationsInput | $Enums.ActivityLevel
   study_hours?: Prisma.FloatFieldUpdateOperationsInput | number
   social_score?: Prisma.IntFieldUpdateOperationsInput | number
+  how_you_feeling?: Prisma.EnumMoodExtendedFieldUpdateOperationsInput | $Enums.MoodExtended
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentiment_score?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   logged_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -450,6 +468,7 @@ export type mood_logsUncheckedUpdateManyInput = {
   activity_level?: Prisma.EnumActivityLevelFieldUpdateOperationsInput | $Enums.ActivityLevel
   study_hours?: Prisma.FloatFieldUpdateOperationsInput | number
   social_score?: Prisma.IntFieldUpdateOperationsInput | number
+  how_you_feeling?: Prisma.EnumMoodExtendedFieldUpdateOperationsInput | $Enums.MoodExtended
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentiment_score?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   logged_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -474,6 +493,7 @@ export type mood_logsCountOrderByAggregateInput = {
   activity_level?: Prisma.SortOrder
   study_hours?: Prisma.SortOrder
   social_score?: Prisma.SortOrder
+  how_you_feeling?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   sentiment_score?: Prisma.SortOrder
   logged_at?: Prisma.SortOrder
@@ -497,6 +517,7 @@ export type mood_logsMaxOrderByAggregateInput = {
   activity_level?: Prisma.SortOrder
   study_hours?: Prisma.SortOrder
   social_score?: Prisma.SortOrder
+  how_you_feeling?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   sentiment_score?: Prisma.SortOrder
   logged_at?: Prisma.SortOrder
@@ -511,6 +532,7 @@ export type mood_logsMinOrderByAggregateInput = {
   activity_level?: Prisma.SortOrder
   study_hours?: Prisma.SortOrder
   social_score?: Prisma.SortOrder
+  how_you_feeling?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   sentiment_score?: Prisma.SortOrder
   logged_at?: Prisma.SortOrder
@@ -586,6 +608,10 @@ export type EnumActivityLevelFieldUpdateOperationsInput = {
   set?: $Enums.ActivityLevel
 }
 
+export type EnumMoodExtendedFieldUpdateOperationsInput = {
+  set?: $Enums.MoodExtended
+}
+
 export type NullableFloatFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number
@@ -613,6 +639,7 @@ export type mood_logsCreateWithoutUserInput = {
   activity_level: $Enums.ActivityLevel
   study_hours: number
   social_score: number
+  how_you_feeling: $Enums.MoodExtended
   notes?: string | null
   sentiment_score?: number | null
   logged_at?: Date | string
@@ -627,6 +654,7 @@ export type mood_logsUncheckedCreateWithoutUserInput = {
   activity_level: $Enums.ActivityLevel
   study_hours: number
   social_score: number
+  how_you_feeling: $Enums.MoodExtended
   notes?: string | null
   sentiment_score?: number | null
   logged_at?: Date | string
@@ -671,6 +699,7 @@ export type mood_logsScalarWhereInput = {
   activity_level?: Prisma.EnumActivityLevelFilter<"mood_logs"> | $Enums.ActivityLevel
   study_hours?: Prisma.FloatFilter<"mood_logs"> | number
   social_score?: Prisma.IntFilter<"mood_logs"> | number
+  how_you_feeling?: Prisma.EnumMoodExtendedFilter<"mood_logs"> | $Enums.MoodExtended
   notes?: Prisma.StringNullableFilter<"mood_logs"> | string | null
   sentiment_score?: Prisma.FloatNullableFilter<"mood_logs"> | number | null
   logged_at?: Prisma.DateTimeFilter<"mood_logs"> | Date | string
@@ -683,6 +712,7 @@ export type mood_logsCreateWithoutPredictionInput = {
   activity_level: $Enums.ActivityLevel
   study_hours: number
   social_score: number
+  how_you_feeling: $Enums.MoodExtended
   notes?: string | null
   sentiment_score?: number | null
   logged_at?: Date | string
@@ -698,6 +728,7 @@ export type mood_logsUncheckedCreateWithoutPredictionInput = {
   activity_level: $Enums.ActivityLevel
   study_hours: number
   social_score: number
+  how_you_feeling: $Enums.MoodExtended
   notes?: string | null
   sentiment_score?: number | null
   logged_at?: Date | string
@@ -726,6 +757,7 @@ export type mood_logsUpdateWithoutPredictionInput = {
   activity_level?: Prisma.EnumActivityLevelFieldUpdateOperationsInput | $Enums.ActivityLevel
   study_hours?: Prisma.FloatFieldUpdateOperationsInput | number
   social_score?: Prisma.IntFieldUpdateOperationsInput | number
+  how_you_feeling?: Prisma.EnumMoodExtendedFieldUpdateOperationsInput | $Enums.MoodExtended
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentiment_score?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   logged_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -741,6 +773,7 @@ export type mood_logsUncheckedUpdateWithoutPredictionInput = {
   activity_level?: Prisma.EnumActivityLevelFieldUpdateOperationsInput | $Enums.ActivityLevel
   study_hours?: Prisma.FloatFieldUpdateOperationsInput | number
   social_score?: Prisma.IntFieldUpdateOperationsInput | number
+  how_you_feeling?: Prisma.EnumMoodExtendedFieldUpdateOperationsInput | $Enums.MoodExtended
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentiment_score?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   logged_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -754,6 +787,7 @@ export type mood_logsCreateManyUserInput = {
   activity_level: $Enums.ActivityLevel
   study_hours: number
   social_score: number
+  how_you_feeling: $Enums.MoodExtended
   notes?: string | null
   sentiment_score?: number | null
   logged_at?: Date | string
@@ -766,6 +800,7 @@ export type mood_logsUpdateWithoutUserInput = {
   activity_level?: Prisma.EnumActivityLevelFieldUpdateOperationsInput | $Enums.ActivityLevel
   study_hours?: Prisma.FloatFieldUpdateOperationsInput | number
   social_score?: Prisma.IntFieldUpdateOperationsInput | number
+  how_you_feeling?: Prisma.EnumMoodExtendedFieldUpdateOperationsInput | $Enums.MoodExtended
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentiment_score?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   logged_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -780,6 +815,7 @@ export type mood_logsUncheckedUpdateWithoutUserInput = {
   activity_level?: Prisma.EnumActivityLevelFieldUpdateOperationsInput | $Enums.ActivityLevel
   study_hours?: Prisma.FloatFieldUpdateOperationsInput | number
   social_score?: Prisma.IntFieldUpdateOperationsInput | number
+  how_you_feeling?: Prisma.EnumMoodExtendedFieldUpdateOperationsInput | $Enums.MoodExtended
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentiment_score?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   logged_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -794,6 +830,7 @@ export type mood_logsUncheckedUpdateManyWithoutUserInput = {
   activity_level?: Prisma.EnumActivityLevelFieldUpdateOperationsInput | $Enums.ActivityLevel
   study_hours?: Prisma.FloatFieldUpdateOperationsInput | number
   social_score?: Prisma.IntFieldUpdateOperationsInput | number
+  how_you_feeling?: Prisma.EnumMoodExtendedFieldUpdateOperationsInput | $Enums.MoodExtended
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sentiment_score?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   logged_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -810,6 +847,7 @@ export type mood_logsSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   activity_level?: boolean
   study_hours?: boolean
   social_score?: boolean
+  how_you_feeling?: boolean
   notes?: boolean
   sentiment_score?: boolean
   logged_at?: boolean
@@ -826,6 +864,7 @@ export type mood_logsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   activity_level?: boolean
   study_hours?: boolean
   social_score?: boolean
+  how_you_feeling?: boolean
   notes?: boolean
   sentiment_score?: boolean
   logged_at?: boolean
@@ -841,6 +880,7 @@ export type mood_logsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   activity_level?: boolean
   study_hours?: boolean
   social_score?: boolean
+  how_you_feeling?: boolean
   notes?: boolean
   sentiment_score?: boolean
   logged_at?: boolean
@@ -856,6 +896,7 @@ export type mood_logsSelectScalar = {
   activity_level?: boolean
   study_hours?: boolean
   social_score?: boolean
+  how_you_feeling?: boolean
   notes?: boolean
   sentiment_score?: boolean
   logged_at?: boolean
@@ -863,7 +904,7 @@ export type mood_logsSelectScalar = {
   updated_at?: boolean
 }
 
-export type mood_logsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"log_id" | "user_id" | "sleep_hours" | "activity_level" | "study_hours" | "social_score" | "notes" | "sentiment_score" | "logged_at" | "created_at" | "updated_at", ExtArgs["result"]["mood_logs"]>
+export type mood_logsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"log_id" | "user_id" | "sleep_hours" | "activity_level" | "study_hours" | "social_score" | "how_you_feeling" | "notes" | "sentiment_score" | "logged_at" | "created_at" | "updated_at", ExtArgs["result"]["mood_logs"]>
 export type mood_logsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.usersDefaultArgs<ExtArgs>
   prediction?: boolean | Prisma.mood_logs$predictionArgs<ExtArgs>
@@ -888,6 +929,7 @@ export type $mood_logsPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     activity_level: $Enums.ActivityLevel
     study_hours: number
     social_score: number
+    how_you_feeling: $Enums.MoodExtended
     notes: string | null
     sentiment_score: number | null
     logged_at: Date
@@ -1324,6 +1366,7 @@ export interface mood_logsFieldRefs {
   readonly activity_level: Prisma.FieldRef<"mood_logs", 'ActivityLevel'>
   readonly study_hours: Prisma.FieldRef<"mood_logs", 'Float'>
   readonly social_score: Prisma.FieldRef<"mood_logs", 'Int'>
+  readonly how_you_feeling: Prisma.FieldRef<"mood_logs", 'MoodExtended'>
   readonly notes: Prisma.FieldRef<"mood_logs", 'String'>
   readonly sentiment_score: Prisma.FieldRef<"mood_logs", 'Float'>
   readonly logged_at: Prisma.FieldRef<"mood_logs", 'DateTime'>
