@@ -25,6 +25,7 @@ model users {
   role          Role              @default(USER)
   credentials   user_credentials?
   mood_logs     mood_logs[]
+  userSettings  user_settings?
 }
 
 model user_credentials {
@@ -36,6 +37,20 @@ model user_credentials {
   token_expires DateTime? // kapan refresh token expired
   last_login    DateTime? // last login timestamp
   is_active     Boolean   @default(true)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model user_settings {
+  setting_id Int   @id @default(autoincrement())
+  user_id    Int   @unique
+  user       users @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  theme           String  @default("light") // light | dark
+  reminder_active Boolean @default(true)
+  reminder_time   String  @default("20:00") // Format HH:MM
+  language        String  @default("id") // id | en
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

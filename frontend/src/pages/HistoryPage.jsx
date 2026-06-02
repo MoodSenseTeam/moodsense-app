@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   AlertCircle,
-  Calendar,
   ChevronDown,
   ChevronUp,
   Download,
@@ -12,7 +11,7 @@ import {
   Users,
 } from "lucide-react";
 import { useAuth } from "../contexts/useAuth";
-import { fetchCheckinHistory, feelingOptions, getFeelingOption, activityOptions, getActivityOption } from "../lib/checkin";
+import { fetchCheckinHistory, feelingOptions, getFeelingOption, getActivityOption } from "../lib/checkin";
 
 function HistoryPage() {
   const { accessToken, isLoading: isAuthLoading } = useAuth();
@@ -129,10 +128,7 @@ function HistoryPage() {
     });
   }, [logs, searchTerm]);
 
-  // Reset page when search term changes
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm]);
+
 
   // Paginated logs
   const paginatedLogs = useMemo(() => {
@@ -335,7 +331,10 @@ function HistoryPage() {
               <input
                 type="text"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1);
+                }}
                 placeholder="Cari catatan..."
                 className="h-11 w-full rounded-xl border border-[#dfe5e1] bg-white pl-11 pr-5 text-sm text-[#1f3f31] outline-none transition placeholder:text-[#7f8f86] focus:border-[#2b6a4f] dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:focus:border-emerald-500 sm:w-64"
               />

@@ -227,11 +227,11 @@ export type EnumActivityLevelFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumActivityLevelFilter<$PrismaModel> | $Enums.ActivityLevel
 }
 
-export type EnumMoodExtendedFilter<$PrismaModel = never> = {
-  equals?: $Enums.MoodExtended | Prisma.EnumMoodExtendedFieldRefInput<$PrismaModel>
-  in?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMoodExtendedFilter<$PrismaModel> | $Enums.MoodExtended
+export type EnumMoodExtendedNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.MoodExtended | Prisma.EnumMoodExtendedFieldRefInput<$PrismaModel> | null
+  in?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumMoodExtendedNullableFilter<$PrismaModel> | $Enums.MoodExtended | null
 }
 
 export type FloatNullableFilter<$PrismaModel = never> = {
@@ -271,14 +271,14 @@ export type EnumActivityLevelWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumActivityLevelFilter<$PrismaModel>
 }
 
-export type EnumMoodExtendedWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.MoodExtended | Prisma.EnumMoodExtendedFieldRefInput<$PrismaModel>
-  in?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMoodExtendedWithAggregatesFilter<$PrismaModel> | $Enums.MoodExtended
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumMoodExtendedFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumMoodExtendedFilter<$PrismaModel>
+export type EnumMoodExtendedNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MoodExtended | Prisma.EnumMoodExtendedFieldRefInput<$PrismaModel> | null
+  in?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumMoodExtendedNullableWithAggregatesFilter<$PrismaModel> | $Enums.MoodExtended | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMoodExtendedNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMoodExtendedNullableFilter<$PrismaModel>
 }
 
 export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -529,11 +529,11 @@ export type NestedEnumActivityLevelFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumActivityLevelFilter<$PrismaModel> | $Enums.ActivityLevel
 }
 
-export type NestedEnumMoodExtendedFilter<$PrismaModel = never> = {
-  equals?: $Enums.MoodExtended | Prisma.EnumMoodExtendedFieldRefInput<$PrismaModel>
-  in?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMoodExtendedFilter<$PrismaModel> | $Enums.MoodExtended
+export type NestedEnumMoodExtendedNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.MoodExtended | Prisma.EnumMoodExtendedFieldRefInput<$PrismaModel> | null
+  in?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumMoodExtendedNullableFilter<$PrismaModel> | $Enums.MoodExtended | null
 }
 
 export type NestedFloatNullableFilter<$PrismaModel = never> = {
@@ -573,14 +573,14 @@ export type NestedEnumActivityLevelWithAggregatesFilter<$PrismaModel = never> = 
   _max?: Prisma.NestedEnumActivityLevelFilter<$PrismaModel>
 }
 
-export type NestedEnumMoodExtendedWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.MoodExtended | Prisma.EnumMoodExtendedFieldRefInput<$PrismaModel>
-  in?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMoodExtendedWithAggregatesFilter<$PrismaModel> | $Enums.MoodExtended
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumMoodExtendedFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumMoodExtendedFilter<$PrismaModel>
+export type NestedEnumMoodExtendedNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MoodExtended | Prisma.EnumMoodExtendedFieldRefInput<$PrismaModel> | null
+  in?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.MoodExtended[] | Prisma.ListEnumMoodExtendedFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumMoodExtendedNullableWithAggregatesFilter<$PrismaModel> | $Enums.MoodExtended | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMoodExtendedNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMoodExtendedNullableFilter<$PrismaModel>
 }
 
 export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {

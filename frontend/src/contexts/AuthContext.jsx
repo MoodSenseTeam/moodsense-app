@@ -27,6 +27,9 @@ function normalizeUser(user) {
     id: user.user_id,
     name: user.name,
     email: user.email,
+    gender: user.gender,
+    tanggal_lahir: user.tanggal_lahir,
+    usage_reason: user.usage_reason,
     avatar: getAvatarFromUser(user),
     status: "Aktif",
   };

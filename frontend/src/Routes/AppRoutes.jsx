@@ -11,6 +11,7 @@ import NoteStep from "../pages/tracker/NoteStep";
 import ConstructionPage from "../pages/ConstructionPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import HistoryPage from "../pages/HistoryPage";
+import SettingsPage from "../pages/SettingsPage";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import TrackerLayout from "../layouts/TrackerLayout";
@@ -79,7 +80,7 @@ function AppRoutes() {
           path="/settings"
           element={
             <ProtectedRoute>
-              <ConstructionPage />
+              <SettingsPage />
             </ProtectedRoute>
           }
         />
@@ -88,7 +89,7 @@ function AppRoutes() {
           path="/settings/profile"
           element={
             <ProtectedRoute>
-              <ConstructionPage />
+              <SettingsPage />
             </ProtectedRoute>
           }
         />

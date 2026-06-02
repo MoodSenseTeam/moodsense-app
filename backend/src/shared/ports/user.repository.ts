@@ -3,7 +3,14 @@ import type { CreateUserDto } from '@/features/v1/auth/create-user/create-user.d
 export interface UserRepository {
     findByEmail(
         email: string,
-    ): Promise<{ user_id: number; name: string; email: string } | null>;
+    ): Promise<{
+        user_id: number;
+        name: string;
+        email: string;
+        gender?: string;
+        tanggal_lahir?: Date;
+        usage_reason?: string | null;
+    } | null>;
     findByEmailWithPassword(email: string): Promise<{
         user_id: number;
         name: string;
@@ -26,4 +33,25 @@ export interface UserRepository {
         is_active: boolean;
     } | null>;
     revokeCredentials(userId: number): Promise<void>;
+    findByIdWithPassword(
+        userId: number,
+    ): Promise<{
+        user_id: number;
+        name: string;
+        email: string;
+        password: string;
+        gender: string;
+        tanggal_lahir: Date;
+        usage_reason: string | null;
+    } | null>;
+    updateUser(
+        userId: number,
+        data: {
+            name?: string;
+            gender?: 'MALE' | 'FEMALE' | 'OTHER';
+            tanggal_lahir?: Date;
+            usage_reason?: string;
+        },
+    ): Promise<{ user_id: number; name: string; email: string }>;
+    updatePassword(userId: number, hashedPassword: string): Promise<void>;
 }

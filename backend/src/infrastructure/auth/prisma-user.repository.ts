@@ -12,6 +12,9 @@ export class PrismaUserRepository implements UserRepository {
                 user_id: true,
                 name: true,
                 email: true,
+                gender: true,
+                tanggal_lahir: true,
+                usage_reason: true,
             },
         });
     }
@@ -112,4 +115,47 @@ export class PrismaUserRepository implements UserRepository {
             },
         });
     }
+
+    async findByIdWithPassword(userId: number) {
+        return this.prisma.users.findUnique({
+            where: { user_id: userId },
+            select: {
+                user_id: true,
+                name: true,
+                email: true,
+                password: true,
+                gender: true,
+                tanggal_lahir: true,
+                usage_reason: true,
+            },
+        });
+    }
+
+    async updateUser(
+        userId: number,
+        data: {
+            name?: string;
+            gender?: 'MALE' | 'FEMALE' | 'OTHER';
+            tanggal_lahir?: Date;
+            usage_reason?: string;
+        },
+    ) {
+        return this.prisma.users.update({
+            where: { user_id: userId },
+            data,
+            select: {
+                user_id: true,
+                name: true,
+                email: true,
+            },
+        });
+    }
+
+    async updatePassword(userId: number, hashedPassword: string) {
+        await this.prisma.users.update({
+            where: { user_id: userId },
+            data: { password: hashedPassword },
+        });
+    }
 }
+

@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   users: 'users',
   user_credentials: 'user_credentials',
+  user_settings: 'user_settings',
   mood_logs: 'mood_logs',
   mood_predictions: 'mood_predictions'
 } as const
@@ -101,6 +102,20 @@ export const User_credentialsScalarFieldEnum = {
 } as const
 
 export type User_credentialsScalarFieldEnum = (typeof User_credentialsScalarFieldEnum)[keyof typeof User_credentialsScalarFieldEnum]
+
+
+export const User_settingsScalarFieldEnum = {
+  setting_id: 'setting_id',
+  user_id: 'user_id',
+  theme: 'theme',
+  reminder_active: 'reminder_active',
+  reminder_time: 'reminder_time',
+  language: 'language',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type User_settingsScalarFieldEnum = (typeof User_settingsScalarFieldEnum)[keyof typeof User_settingsScalarFieldEnum]
 
 
 export const Mood_logsScalarFieldEnum = {

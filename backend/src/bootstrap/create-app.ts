@@ -8,6 +8,7 @@ import { createPrismaClient } from '@/bootstrap/create-prisma-client';
 import { createAuthModule } from '@/bootstrap/create-auth-module';
 import { createOpenApiRoutes } from '@/shared/openapi/openapi.route';
 import { createDashboardModule } from '@/bootstrap/create-dashboard-module';
+import { createSettingsModule } from '@/bootstrap/create-settings-module';
 import { getConfig } from '@/shared/config';
 
 export function createApp() {
@@ -16,7 +17,7 @@ export function createApp() {
 
     const corsOptions: cors.CorsOptions = {
         origin: allowedOrigins,
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
         allowedHeaders: ['Content-Type', 'Authorization'],
     };
 
@@ -26,6 +27,7 @@ export function createApp() {
     const prisma = createPrismaClient();
     app.use('/auth', createAuthModule(prisma));
     app.use('/dashboard', createDashboardModule(prisma));
+    app.use('/settings', createSettingsModule(prisma));
     app.use('/api-docs', createOpenApiRoutes());
 
     app.get('/', (req: Request, res: Response) => {

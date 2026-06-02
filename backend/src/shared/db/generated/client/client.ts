@@ -50,6 +50,11 @@ export type users = Prisma.usersModel
  */
 export type user_credentials = Prisma.user_credentialsModel
 /**
+ * Model user_settings
+ * 
+ */
+export type user_settings = Prisma.user_settingsModel
+/**
  * Model mood_logs
  * 
  */
