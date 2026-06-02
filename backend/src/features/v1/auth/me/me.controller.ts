@@ -40,6 +40,9 @@ export class MeController {
                 user_id: user.user_id,
                 name: user.name,
                 email: user.email,
+                gender: user.gender,
+                tanggal_lahir: user.tanggal_lahir,
+                usage_reason: user.usage_reason,
             },
         });
     }

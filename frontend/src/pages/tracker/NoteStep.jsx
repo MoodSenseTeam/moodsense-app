@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { getActivityOption, getFeelingOption } from "../../lib/checkin";
 
 function NoteStep() {
-  const { draft, setDraft, submitError, isSubmitting, isSubmitted } = useOutletContext();
+  const { draft, setDraft, submitError, isSubmitted } = useOutletContext();
 
   const feeling = getFeelingOption(draft.how_you_feeling);
   const activity = getActivityOption(draft.activity_level);

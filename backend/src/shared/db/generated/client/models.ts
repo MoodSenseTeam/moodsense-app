@@ -10,6 +10,7 @@
  */
 export type * from './models/users'
 export type * from './models/user_credentials'
+export type * from './models/user_settings'
 export type * from './models/mood_logs'
 export type * from './models/mood_predictions'
 export type * from './commonInputTypes'

@@ -6,7 +6,7 @@ export class CreateCheckinUseCase {
     constructor(
         private readonly checkinRepository: CheckinRepository,
         private readonly predictionService: PredictionService,
-    ) {}
+    ) { }
 
     async execute(
         userId: number,
