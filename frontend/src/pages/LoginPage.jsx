@@ -84,17 +84,6 @@ function LoginPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="mt-10 md:mt-12">
-              <button type="button" className="flex h-14 w-full items-center justify-center gap-4 rounded-2xl border border-[#dfe5e1] bg-white text-sm font-semibold text-[#1f3f31] transition hover:bg-[#f7faf8] sm:h-16 sm:text-base">
-                <span className="text-xl font-bold text-blue-500 sm:text-2xl">G</span>
-                Masuk dengan Google
-              </button>
-
-              <div className="my-8 flex items-center gap-5 md:my-10">
-                <div className="h-px flex-1 bg-[#dfe5e1]" />
-                <span className="text-sm font-medium text-[#60766b]">atau</span>
-                <div className="h-px flex-1 bg-[#dfe5e1]" />
-              </div>
-
               {submitError ? <p className="-mt-2 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p> : null}
 
               <div className="space-y-6">
