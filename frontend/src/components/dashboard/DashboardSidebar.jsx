@@ -1,11 +1,12 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { BarChart3, BrainCircuit, CalendarCheck, History, Lightbulb, LogOut, Settings, X } from "lucide-react";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/useAuth";
 import { useApp } from "../../contexts/AppContext";
 
 function DashboardSidebar({ isOpen, onClose }) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { language } = useApp();
+  const navigate = useNavigate();
 
   const menus = [
     {
@@ -39,6 +40,11 @@ function DashboardSidebar({ isOpen, onClose }) {
       icon: Settings,
     },
   ];
+
+  async function handleLogout() {
+    await logout();
+    navigate("/login", { replace: true });
+  }
 
   return (
     <>
@@ -81,15 +87,15 @@ function DashboardSidebar({ isOpen, onClose }) {
 
         <div className="mt-auto border-t border-[#e6ece8] pt-7 dark:border-slate-700">
           <div className="flex items-center gap-4">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#d8f5e6] text-sm font-semibold text-[#2b6a4f] dark:bg-emerald-950 dark:text-emerald-300">{user.avatar}</div>
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#d8f5e6] text-sm font-semibold text-[#2b6a4f] dark:bg-emerald-950 dark:text-emerald-300">{user?.avatar || "MS"}</div>
 
             <div>
-              <p className="font-semibold text-[#1f3f31] dark:text-white">{user.name}</p>
-              <p className="text-sm text-[#60766b] dark:text-slate-300">{language === "id" ? user.status : "Active"}</p>
+              <p className="font-semibold text-[#1f3f31] dark:text-white">{user?.name || "Mood Sense"}</p>
+              <p className="text-sm text-[#60766b] dark:text-slate-300">{language === "id" ? user?.status || "Aktif" : "Active"}</p>
             </div>
           </div>
 
-          <button className="mt-6 flex items-center gap-3 text-sm font-medium text-[#60766b] hover:text-[#2b6a4f] dark:text-slate-300 dark:hover:text-emerald-300">
+          <button type="button" onClick={handleLogout} className="mt-6 flex items-center gap-3 text-sm font-medium text-[#60766b] hover:text-[#2b6a4f] dark:text-slate-300 dark:hover:text-emerald-300">
             <LogOut size={18} />
             {language === "id" ? "Keluar" : "Logout"}
           </button>

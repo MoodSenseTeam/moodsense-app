@@ -1,19 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthSidePanel from "../components/auth/AuthSidePanel";
 import AuthInput from "../components/auth/AuthInput";
+import { useAuth } from "../contexts/useAuth";
 
 function LoginPage() {
   const [formData, setFormData] = useState({
     email: "",
-    password: "password",
+    password: "",
     rememberMe: false,
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login, isAuthenticated, isLoading } = useAuth();
+
+  const redirectPath = location.state?.from?.pathname || "/dashboard";
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate(redirectPath, { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate, redirectPath]);
 
   function handleChange(event) {
     const { name, value, checked, type } = event.target;
@@ -24,10 +36,24 @@ function LoginPage() {
     }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log("Data login:", formData);
-    navigate("/dashboard");
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    try {
+      await login({
+        email: formData.email,
+        password: formData.password,
+        rememberMe: formData.rememberMe,
+      });
+
+      navigate(redirectPath, { replace: true });
+    } catch (error) {
+      setSubmitError(error.message || "Gagal masuk. Periksa kembali email dan password.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -69,6 +95,8 @@ function LoginPage() {
                 <div className="h-px flex-1 bg-[#dfe5e1]" />
               </div>
 
+              {submitError ? <p className="-mt-2 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p> : null}
+
               <div className="space-y-6">
                 <AuthInput id="email" name="email" label="Email" type="email" placeholder="nama@email.com" value={formData.email} onChange={handleChange} />
 
@@ -108,9 +136,10 @@ function LoginPage() {
 
               <button
                 type="submit"
-                className="mt-9 flex h-16 w-full items-center justify-center gap-4 rounded-2xl bg-[#2b6a4f] px-6 text-base font-bold text-white shadow-xl shadow-green-900/20 transition hover:-translate-y-0.5 hover:bg-[#245a43] sm:h-18 sm:text-lg"
+                disabled={isSubmitting}
+                className="mt-9 flex h-16 w-full items-center justify-center gap-4 rounded-2xl bg-[#2b6a4f] px-6 text-base font-bold text-white shadow-xl shadow-green-900/20 transition hover:-translate-y-0.5 hover:bg-[#245a43] disabled:cursor-not-allowed disabled:opacity-70 sm:h-18 sm:text-lg"
               >
-                Masuk ke Mood Sense
+                {isSubmitting ? "Memproses..." : "Masuk ke Mood Sense"}
                 <ArrowRight size={22} />
               </button>
             </form>

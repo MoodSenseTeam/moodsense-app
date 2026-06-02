@@ -1,14 +1,21 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, CalendarDays, Eye, EyeOff, User, Users } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthSidePanel from "../components/auth/AuthSidePanel";
 import RegisterSteps from "../components/auth/RegisterSteps";
+import { useAuth } from "../contexts/useAuth";
 
 function RegisterPage() {
   const [step, setStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const birthDateRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { register, isAuthenticated, isLoading } = useAuth();
+
+  const redirectPath = location.state?.from?.pathname || "/dashboard";
 
   const [formData, setFormData] = useState({
     name: "",
@@ -19,6 +26,12 @@ function RegisterPage() {
     goals: ["Kurangi Stres"],
     agreeTerms: true,
   });
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate(redirectPath, { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate, redirectPath]);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -49,10 +62,35 @@ function RegisterPage() {
     setStep(1);
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log("Data register:", formData);
-    navigate("/dashboard");
+    setSubmitError("");
+    setIsSubmitting(true);
+
+    try {
+      await register(
+        {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          gender:
+            formData.gender === "L"
+              ? "MALE"
+              : formData.gender === "P"
+                ? "FEMALE"
+                : "OTHER",
+          tanggal_lahir: formData.birthDate,
+          usage_reason: formData.goals.join(", "),
+        },
+        true,
+      );
+
+      navigate(redirectPath, { replace: true });
+    } catch (error) {
+      setSubmitError(error.message || "Gagal membuat akun. Coba periksa kembali data yang diisi.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -115,6 +153,7 @@ function RegisterPage() {
                         id="name"
                         name="name"
                         type="text"
+                        required
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="Contoh: Budi"
@@ -131,6 +170,7 @@ function RegisterPage() {
                         id="email"
                         name="email"
                         type="email"
+                        required
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="nama@email.com"
@@ -148,6 +188,7 @@ function RegisterPage() {
                           id="password"
                           name="password"
                           type={showPassword ? "text" : "password"}
+                          required
                           value={formData.password}
                           onChange={handleChange}
                           placeholder="Min. 8 karakter"
@@ -175,6 +216,8 @@ function RegisterPage() {
                       </div>
                     </div>
                   </div>
+
+                  {submitError ? <p className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p> : null}
 
                   <button
                     type="submit"
@@ -241,7 +284,7 @@ function RegisterPage() {
 
                   <div>
                     <label htmlFor="birthDate" className="text-sm font-medium text-[#1f3f31]">
-                      Tgl. Lahir (opsional)
+                      Tgl. Lahir
                     </label>
 
                     <div className="relative">
@@ -250,6 +293,7 @@ function RegisterPage() {
                         id="birthDate"
                         name="birthDate"
                         type="date"
+                        required
                         value={formData.birthDate}
                         onChange={handleChange}
                         className="mt-2 h-14 w-full rounded-2xl border border-[#dfe5e1] bg-white px-5 pr-14 text-base text-[#1f3f31] outline-none transition focus:border-[#2b6a4f] sm:h-16 sm:px-6"
@@ -306,11 +350,14 @@ function RegisterPage() {
                     Saya menyetujui Syarat & Ketentuan
                   </label>
 
+                  {submitError ? <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p> : null}
+
                   <button
                     type="submit"
-                    className="flex h-16 w-full items-center justify-center gap-4 rounded-2xl bg-[#2b6a4f] px-6 text-base font-bold text-white shadow-xl shadow-green-900/20 transition hover:-translate-y-0.5 hover:bg-[#245a43] sm:h-18 sm:text-lg"
+                    disabled={isSubmitting}
+                    className="flex h-16 w-full items-center justify-center gap-4 rounded-2xl bg-[#2b6a4f] px-6 text-base font-bold text-white shadow-xl shadow-green-900/20 transition hover:-translate-y-0.5 hover:bg-[#245a43] disabled:cursor-not-allowed disabled:opacity-70 sm:h-18 sm:text-lg"
                   >
-                    Selesai & Masuk ke Dashboard
+                    {isSubmitting ? "Membuat akun..." : "Selesai & Masuk ke Dashboard"}
                     <ArrowRight size={22} />
                   </button>
                 </div>
