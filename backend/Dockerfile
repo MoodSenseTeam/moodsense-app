@@ -14,4 +14,4 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile --prod
 COPY --from=build /app/dist/ ./dist/
 EXPOSE 5000
-CMD ["node", "dist/server.js"]
+CMD ["pnpm", "start"]
