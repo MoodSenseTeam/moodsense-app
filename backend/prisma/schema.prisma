@@ -51,7 +51,7 @@ model mood_logs {
   activity_level  ActivityLevel
   study_hours     Float
   social_score    Int
-  how_you_feeling MoodExtended
+  how_you_feeling MoodExtended?
   notes           String?
   sentiment_score Float? // tetap di sini, hasil pre-processing sebelum dikirim ke ML
 
