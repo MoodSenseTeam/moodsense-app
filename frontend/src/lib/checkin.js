@@ -71,3 +71,10 @@ export async function submitCheckin(token, payload) {
     body: payload,
   });
 }
+
+export async function fetchCheckinHistory(token) {
+  return apiRequest("/dashboard/checkin/history", {
+    method: "GET",
+    token,
+  });
+}

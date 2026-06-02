@@ -185,6 +185,7 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(async () => {
     const refreshToken = session?.refreshToken;
+    const userId = session?.user?.id;
 
     try {
       if (refreshToken) {
@@ -194,11 +195,18 @@ export function AuthProvider({ children }) {
         });
       }
     } finally {
+      if (userId) {
+        try {
+          localStorage.removeItem(`moodsense_dashboard_cache_${userId}`);
+        } catch (cacheErr) {
+          console.warn("Failed to clear dashboard cache on logout:", cacheErr);
+        }
+      }
       clearSessionStorage();
       setSession(null);
       setError(null);
     }
-  }, [session?.refreshToken]);
+  }, [session]);
 
   const reloadSession = useCallback(async () => {
     if (!session?.accessToken) {

@@ -38,6 +38,7 @@ function FactorsActivitiesStep() {
         <div className="mt-8 grid gap-6 md:grid-cols-2">
           <NumberField
             label="Jam belajar"
+            description="Durasi waktu yang kamu gunakan untuk belajar atau bekerja hari ini."
             value={draft.study_hours}
             min={0}
             max={24}
@@ -47,6 +48,7 @@ function FactorsActivitiesStep() {
 
           <NumberField
             label="Skor sosial"
+            description="Kualitas atau keaktifan interaksi sosialmu hari ini (1: Sangat minim/sendiri, 10: Sangat aktif/berarti)."
             value={draft.social_score}
             min={1}
             max={10}
@@ -68,13 +70,16 @@ function FactorsActivitiesStep() {
   );
 }
 
-function NumberField({ label, value, min, max, step, onChange }) {
+function NumberField({ label, description, value, min, max, step, onChange }) {
   return (
     <label className="block">
       <div className="flex items-center justify-between gap-4">
         <span className="text-sm font-medium text-[#1f3f31] dark:text-white">{label}</span>
         <span className="text-sm font-semibold text-[#2b6a4f] dark:text-emerald-300">{value}</span>
       </div>
+      {description && (
+        <p className="mt-1.5 text-xs leading-5 text-[#60766b] dark:text-slate-400">{description}</p>
+      )}
       <input
         type="range"
         min={min}

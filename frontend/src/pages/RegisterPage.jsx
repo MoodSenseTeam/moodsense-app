@@ -21,7 +21,7 @@ function RegisterPage() {
     name: "",
     email: "",
     password: "",
-    gender: "P",
+    gender: "Lain",
     birthDate: "",
     goals: ["Kurangi Stres"],
     agreeTerms: true,

@@ -10,6 +10,7 @@ import FactorsActivitiesStep from "../pages/tracker/FactorsActivitiesStep";
 import NoteStep from "../pages/tracker/NoteStep";
 import ConstructionPage from "../pages/ConstructionPage";
 import NotFoundPage from "../pages/NotFoundPage";
+import HistoryPage from "../pages/HistoryPage";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import TrackerLayout from "../layouts/TrackerLayout";
@@ -69,7 +70,7 @@ function AppRoutes() {
           path="/history"
           element={
             <ProtectedRoute>
-              <ConstructionPage />
+              <HistoryPage />
             </ProtectedRoute>
           }
         />

@@ -14,7 +14,7 @@ import { buildDashboardViewModel, fetchDashboardInsights, fetchDashboardSummary 
 
 function DashboardPage() {
   const location = useLocation();
-  const { accessToken, isLoading: isAuthLoading } = useAuth();
+  const { user, accessToken, isLoading: isAuthLoading } = useAuth();
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,7 +23,7 @@ function DashboardPage() {
     let isMounted = true;
 
     async function loadDashboard() {
-      if (isAuthLoading) {
+      if (isAuthLoading || !user) {
         return;
       }
 
@@ -32,12 +32,32 @@ function DashboardPage() {
           setError("Sesi login tidak tersedia.");
           setIsLoading(false);
         }
-
         return;
       }
 
+      const cacheKey = `moodsense_dashboard_cache_${user.id}`;
+      let hasCache = false;
+
+      // 1. Try loading from cache first to render immediately
       try {
-        setIsLoading(true);
+        const cachedRaw = localStorage.getItem(cacheKey);
+        if (cachedRaw) {
+          const cachedData = JSON.parse(cachedRaw);
+          if (cachedData?.summary && cachedData?.insights) {
+            setDashboard(buildDashboardViewModel(cachedData.summary, cachedData.insights));
+            setIsLoading(false);
+            hasCache = true;
+          }
+        }
+      } catch (cacheLoadErr) {
+        console.warn("Failed to load dashboard cache:", cacheLoadErr);
+      }
+
+      // 2. Fetch fresh data in the background (or foreground if no cache)
+      try {
+        if (!hasCache) {
+          setIsLoading(true);
+        }
         setError(null);
 
         const [summary, insights] = await Promise.all([
@@ -49,10 +69,22 @@ function DashboardPage() {
           return;
         }
 
+        // Update cache
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify({ summary, insights }));
+        } catch (cacheSaveErr) {
+          console.warn("Failed to write dashboard cache:", cacheSaveErr);
+        }
+
         setDashboard(buildDashboardViewModel(summary, insights));
       } catch (loadError) {
         if (isMounted) {
-          setError(loadError instanceof Error ? loadError.message : "Gagal memuat dashboard.");
+          // Only show full-page error block if we don't have cached data to display
+          if (!hasCache) {
+            setError(loadError instanceof Error ? loadError.message : "Gagal memuat dashboard.");
+          } else {
+            console.error("Dashboard background sync failed:", loadError);
+          }
         }
       } finally {
         if (isMounted) {
@@ -66,7 +98,7 @@ function DashboardPage() {
     return () => {
       isMounted = false;
     };
-  }, [accessToken, isAuthLoading]);
+  }, [accessToken, isAuthLoading, user]);
 
   if (isAuthLoading || isLoading) {
     return (

@@ -119,7 +119,7 @@ function TrackerLayout() {
   }, [currentStep, handleNext, handleSubmit]);
 
   return (
-    <div className="mx-auto max-w-340">
+    <div className="mx-auto max-w-340 px-6 py-10 md:px-10 md:py-16">
       <header className="mb-8 pl-14 lg:pl-0">
         <h1 className="text-3xl font-medium tracking-tight text-[#1f3f31] dark:text-white md:text-4xl">Mood Tracker</h1>
 
