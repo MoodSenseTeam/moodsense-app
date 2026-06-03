@@ -388,7 +388,8 @@ export const ModelName = {
   user_credentials: 'user_credentials',
   user_settings: 'user_settings',
   mood_logs: 'mood_logs',
-  mood_predictions: 'mood_predictions'
+  mood_predictions: 'mood_predictions',
+  todo_items: 'todo_items'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "users" | "user_credentials" | "user_settings" | "mood_logs" | "mood_predictions"
+    modelProps: "users" | "user_credentials" | "user_settings" | "mood_logs" | "mood_predictions" | "todo_items"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -778,6 +779,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    todo_items: {
+      payload: Prisma.$todo_itemsPayload<ExtArgs>
+      fields: Prisma.todo_itemsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.todo_itemsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$todo_itemsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.todo_itemsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$todo_itemsPayload>
+        }
+        findFirst: {
+          args: Prisma.todo_itemsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$todo_itemsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.todo_itemsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$todo_itemsPayload>
+        }
+        findMany: {
+          args: Prisma.todo_itemsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$todo_itemsPayload>[]
+        }
+        create: {
+          args: Prisma.todo_itemsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$todo_itemsPayload>
+        }
+        createMany: {
+          args: Prisma.todo_itemsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.todo_itemsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$todo_itemsPayload>[]
+        }
+        delete: {
+          args: Prisma.todo_itemsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$todo_itemsPayload>
+        }
+        update: {
+          args: Prisma.todo_itemsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$todo_itemsPayload>
+        }
+        deleteMany: {
+          args: Prisma.todo_itemsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.todo_itemsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.todo_itemsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$todo_itemsPayload>[]
+        }
+        upsert: {
+          args: Prisma.todo_itemsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$todo_itemsPayload>
+        }
+        aggregate: {
+          args: Prisma.Todo_itemsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTodo_items>
+        }
+        groupBy: {
+          args: Prisma.todo_itemsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Todo_itemsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.todo_itemsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Todo_itemsCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -889,6 +964,20 @@ export const Mood_predictionsScalarFieldEnum = {
 } as const
 
 export type Mood_predictionsScalarFieldEnum = (typeof Mood_predictionsScalarFieldEnum)[keyof typeof Mood_predictionsScalarFieldEnum]
+
+
+export const Todo_itemsScalarFieldEnum = {
+  todo_id: 'todo_id',
+  user_id: 'user_id',
+  name: 'name',
+  description: 'description',
+  duration: 'duration',
+  is_completed: 'is_completed',
+  completed_at: 'completed_at',
+  created_at: 'created_at'
+} as const
+
+export type Todo_itemsScalarFieldEnum = (typeof Todo_itemsScalarFieldEnum)[keyof typeof Todo_itemsScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1168,6 +1257,7 @@ export type GlobalOmitConfig = {
   user_settings?: Prisma.user_settingsOmit
   mood_logs?: Prisma.mood_logsOmit
   mood_predictions?: Prisma.mood_predictionsOmit
+  todo_items?: Prisma.todo_itemsOmit
 }
 
 /* Types for Logging */

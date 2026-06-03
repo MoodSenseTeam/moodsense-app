@@ -64,3 +64,8 @@ export type mood_logs = Prisma.mood_logsModel
  * 
  */
 export type mood_predictions = Prisma.mood_predictionsModel
+/**
+ * Model todo_items
+ * 
+ */
+export type todo_items = Prisma.todo_itemsModel

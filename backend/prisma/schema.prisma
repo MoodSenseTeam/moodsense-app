@@ -26,6 +26,7 @@ model users {
   credentials   user_credentials?
   mood_logs     mood_logs[]
   userSettings  user_settings?
+  todo_items    todo_items[]
 }
 
 model user_credentials {
@@ -87,6 +88,22 @@ model mood_predictions {
   confidence_score    Float // 0.0 - 1.0
 
   created_at DateTime @default(now())
+}
+
+model todo_items {
+  todo_id      Int       @id @default(autoincrement())
+  user_id      Int
+  name         String
+  description  String
+  duration     String
+  is_completed Boolean   @default(false)
+  completed_at DateTime?
+  created_at   DateTime  @default(now())
+
+  user users @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  @@unique([user_id, name])
+  @@map("todo_items")
 }
 
 enum Role {

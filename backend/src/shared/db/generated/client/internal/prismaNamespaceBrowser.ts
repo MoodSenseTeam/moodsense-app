@@ -55,7 +55,8 @@ export const ModelName = {
   user_credentials: 'user_credentials',
   user_settings: 'user_settings',
   mood_logs: 'mood_logs',
-  mood_predictions: 'mood_predictions'
+  mood_predictions: 'mood_predictions',
+  todo_items: 'todo_items'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -146,6 +147,20 @@ export const Mood_predictionsScalarFieldEnum = {
 } as const
 
 export type Mood_predictionsScalarFieldEnum = (typeof Mood_predictionsScalarFieldEnum)[keyof typeof Mood_predictionsScalarFieldEnum]
+
+
+export const Todo_itemsScalarFieldEnum = {
+  todo_id: 'todo_id',
+  user_id: 'user_id',
+  name: 'name',
+  description: 'description',
+  duration: 'duration',
+  is_completed: 'is_completed',
+  completed_at: 'completed_at',
+  created_at: 'created_at'
+} as const
+
+export type Todo_itemsScalarFieldEnum = (typeof Todo_itemsScalarFieldEnum)[keyof typeof Todo_itemsScalarFieldEnum]
 
 
 export const SortOrder = {
