@@ -93,20 +93,20 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-      </Route>
+        <Route
+          path="/tracker"
+          element={
+            <ProtectedRoute>
+              <TrackerLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Navigate to="mood-energy" replace />} />
+          <Route path="mood-energy" element={<MoodEnergyStep />} />
+          <Route path="factors-activities" element={<FactorsActivitiesStep />} />
+          <Route path="note" element={<NoteStep />} />
+        </Route>
 
-      <Route
-        path="/tracker"
-        element={
-          <ProtectedRoute>
-            <TrackerLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<Navigate to="mood-energy" replace />} />
-        <Route path="mood-energy" element={<MoodEnergyStep />} />
-        <Route path="factors-activities" element={<FactorsActivitiesStep />} />
-        <Route path="note" element={<NoteStep />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
