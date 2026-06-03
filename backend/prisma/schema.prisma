@@ -100,6 +100,8 @@ model todo_items {
   completed_at DateTime?
   created_at   DateTime  @default(now())
 
+  source       String    @default("AI") // AI | MANUAL
+
   user users @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@unique([user_id, name])

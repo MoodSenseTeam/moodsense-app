@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { CheckSquare, ListTodo, Square } from "lucide-react";
+import { CheckSquare, ListTodo, Square, Trash2 } from "lucide-react";
 import { useAuth } from "../../contexts/useAuth";
-import { fetchTodos, toggleTodo } from "../../lib/todos";
+import { deleteTodo, fetchTodos, toggleTodo } from "../../lib/todos";
 
 function RecommendationCard() {
   const { accessToken } = useAuth();
@@ -9,6 +9,7 @@ function RecommendationCard() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [togglingIds, setTogglingIds] = useState(new Set());
+  const [deletingIds, setDeletingIds] = useState(new Set());
 
   const loadTodos = useCallback(async () => {
     if (!accessToken) return;
@@ -52,11 +53,7 @@ function RecommendationCard() {
       setTodos((prev) =>
         prev.map((item) =>
           item.todo_id === todo.todo_id
-            ? {
-                ...item,
-                is_completed: todo.is_completed,
-                completed_at: todo.completed_at,
-              }
+            ? { ...item, is_completed: todo.is_completed, completed_at: todo.completed_at }
             : item,
         ),
       );
@@ -69,9 +66,29 @@ function RecommendationCard() {
     }
   }
 
+  async function handleDelete(todo) {
+    if (!accessToken || deletingIds.has(todo.todo_id)) return;
+
+    setDeletingIds((prev) => new Set(prev).add(todo.todo_id));
+    setTodos((prev) => prev.filter((item) => item.todo_id !== todo.todo_id));
+
+    try {
+      await deleteTodo(todo.todo_id, accessToken);
+    } catch {
+      setTodos((prev) => [...prev, todo].sort((a, b) => a.todo_id - b.todo_id));
+    } finally {
+      setDeletingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(todo.todo_id);
+        return next;
+      });
+    }
+  }
+
   const completedCount = todos.filter((t) => t.is_completed).length;
   const totalCount = todos.length;
   const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+  const allDone = totalCount > 0 && completedCount === totalCount;
 
   // --- Loading State ---
   if (isLoading) {
@@ -142,9 +159,6 @@ function RecommendationCard() {
     );
   }
 
-  // --- All Complete ---
-  const allDone = completedCount === totalCount;
-
   // --- Todo List ---
   return (
     <section className="rounded-2xl border border-[#e2e8e4] bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/80 dark:shadow-md">
@@ -154,9 +168,7 @@ function RecommendationCard() {
           <ListTodo size={18} className={allDone ? "text-emerald-600 dark:text-emerald-400" : "text-[#2b6a4f] dark:text-emerald-400"} />
         </div>
         <div className="flex-1">
-          <h2 className="text-lg font-semibold text-[#1f3f31] dark:text-slate-100">
-            Todo List
-          </h2>
+          <h2 className="text-lg font-semibold text-[#1f3f31] dark:text-slate-100">Todo List</h2>
         </div>
         {allDone && (
           <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
@@ -188,24 +200,29 @@ function RecommendationCard() {
       {/* Items */}
       <div className="mt-4 space-y-2.5">
         {todos.map((todo) => (
-          <button
+          <div
             key={todo.todo_id}
-            type="button"
-            onClick={() => handleToggle(todo)}
-            disabled={togglingIds.has(todo.todo_id)}
-            className={`group flex w-full items-start gap-3 rounded-xl border p-3.5 text-left transition-all duration-200 ${
+            className={`group flex w-full items-start gap-3 rounded-xl border p-3.5 transition-all duration-200 ${
               todo.is_completed
                 ? "border-emerald-100 bg-emerald-50/40 dark:border-emerald-900/20 dark:bg-emerald-950/20"
                 : "border-slate-100 bg-slate-50/40 hover:border-slate-200 hover:bg-slate-50 hover:shadow-sm dark:border-slate-800 dark:bg-slate-800/40 dark:hover:border-slate-700 dark:hover:bg-slate-800/70"
-            } ${togglingIds.has(todo.todo_id) ? "pointer-events-none opacity-60" : ""}`}
+            }`}
           >
-            <span className={`mt-0.5 shrink-0 transition-colors ${
-              todo.is_completed
-                ? "text-emerald-500 dark:text-emerald-400"
-                : "text-slate-300 group-hover:text-[#19c58f] dark:text-slate-600 dark:group-hover:text-emerald-400"
-            }`}>
+            {/* Checkbox */}
+            <button
+              type="button"
+              onClick={() => handleToggle(todo)}
+              disabled={togglingIds.has(todo.todo_id)}
+              className={`mt-0.5 shrink-0 transition-colors ${
+                todo.is_completed
+                  ? "text-emerald-500 dark:text-emerald-400"
+                  : "text-slate-300 group-hover:text-[#19c58f] dark:text-slate-600 dark:group-hover:text-emerald-400"
+              } ${togglingIds.has(todo.todo_id) ? "pointer-events-none opacity-60" : ""}`}
+            >
               {todo.is_completed ? <CheckSquare size={19} /> : <Square size={19} />}
-            </span>
+            </button>
+
+            {/* Content */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between gap-2">
                 <h4
@@ -235,7 +252,18 @@ function RecommendationCard() {
                 {todo.description}
               </p>
             </div>
-          </button>
+
+            {/* Delete */}
+            <button
+              type="button"
+              onClick={() => handleDelete(todo)}
+              disabled={deletingIds.has(todo.todo_id)}
+              className="mt-0.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity text-slate-300 hover:text-red-500 dark:text-slate-600 dark:hover:text-red-400"
+              title="Hapus todo"
+            >
+              <Trash2 size={16} />
+            </button>
+          </div>
         ))}
       </div>
     </section>
