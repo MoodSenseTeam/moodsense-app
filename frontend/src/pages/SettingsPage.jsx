@@ -357,12 +357,19 @@ function SettingsPage() {
     <div className="mx-auto max-w-5xl">
       {/* Header */}
       <header className="mb-8 pl-14 lg:pl-0">
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-[#1f3f31] dark:text-white md:text-4xl">
-          {translations.title}
-        </h1>
-        <p className="mt-2 text-sm text-[#60766b] dark:text-slate-400">
-          {translations.subtitle}
-        </p>
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-50 dark:bg-slate-800">
+            <Settings size={24} className="text-slate-500 dark:text-slate-400" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-medium tracking-tight text-[#1f3f31] dark:text-white md:text-4xl">
+              {translations.title}
+            </h1>
+            <p className="mt-2 text-base text-[#375446] dark:text-slate-300 md:text-lg">
+              {translations.subtitle}
+            </p>
+          </div>
+        </div>
       </header>
 
       {/* Main Container */}
@@ -885,6 +892,26 @@ function SettingsPage() {
           )}
         </div>
       </div>
+
+      <footer className="mt-16 border-t border-[#e3e9e5] px-4 pt-6 pb-8 text-center dark:border-slate-700">
+        <div className="flex items-center justify-center gap-5">
+          <img src="/dbs-program.png" alt="DBS Foundation Coding Camp" className="h-7 w-auto" />
+          <img src="/dbs.webp" alt="DBS Foundation" className="h-7 w-auto" />
+          <img src="/dicoding.png" alt="Dicoding" className="h-7 w-auto" />
+        </div>
+
+        <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-[#60766b] dark:text-slate-400">
+          <strong>Mood Sense</strong> adalah proyek akhir <strong>Coding Camp</strong> yang didukung oleh <strong>DBS Foundation</strong>, dengan <strong>Dicoding</strong> sebagai platform pembelajaran. Aplikasi ini membantu pengguna melacak mood harian, menulis refleksi, serta menerima rekomendasi aktivitas berbasis suasana hati.
+        </p>
+
+        <p className="mt-4 text-xs italic text-[#8aa397] dark:text-slate-500">
+          Catatan: Aplikasi ini bukan alat diagnosis medis profesional. Untuk masalah kesehatan mental serius, silakan konsultasikan dengan tenaga profesional.
+        </p>
+
+        <p className="mt-2 text-xs text-[#8aa397] dark:text-slate-500">
+          © 2026 MoodSenseTeam. Seluruh hak cipta dilindungi.
+        </p>
+      </footer>
     </div>
   );
 }

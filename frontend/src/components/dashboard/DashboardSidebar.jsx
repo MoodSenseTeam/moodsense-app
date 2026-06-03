@@ -15,7 +15,7 @@ function DashboardSidebar({ isOpen, onClose }) {
       icon: BarChart3,
     },
     {
-      label: language === "id" ? "Mood Tracker" : "Mood Tracker",
+      label: language === "id" ? "Check-in" : "Check-in",
       path: "/tracker",
       icon: CalendarCheck,
     },

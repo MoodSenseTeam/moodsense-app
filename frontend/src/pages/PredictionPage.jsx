@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, TrendingDown, TrendingUp, Minus, Sparkles, AlertTriangle, Lightbulb } from "lucide-react";
+import { TrendingDown, TrendingUp, Minus, Sparkles, AlertTriangle, Lightbulb } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useAuth } from "../contexts/useAuth";
 import { fetchDashboardSummary, fetchDashboardInsights, fetchForecast, formatTrendDay } from "../lib/dashboard";
@@ -92,7 +92,7 @@ function PredictionPage() {
   // --- Loading ---
   if (isAuthLoading || isLoading) {
     return (
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-330">
         <div className="mb-8 h-5 w-48 animate-pulse rounded-md bg-slate-200 dark:bg-slate-700" />
         <div className="mb-2 h-8 w-64 animate-pulse rounded-md bg-slate-200 dark:bg-slate-700" />
         <div className="mb-8 h-4 w-80 animate-pulse rounded-md bg-slate-100 dark:bg-slate-700/60" />
@@ -104,12 +104,7 @@ function PredictionPage() {
   // --- Error ---
   if (error) {
     return (
-      <div className="mx-auto max-w-3xl">
-        <button type="button" onClick={() => navigate("/dashboard")} className="group mb-8 inline-flex items-center gap-2 text-sm font-medium text-[#60766b] hover:text-[#2b6a4f] dark:text-slate-400 dark:hover:text-emerald-300">
-          <ArrowLeft size={18} className="transition-transform group-hover:-translate-x-0.5" />
-          Kembali ke Dashboard
-        </button>
-
+      <div className="mx-auto max-w-330">
         <div className="rounded-2xl border border-red-200 bg-red-50/80 p-8 dark:border-red-900/30 dark:bg-red-950/20">
           <div className="flex items-center gap-3 mb-3">
             <AlertTriangle size={20} className="text-red-500" />
@@ -127,12 +122,7 @@ function PredictionPage() {
   // --- Empty (no check-in data) ---
   if (historical.length === 0) {
     return (
-      <div className="mx-auto max-w-3xl">
-        <button type="button" onClick={() => navigate("/dashboard")} className="group mb-8 inline-flex items-center gap-2 text-sm font-medium text-[#60766b] hover:text-[#2b6a4f] dark:text-slate-400 dark:hover:text-emerald-300">
-          <ArrowLeft size={18} className="transition-transform group-hover:-translate-x-0.5" />
-          Kembali ke Dashboard
-        </button>
-
+      <div className="mx-auto max-w-330">
         <div className="flex flex-col items-center py-20 text-center rounded-2xl border border-[#e2e8e4] bg-white dark:border-slate-800 dark:bg-slate-900/80">
           <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-slate-50 dark:bg-slate-800/70">
             <Sparkles size={40} className="text-slate-300 dark:text-slate-600" />
@@ -151,24 +141,20 @@ function PredictionPage() {
 
   // --- Forecast ---
   return (
-    <div className="mx-auto max-w-3xl">
-      {/* Header */}
-      <button type="button" onClick={() => navigate("/dashboard")} className="group mb-8 inline-flex items-center gap-2 text-sm font-medium text-[#60766b] hover:text-[#2b6a4f] dark:text-slate-400 dark:hover:text-emerald-300">
-        <ArrowLeft size={18} className="transition-transform group-hover:-translate-x-0.5" />
-        Kembali ke Dashboard
-      </button>
-
-      <div className="flex items-center gap-4 mb-2">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-50 dark:bg-purple-950/30">
-          <Sparkles size={24} className="text-purple-500 dark:text-purple-400" />
+    <div className="mx-auto max-w-330">
+      <header className="mb-8 pl-14 lg:pl-0">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-50 dark:bg-purple-950/30">
+            <Sparkles size={24} className="text-purple-500 dark:text-purple-400" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-medium tracking-tight text-[#1f3f31] dark:text-white md:text-4xl">Prediksi Mood</h1>
+            <p className="mt-2 text-base text-[#375446] dark:text-slate-300 md:text-lg">
+              Proyeksi 5 hari ke depan berdasarkan tren historis
+            </p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold text-[#1f3f31] dark:text-slate-100">Prediksi Mood</h1>
-          <p className="text-sm text-[#60766b] dark:text-slate-400">
-            Proyeksi 5 hari ke depan berdasarkan tren historis
-          </p>
-        </div>
-      </div>
+      </header>
 
       {/* Chart */}
       <div className="mt-8 rounded-2xl border border-[#e2e8e4] bg-white p-6 dark:border-slate-800 dark:bg-slate-900/80 dark:shadow-md">

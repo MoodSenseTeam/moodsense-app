@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Clock3 } from "lucide-react";
-import { moodOptions } from "../../data/dashboardData";
+import { feelingOptions } from "../../lib/checkin";
 
 function MoodCheckIn({ hasCheckedInToday = false }) {
   const navigate = useNavigate();
-  const [selectedMood, setSelectedMood] = useState("Baik");
+  const [selectedMood, setSelectedMood] = useState("HAPPY");
 
   function handleSaveAndAnalyze() {
-    navigate("/tracker/mood-energy");
+    navigate("/tracker/mood-energy", { state: { preselectedMood: selectedMood } });
   }
 
   return (
@@ -23,21 +23,21 @@ function MoodCheckIn({ hasCheckedInToday = false }) {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        {moodOptions.map((mood) => {
-          const isSelected = selectedMood === mood.label;
+        {feelingOptions.map((option) => {
+          const isSelected = selectedMood === option.value;
 
           return (
             <button
-              key={mood.id}
+              key={option.value}
               type="button"
-              onClick={() => setSelectedMood(mood.label)}
+              onClick={() => setSelectedMood(option.value)}
               className={`rounded-2xl border px-4 py-5 text-center transition ${
                 isSelected ? "border-[#2b6a4f] bg-[#edf8f2] dark:border-emerald-400 dark:bg-emerald-950/40" : "border-[#dde5e1] bg-white hover:border-[#2b6a4f] dark:border-slate-700 dark:bg-slate-900 dark:hover:border-emerald-400"
               }`}
             >
-              <div className="text-3xl">{mood.emoji}</div>
+              <div className="text-3xl">{option.emoji}</div>
 
-              <p className="mt-3 text-sm font-medium text-[#1f3f31] dark:text-white">{mood.label}</p>
+              <p className="mt-3 text-sm font-medium text-[#1f3f31] dark:text-white">{option.label}</p>
             </button>
           );
         })}
