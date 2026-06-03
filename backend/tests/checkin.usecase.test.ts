@@ -4,6 +4,7 @@ import { CreateCheckinUseCase } from '../src/features/v1/dashboard/checkin/check
 import type { CreatedCheckinDto } from '../src/features/v1/dashboard/checkin/checkin.dto';
 import type { CheckinRepository } from '../src/shared/ports/checkin.repository';
 import type { PredictionService } from '../src/shared/ports/prediction-service';
+import type { ForecastCacheRepository } from '../src/shared/ports/forecast-cache.repository';
 
 const validInput = {
     sleep_hours: 7.5,
@@ -50,11 +51,18 @@ const createdCheckin: CreatedCheckinDto = {
     },
 };
 
+const forecastCache: ForecastCacheRepository = {
+    get: vi.fn(),
+    set: vi.fn(),
+    invalidate: vi.fn(),
+};
+
 describe('CreateCheckinUseCase', () => {
     it('creates a check-in when the user has not checked in today', async () => {
         const repository: CheckinRepository = {
             create: vi.fn().mockResolvedValue(createdCheckin),
             hasCheckinToday: vi.fn().mockResolvedValue(false),
+            getHistory: vi.fn(),
         };
 
         const predictionService: PredictionService = {
@@ -64,9 +72,10 @@ describe('CreateCheckinUseCase', () => {
             }),
             getInsight: vi.fn().mockResolvedValue(mockInsight),
             getFactors: vi.fn().mockResolvedValue(mockFactors),
+            getForecast: vi.fn(),
         };
 
-        const useCase = new CreateCheckinUseCase(repository, predictionService);
+        const useCase = new CreateCheckinUseCase(repository, predictionService, forecastCache);
         const result = await useCase.execute(15, validInput);
 
         expect(result).toEqual(createdCheckin);
@@ -108,15 +117,17 @@ describe('CreateCheckinUseCase', () => {
         const repository: CheckinRepository = {
             create: vi.fn(),
             hasCheckinToday: vi.fn().mockResolvedValue(true),
+            getHistory: vi.fn(),
         };
 
         const predictionService: PredictionService = {
             predict: vi.fn(),
             getInsight: vi.fn(),
             getFactors: vi.fn(),
+            getForecast: vi.fn(),
         };
 
-        const useCase = new CreateCheckinUseCase(repository, predictionService);
+        const useCase = new CreateCheckinUseCase(repository, predictionService, forecastCache);
 
         await expect(useCase.execute(15, validInput)).rejects.toThrow(
             'You have already checked in today',

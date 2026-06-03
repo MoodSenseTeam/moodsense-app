@@ -45,6 +45,7 @@ export type Todo_itemsMinAggregateOutputType = {
   is_completed: boolean | null
   completed_at: Date | null
   created_at: Date | null
+  source: string | null
 }
 
 export type Todo_itemsMaxAggregateOutputType = {
@@ -56,6 +57,7 @@ export type Todo_itemsMaxAggregateOutputType = {
   is_completed: boolean | null
   completed_at: Date | null
   created_at: Date | null
+  source: string | null
 }
 
 export type Todo_itemsCountAggregateOutputType = {
@@ -67,6 +69,7 @@ export type Todo_itemsCountAggregateOutputType = {
   is_completed: number
   completed_at: number
   created_at: number
+  source: number
   _all: number
 }
 
@@ -90,6 +93,7 @@ export type Todo_itemsMinAggregateInputType = {
   is_completed?: true
   completed_at?: true
   created_at?: true
+  source?: true
 }
 
 export type Todo_itemsMaxAggregateInputType = {
@@ -101,6 +105,7 @@ export type Todo_itemsMaxAggregateInputType = {
   is_completed?: true
   completed_at?: true
   created_at?: true
+  source?: true
 }
 
 export type Todo_itemsCountAggregateInputType = {
@@ -112,6 +117,7 @@ export type Todo_itemsCountAggregateInputType = {
   is_completed?: true
   completed_at?: true
   created_at?: true
+  source?: true
   _all?: true
 }
 
@@ -210,6 +216,7 @@ export type Todo_itemsGroupByOutputType = {
   is_completed: boolean
   completed_at: Date | null
   created_at: Date
+  source: string
   _count: Todo_itemsCountAggregateOutputType | null
   _avg: Todo_itemsAvgAggregateOutputType | null
   _sum: Todo_itemsSumAggregateOutputType | null
@@ -244,6 +251,7 @@ export type todo_itemsWhereInput = {
   is_completed?: Prisma.BoolFilter<"todo_items"> | boolean
   completed_at?: Prisma.DateTimeNullableFilter<"todo_items"> | Date | string | null
   created_at?: Prisma.DateTimeFilter<"todo_items"> | Date | string
+  source?: Prisma.StringFilter<"todo_items"> | string
   user?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.usersWhereInput>
 }
 
@@ -256,6 +264,7 @@ export type todo_itemsOrderByWithRelationInput = {
   is_completed?: Prisma.SortOrder
   completed_at?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   user?: Prisma.usersOrderByWithRelationInput
 }
 
@@ -272,6 +281,7 @@ export type todo_itemsWhereUniqueInput = Prisma.AtLeast<{
   is_completed?: Prisma.BoolFilter<"todo_items"> | boolean
   completed_at?: Prisma.DateTimeNullableFilter<"todo_items"> | Date | string | null
   created_at?: Prisma.DateTimeFilter<"todo_items"> | Date | string
+  source?: Prisma.StringFilter<"todo_items"> | string
   user?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.usersWhereInput>
 }, "todo_id" | "user_id_name">
 
@@ -284,6 +294,7 @@ export type todo_itemsOrderByWithAggregationInput = {
   is_completed?: Prisma.SortOrder
   completed_at?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   _count?: Prisma.todo_itemsCountOrderByAggregateInput
   _avg?: Prisma.todo_itemsAvgOrderByAggregateInput
   _max?: Prisma.todo_itemsMaxOrderByAggregateInput
@@ -303,6 +314,7 @@ export type todo_itemsScalarWhereWithAggregatesInput = {
   is_completed?: Prisma.BoolWithAggregatesFilter<"todo_items"> | boolean
   completed_at?: Prisma.DateTimeNullableWithAggregatesFilter<"todo_items"> | Date | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"todo_items"> | Date | string
+  source?: Prisma.StringWithAggregatesFilter<"todo_items"> | string
 }
 
 export type todo_itemsCreateInput = {
@@ -312,6 +324,7 @@ export type todo_itemsCreateInput = {
   is_completed?: boolean
   completed_at?: Date | string | null
   created_at?: Date | string
+  source?: string
   user: Prisma.usersCreateNestedOneWithoutTodo_itemsInput
 }
 
@@ -324,6 +337,7 @@ export type todo_itemsUncheckedCreateInput = {
   is_completed?: boolean
   completed_at?: Date | string | null
   created_at?: Date | string
+  source?: string
 }
 
 export type todo_itemsUpdateInput = {
@@ -333,6 +347,7 @@ export type todo_itemsUpdateInput = {
   is_completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   user?: Prisma.usersUpdateOneRequiredWithoutTodo_itemsNestedInput
 }
 
@@ -345,6 +360,7 @@ export type todo_itemsUncheckedUpdateInput = {
   is_completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type todo_itemsCreateManyInput = {
@@ -356,6 +372,7 @@ export type todo_itemsCreateManyInput = {
   is_completed?: boolean
   completed_at?: Date | string | null
   created_at?: Date | string
+  source?: string
 }
 
 export type todo_itemsUpdateManyMutationInput = {
@@ -365,6 +382,7 @@ export type todo_itemsUpdateManyMutationInput = {
   is_completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type todo_itemsUncheckedUpdateManyInput = {
@@ -376,6 +394,7 @@ export type todo_itemsUncheckedUpdateManyInput = {
   is_completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type Todo_itemsListRelationFilter = {
@@ -402,6 +421,7 @@ export type todo_itemsCountOrderByAggregateInput = {
   is_completed?: Prisma.SortOrder
   completed_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  source?: Prisma.SortOrder
 }
 
 export type todo_itemsAvgOrderByAggregateInput = {
@@ -418,6 +438,7 @@ export type todo_itemsMaxOrderByAggregateInput = {
   is_completed?: Prisma.SortOrder
   completed_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  source?: Prisma.SortOrder
 }
 
 export type todo_itemsMinOrderByAggregateInput = {
@@ -429,6 +450,7 @@ export type todo_itemsMinOrderByAggregateInput = {
   is_completed?: Prisma.SortOrder
   completed_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  source?: Prisma.SortOrder
 }
 
 export type todo_itemsSumOrderByAggregateInput = {
@@ -485,6 +507,7 @@ export type todo_itemsCreateWithoutUserInput = {
   is_completed?: boolean
   completed_at?: Date | string | null
   created_at?: Date | string
+  source?: string
 }
 
 export type todo_itemsUncheckedCreateWithoutUserInput = {
@@ -495,6 +518,7 @@ export type todo_itemsUncheckedCreateWithoutUserInput = {
   is_completed?: boolean
   completed_at?: Date | string | null
   created_at?: Date | string
+  source?: string
 }
 
 export type todo_itemsCreateOrConnectWithoutUserInput = {
@@ -535,6 +559,7 @@ export type todo_itemsScalarWhereInput = {
   is_completed?: Prisma.BoolFilter<"todo_items"> | boolean
   completed_at?: Prisma.DateTimeNullableFilter<"todo_items"> | Date | string | null
   created_at?: Prisma.DateTimeFilter<"todo_items"> | Date | string
+  source?: Prisma.StringFilter<"todo_items"> | string
 }
 
 export type todo_itemsCreateManyUserInput = {
@@ -545,6 +570,7 @@ export type todo_itemsCreateManyUserInput = {
   is_completed?: boolean
   completed_at?: Date | string | null
   created_at?: Date | string
+  source?: string
 }
 
 export type todo_itemsUpdateWithoutUserInput = {
@@ -554,6 +580,7 @@ export type todo_itemsUpdateWithoutUserInput = {
   is_completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type todo_itemsUncheckedUpdateWithoutUserInput = {
@@ -564,6 +591,7 @@ export type todo_itemsUncheckedUpdateWithoutUserInput = {
   is_completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type todo_itemsUncheckedUpdateManyWithoutUserInput = {
@@ -574,6 +602,7 @@ export type todo_itemsUncheckedUpdateManyWithoutUserInput = {
   is_completed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   completed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -587,6 +616,7 @@ export type todo_itemsSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   is_completed?: boolean
   completed_at?: boolean
   created_at?: boolean
+  source?: boolean
   user?: boolean | Prisma.usersDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["todo_items"]>
 
@@ -599,6 +629,7 @@ export type todo_itemsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   is_completed?: boolean
   completed_at?: boolean
   created_at?: boolean
+  source?: boolean
   user?: boolean | Prisma.usersDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["todo_items"]>
 
@@ -611,6 +642,7 @@ export type todo_itemsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   is_completed?: boolean
   completed_at?: boolean
   created_at?: boolean
+  source?: boolean
   user?: boolean | Prisma.usersDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["todo_items"]>
 
@@ -623,9 +655,10 @@ export type todo_itemsSelectScalar = {
   is_completed?: boolean
   completed_at?: boolean
   created_at?: boolean
+  source?: boolean
 }
 
-export type todo_itemsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"todo_id" | "user_id" | "name" | "description" | "duration" | "is_completed" | "completed_at" | "created_at", ExtArgs["result"]["todo_items"]>
+export type todo_itemsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"todo_id" | "user_id" | "name" | "description" | "duration" | "is_completed" | "completed_at" | "created_at" | "source", ExtArgs["result"]["todo_items"]>
 export type todo_itemsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.usersDefaultArgs<ExtArgs>
 }
@@ -650,6 +683,7 @@ export type $todo_itemsPayload<ExtArgs extends runtime.Types.Extensions.Internal
     is_completed: boolean
     completed_at: Date | null
     created_at: Date
+    source: string
   }, ExtArgs["result"]["todo_items"]>
   composites: {}
 }
@@ -1082,6 +1116,7 @@ export interface todo_itemsFieldRefs {
   readonly is_completed: Prisma.FieldRef<"todo_items", 'Boolean'>
   readonly completed_at: Prisma.FieldRef<"todo_items", 'DateTime'>
   readonly created_at: Prisma.FieldRef<"todo_items", 'DateTime'>
+  readonly source: Prisma.FieldRef<"todo_items", 'String'>
 }
     
 

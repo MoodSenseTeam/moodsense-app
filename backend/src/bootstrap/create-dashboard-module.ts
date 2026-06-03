@@ -13,10 +13,14 @@ import { GetCheckinHistoryUseCase } from '@/features/v1/dashboard/checkin/checki
 import { CheckinController } from '@/features/v1/dashboard/checkin/checkin.controller';
 import { CheckinHistoryController } from '@/features/v1/dashboard/checkin/checkin-history.controller';
 import { createCheckinRoutes } from '@/features/v1/dashboard/checkin/checkin.router';
+import { PrismaForecastCacheRepository } from '@/infrastructure/dashboard/prisma-forecast-cache.repository';
 import { PrismaTodoRepository } from '@/infrastructure/dashboard/prisma-todo.repository';
-import { ListTodosUseCase, ToggleTodoUseCase, SyncTodosUseCase } from '@/features/v1/dashboard/todos/todo.usecase';
+import { ListTodosUseCase, CreateTodoUseCase, ToggleTodoUseCase, DeleteTodoUseCase, SyncTodosUseCase } from '@/features/v1/dashboard/todos/todo.usecase';
 import { TodoController } from '@/features/v1/dashboard/todos/todo.controller';
 import { createTodoRoutes } from '@/features/v1/dashboard/todos/todo.router';
+import { GetPredictionUseCase } from '@/features/v1/dashboard/prediction/prediction.usecase';
+import { PredictionController } from '@/features/v1/dashboard/prediction/prediction.controller';
+import { createPredictionRoutes } from '@/features/v1/dashboard/prediction/prediction.router';
 import { requireAccessToken } from '@/shared/middleware/require-access-token';
 
 export function createDashboardModule(prisma: PrismaClient): Router {
@@ -28,9 +32,11 @@ export function createDashboardModule(prisma: PrismaClient): Router {
     // Todo
     const todoRepository = new PrismaTodoRepository(prisma);
     const listTodosUseCase = new ListTodosUseCase(todoRepository);
+    const createTodoUseCase = new CreateTodoUseCase(todoRepository);
     const toggleTodoUseCase = new ToggleTodoUseCase(todoRepository);
+    const deleteTodoUseCase = new DeleteTodoUseCase(todoRepository);
     const syncTodosUseCase = new SyncTodosUseCase(todoRepository);
-    const todoController = new TodoController(listTodosUseCase, toggleTodoUseCase);
+    const todoController = new TodoController(listTodosUseCase, createTodoUseCase, toggleTodoUseCase, deleteTodoUseCase);
     router.use(createTodoRoutes(todoController));
 
     // Summary
@@ -39,11 +45,19 @@ export function createDashboardModule(prisma: PrismaClient): Router {
     const summaryController = new SummaryController(getSummaryUseCase);
     router.use(createSummaryRoutes(summaryController));
 
-    // Check-in
+    // Shared: forecast cache (used by prediction + checkin)
+    const forecastCacheRepository = new PrismaForecastCacheRepository(prisma);
+
+    // Prediction (forecast)
     const predictionService = new HttpPredictionService();
+    const getPredictionUseCase = new GetPredictionUseCase(summaryRepository, predictionService, forecastCacheRepository);
+    const predictionController = new PredictionController(getPredictionUseCase);
+    router.use(createPredictionRoutes(predictionController));
+
+    // Check-in
     const checkinRepository = new PrismaCheckinRepository(prisma);
 
-    const createCheckinUseCase = new CreateCheckinUseCase(checkinRepository, predictionService);
+    const createCheckinUseCase = new CreateCheckinUseCase(checkinRepository, predictionService, forecastCacheRepository);
     const checkinController = new CheckinController(createCheckinUseCase);
 
     const getCheckinHistoryUseCase = new GetCheckinHistoryUseCase(checkinRepository);

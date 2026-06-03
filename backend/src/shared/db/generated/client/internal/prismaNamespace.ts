@@ -389,7 +389,8 @@ export const ModelName = {
   user_settings: 'user_settings',
   mood_logs: 'mood_logs',
   mood_predictions: 'mood_predictions',
-  todo_items: 'todo_items'
+  todo_items: 'todo_items',
+  mood_forecasts: 'mood_forecasts'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -405,7 +406,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "users" | "user_credentials" | "user_settings" | "mood_logs" | "mood_predictions" | "todo_items"
+    modelProps: "users" | "user_credentials" | "user_settings" | "mood_logs" | "mood_predictions" | "todo_items" | "mood_forecasts"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -853,6 +854,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    mood_forecasts: {
+      payload: Prisma.$mood_forecastsPayload<ExtArgs>
+      fields: Prisma.mood_forecastsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.mood_forecastsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mood_forecastsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.mood_forecastsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mood_forecastsPayload>
+        }
+        findFirst: {
+          args: Prisma.mood_forecastsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mood_forecastsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.mood_forecastsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mood_forecastsPayload>
+        }
+        findMany: {
+          args: Prisma.mood_forecastsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mood_forecastsPayload>[]
+        }
+        create: {
+          args: Prisma.mood_forecastsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mood_forecastsPayload>
+        }
+        createMany: {
+          args: Prisma.mood_forecastsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.mood_forecastsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mood_forecastsPayload>[]
+        }
+        delete: {
+          args: Prisma.mood_forecastsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mood_forecastsPayload>
+        }
+        update: {
+          args: Prisma.mood_forecastsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mood_forecastsPayload>
+        }
+        deleteMany: {
+          args: Prisma.mood_forecastsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.mood_forecastsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.mood_forecastsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mood_forecastsPayload>[]
+        }
+        upsert: {
+          args: Prisma.mood_forecastsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mood_forecastsPayload>
+        }
+        aggregate: {
+          args: Prisma.Mood_forecastsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMood_forecasts>
+        }
+        groupBy: {
+          args: Prisma.mood_forecastsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Mood_forecastsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.mood_forecastsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Mood_forecastsCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -974,10 +1049,21 @@ export const Todo_itemsScalarFieldEnum = {
   duration: 'duration',
   is_completed: 'is_completed',
   completed_at: 'completed_at',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  source: 'source'
 } as const
 
 export type Todo_itemsScalarFieldEnum = (typeof Todo_itemsScalarFieldEnum)[keyof typeof Todo_itemsScalarFieldEnum]
+
+
+export const Mood_forecastsScalarFieldEnum = {
+  forecast_id: 'forecast_id',
+  user_id: 'user_id',
+  forecast_data: 'forecast_data',
+  generated_at: 'generated_at'
+} as const
+
+export type Mood_forecastsScalarFieldEnum = (typeof Mood_forecastsScalarFieldEnum)[keyof typeof Mood_forecastsScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -986,6 +1072,13 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -1002,6 +1095,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -1142,6 +1244,20 @@ export type EnumMoodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
 export type ListEnumMoodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Mood[]'>
     
 
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -1258,6 +1374,7 @@ export type GlobalOmitConfig = {
   mood_logs?: Prisma.mood_logsOmit
   mood_predictions?: Prisma.mood_predictionsOmit
   todo_items?: Prisma.todo_itemsOmit
+  mood_forecasts?: Prisma.mood_forecastsOmit
 }
 
 /* Types for Logging */

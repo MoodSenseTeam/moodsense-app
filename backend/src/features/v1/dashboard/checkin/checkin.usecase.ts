@@ -1,11 +1,13 @@
 import type { CreateCheckinDto, CreatedCheckinDto } from './checkin.dto';
 import type { CheckinRepository } from '@/shared/ports/checkin.repository';
 import type { PredictionService } from '@/shared/ports/prediction-service';
+import type { ForecastCacheRepository } from '@/shared/ports/forecast-cache.repository';
 
 export class CreateCheckinUseCase {
     constructor(
         private readonly checkinRepository: CheckinRepository,
         private readonly predictionService: PredictionService,
+        private readonly forecastCache: ForecastCacheRepository,
     ) { }
 
     async execute(
@@ -55,7 +57,10 @@ export class CreateCheckinUseCase {
             factors: factorsRes,
         });
 
-        // 3. Write checkin and prediction atomically
+        // 3. Invalidate stale forecast cache (new data = need fresh forecast)
+        await this.forecastCache.invalidate(userId);
+
+        // 4. Write checkin and prediction atomically
         return this.checkinRepository.create(userId, input, {
             mood_result: moodResultUpper,
             confidence_score: prediction.confidence,

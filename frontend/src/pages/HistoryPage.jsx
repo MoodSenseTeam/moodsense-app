@@ -6,6 +6,7 @@ import {
   Download,
   Dumbbell,
   GraduationCap,
+  History,
   Moon,
   Search,
   Users,
@@ -268,10 +269,15 @@ function HistoryPage() {
   // Loading skeleton
   if (isAuthLoading || isLoading) {
     return (
-      <div className="mx-auto max-w-330 px-6 py-10 md:px-10 md:py-16">
+      <div className="mx-auto max-w-330">
         <header className="mb-8 pl-14 lg:pl-0">
-          <div className="h-9 w-48 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
-          <div className="mt-2 h-5 w-80 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800" />
+            <div>
+              <div className="h-9 w-48 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+              <div className="mt-2 h-5 w-80 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800" />
+            </div>
+          </div>
         </header>
 
         <div className="rounded-[2rem] border border-[#e2e8e4] bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -286,11 +292,18 @@ function HistoryPage() {
   // Error state
   if (error) {
     return (
-      <div className="mx-auto max-w-330 px-6 py-10 md:px-10 md:py-16">
+      <div className="mx-auto max-w-330">
         <header className="mb-8 pl-14 lg:pl-0">
-          <h1 className="text-3xl font-medium tracking-tight text-[#1f3f31] dark:text-white md:text-4xl">
-            Jejak Perjalananmu
-          </h1>
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-950/30">
+              <History size={24} className="text-blue-500 dark:text-blue-400" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-medium tracking-tight text-[#1f3f31] dark:text-white md:text-4xl">
+                Jejak Perjalananmu
+              </h1>
+            </div>
+          </div>
         </header>
 
         <div className="rounded-[2rem] border border-red-200 bg-red-50 p-8 text-center shadow-sm dark:border-red-900/40 dark:bg-red-950/30">
@@ -303,15 +316,22 @@ function HistoryPage() {
   }
 
   return (
-    <div className="mx-auto max-w-330 px-6 py-10 md:px-10 md:py-16">
+    <div className="mx-auto max-w-330">
       {/* Page Header */}
       <header className="mb-8 pl-14 lg:pl-0">
-        <h1 className="text-3xl font-medium tracking-tight text-[#1f3f31] dark:text-white md:text-4xl">
-          Jejak Perjalananmu
-        </h1>
-        <p className="mt-2 text-base text-[#375446] dark:text-slate-300 md:text-lg">
-          Lihat pola dan tren kesehatan mentalmu dari waktu ke waktu.
-        </p>
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-950/30">
+            <History size={24} className="text-blue-500 dark:text-blue-400" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-medium tracking-tight text-[#1f3f31] dark:text-white md:text-4xl">
+              Jejak Perjalananmu
+            </h1>
+            <p className="mt-2 text-base text-[#375446] dark:text-slate-300 md:text-lg">
+              Lihat pola dan tren kesehatan mentalmu dari waktu ke waktu.
+            </p>
+          </div>
+        </div>
       </header>
 
       {/* Main Table Card */}

@@ -146,3 +146,10 @@ export async function fetchDashboardInsights(token) {
     token,
   });
 }
+
+export async function fetchForecast(token) {
+  return apiRequest("/dashboard/prediction/forecast", {
+    method: "GET",
+    token,
+  });
+}
