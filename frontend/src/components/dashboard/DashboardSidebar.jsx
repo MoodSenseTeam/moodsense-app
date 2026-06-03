@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { BarChart3, BrainCircuit, CalendarCheck, History, Lightbulb, LogOut, Settings, X } from "lucide-react";
+import { BarChart3, BrainCircuit, CalendarCheck, History, ListTodo, LogOut, Settings, X } from "lucide-react";
 import { useAuth } from "../../contexts/useAuth";
 import { useApp } from "../../contexts/AppContext";
 
@@ -25,9 +25,9 @@ function DashboardSidebar({ isOpen, onClose }) {
       icon: BrainCircuit,
     },
     {
-      label: language === "id" ? "Rekomendasi" : "Recommendation",
+      label: language === "id" ? "Todo List" : "Todo List",
       path: "/recommendation",
-      icon: Lightbulb,
+      icon: ListTodo,
     },
     {
       label: language === "id" ? "Riwayat" : "History",

@@ -259,6 +259,7 @@ export type usersWhereInput = {
   credentials?: Prisma.XOR<Prisma.User_credentialsNullableScalarRelationFilter, Prisma.user_credentialsWhereInput> | null
   mood_logs?: Prisma.Mood_logsListRelationFilter
   userSettings?: Prisma.XOR<Prisma.User_settingsNullableScalarRelationFilter, Prisma.user_settingsWhereInput> | null
+  todo_items?: Prisma.Todo_itemsListRelationFilter
 }
 
 export type usersOrderByWithRelationInput = {
@@ -275,6 +276,7 @@ export type usersOrderByWithRelationInput = {
   credentials?: Prisma.user_credentialsOrderByWithRelationInput
   mood_logs?: Prisma.mood_logsOrderByRelationAggregateInput
   userSettings?: Prisma.user_settingsOrderByWithRelationInput
+  todo_items?: Prisma.todo_itemsOrderByRelationAggregateInput
 }
 
 export type usersWhereUniqueInput = Prisma.AtLeast<{
@@ -294,6 +296,7 @@ export type usersWhereUniqueInput = Prisma.AtLeast<{
   credentials?: Prisma.XOR<Prisma.User_credentialsNullableScalarRelationFilter, Prisma.user_credentialsWhereInput> | null
   mood_logs?: Prisma.Mood_logsListRelationFilter
   userSettings?: Prisma.XOR<Prisma.User_settingsNullableScalarRelationFilter, Prisma.user_settingsWhereInput> | null
+  todo_items?: Prisma.Todo_itemsListRelationFilter
 }, "user_id" | "email">
 
 export type usersOrderByWithAggregationInput = {
@@ -343,6 +346,7 @@ export type usersCreateInput = {
   credentials?: Prisma.user_credentialsCreateNestedOneWithoutUserInput
   mood_logs?: Prisma.mood_logsCreateNestedManyWithoutUserInput
   userSettings?: Prisma.user_settingsCreateNestedOneWithoutUserInput
+  todo_items?: Prisma.todo_itemsCreateNestedManyWithoutUserInput
 }
 
 export type usersUncheckedCreateInput = {
@@ -359,6 +363,7 @@ export type usersUncheckedCreateInput = {
   credentials?: Prisma.user_credentialsUncheckedCreateNestedOneWithoutUserInput
   mood_logs?: Prisma.mood_logsUncheckedCreateNestedManyWithoutUserInput
   userSettings?: Prisma.user_settingsUncheckedCreateNestedOneWithoutUserInput
+  todo_items?: Prisma.todo_itemsUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type usersUpdateInput = {
@@ -374,6 +379,7 @@ export type usersUpdateInput = {
   credentials?: Prisma.user_credentialsUpdateOneWithoutUserNestedInput
   mood_logs?: Prisma.mood_logsUpdateManyWithoutUserNestedInput
   userSettings?: Prisma.user_settingsUpdateOneWithoutUserNestedInput
+  todo_items?: Prisma.todo_itemsUpdateManyWithoutUserNestedInput
 }
 
 export type usersUncheckedUpdateInput = {
@@ -390,6 +396,7 @@ export type usersUncheckedUpdateInput = {
   credentials?: Prisma.user_credentialsUncheckedUpdateOneWithoutUserNestedInput
   mood_logs?: Prisma.mood_logsUncheckedUpdateManyWithoutUserNestedInput
   userSettings?: Prisma.user_settingsUncheckedUpdateOneWithoutUserNestedInput
+  todo_items?: Prisma.todo_itemsUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type usersCreateManyInput = {
@@ -552,6 +559,20 @@ export type usersUpdateOneRequiredWithoutMood_logsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.usersUpdateToOneWithWhereWithoutMood_logsInput, Prisma.usersUpdateWithoutMood_logsInput>, Prisma.usersUncheckedUpdateWithoutMood_logsInput>
 }
 
+export type usersCreateNestedOneWithoutTodo_itemsInput = {
+  create?: Prisma.XOR<Prisma.usersCreateWithoutTodo_itemsInput, Prisma.usersUncheckedCreateWithoutTodo_itemsInput>
+  connectOrCreate?: Prisma.usersCreateOrConnectWithoutTodo_itemsInput
+  connect?: Prisma.usersWhereUniqueInput
+}
+
+export type usersUpdateOneRequiredWithoutTodo_itemsNestedInput = {
+  create?: Prisma.XOR<Prisma.usersCreateWithoutTodo_itemsInput, Prisma.usersUncheckedCreateWithoutTodo_itemsInput>
+  connectOrCreate?: Prisma.usersCreateOrConnectWithoutTodo_itemsInput
+  upsert?: Prisma.usersUpsertWithoutTodo_itemsInput
+  connect?: Prisma.usersWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.usersUpdateToOneWithWhereWithoutTodo_itemsInput, Prisma.usersUpdateWithoutTodo_itemsInput>, Prisma.usersUncheckedUpdateWithoutTodo_itemsInput>
+}
+
 export type usersCreateWithoutCredentialsInput = {
   created_at?: Date | string
   updated_at?: Date | string
@@ -564,6 +585,7 @@ export type usersCreateWithoutCredentialsInput = {
   role?: $Enums.Role
   mood_logs?: Prisma.mood_logsCreateNestedManyWithoutUserInput
   userSettings?: Prisma.user_settingsCreateNestedOneWithoutUserInput
+  todo_items?: Prisma.todo_itemsCreateNestedManyWithoutUserInput
 }
 
 export type usersUncheckedCreateWithoutCredentialsInput = {
@@ -579,6 +601,7 @@ export type usersUncheckedCreateWithoutCredentialsInput = {
   role?: $Enums.Role
   mood_logs?: Prisma.mood_logsUncheckedCreateNestedManyWithoutUserInput
   userSettings?: Prisma.user_settingsUncheckedCreateNestedOneWithoutUserInput
+  todo_items?: Prisma.todo_itemsUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type usersCreateOrConnectWithoutCredentialsInput = {
@@ -609,6 +632,7 @@ export type usersUpdateWithoutCredentialsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   mood_logs?: Prisma.mood_logsUpdateManyWithoutUserNestedInput
   userSettings?: Prisma.user_settingsUpdateOneWithoutUserNestedInput
+  todo_items?: Prisma.todo_itemsUpdateManyWithoutUserNestedInput
 }
 
 export type usersUncheckedUpdateWithoutCredentialsInput = {
@@ -624,6 +648,7 @@ export type usersUncheckedUpdateWithoutCredentialsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   mood_logs?: Prisma.mood_logsUncheckedUpdateManyWithoutUserNestedInput
   userSettings?: Prisma.user_settingsUncheckedUpdateOneWithoutUserNestedInput
+  todo_items?: Prisma.todo_itemsUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type usersCreateWithoutUserSettingsInput = {
@@ -638,6 +663,7 @@ export type usersCreateWithoutUserSettingsInput = {
   role?: $Enums.Role
   credentials?: Prisma.user_credentialsCreateNestedOneWithoutUserInput
   mood_logs?: Prisma.mood_logsCreateNestedManyWithoutUserInput
+  todo_items?: Prisma.todo_itemsCreateNestedManyWithoutUserInput
 }
 
 export type usersUncheckedCreateWithoutUserSettingsInput = {
@@ -653,6 +679,7 @@ export type usersUncheckedCreateWithoutUserSettingsInput = {
   role?: $Enums.Role
   credentials?: Prisma.user_credentialsUncheckedCreateNestedOneWithoutUserInput
   mood_logs?: Prisma.mood_logsUncheckedCreateNestedManyWithoutUserInput
+  todo_items?: Prisma.todo_itemsUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type usersCreateOrConnectWithoutUserSettingsInput = {
@@ -683,6 +710,7 @@ export type usersUpdateWithoutUserSettingsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   credentials?: Prisma.user_credentialsUpdateOneWithoutUserNestedInput
   mood_logs?: Prisma.mood_logsUpdateManyWithoutUserNestedInput
+  todo_items?: Prisma.todo_itemsUpdateManyWithoutUserNestedInput
 }
 
 export type usersUncheckedUpdateWithoutUserSettingsInput = {
@@ -698,6 +726,7 @@ export type usersUncheckedUpdateWithoutUserSettingsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   credentials?: Prisma.user_credentialsUncheckedUpdateOneWithoutUserNestedInput
   mood_logs?: Prisma.mood_logsUncheckedUpdateManyWithoutUserNestedInput
+  todo_items?: Prisma.todo_itemsUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type usersCreateWithoutMood_logsInput = {
@@ -712,6 +741,7 @@ export type usersCreateWithoutMood_logsInput = {
   role?: $Enums.Role
   credentials?: Prisma.user_credentialsCreateNestedOneWithoutUserInput
   userSettings?: Prisma.user_settingsCreateNestedOneWithoutUserInput
+  todo_items?: Prisma.todo_itemsCreateNestedManyWithoutUserInput
 }
 
 export type usersUncheckedCreateWithoutMood_logsInput = {
@@ -727,6 +757,7 @@ export type usersUncheckedCreateWithoutMood_logsInput = {
   role?: $Enums.Role
   credentials?: Prisma.user_credentialsUncheckedCreateNestedOneWithoutUserInput
   userSettings?: Prisma.user_settingsUncheckedCreateNestedOneWithoutUserInput
+  todo_items?: Prisma.todo_itemsUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type usersCreateOrConnectWithoutMood_logsInput = {
@@ -757,6 +788,7 @@ export type usersUpdateWithoutMood_logsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   credentials?: Prisma.user_credentialsUpdateOneWithoutUserNestedInput
   userSettings?: Prisma.user_settingsUpdateOneWithoutUserNestedInput
+  todo_items?: Prisma.todo_itemsUpdateManyWithoutUserNestedInput
 }
 
 export type usersUncheckedUpdateWithoutMood_logsInput = {
@@ -772,6 +804,85 @@ export type usersUncheckedUpdateWithoutMood_logsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   credentials?: Prisma.user_credentialsUncheckedUpdateOneWithoutUserNestedInput
   userSettings?: Prisma.user_settingsUncheckedUpdateOneWithoutUserNestedInput
+  todo_items?: Prisma.todo_itemsUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type usersCreateWithoutTodo_itemsInput = {
+  created_at?: Date | string
+  updated_at?: Date | string
+  email: string
+  name: string
+  password: string
+  gender?: $Enums.Gender
+  tanggal_lahir?: Date | string
+  usage_reason?: string | null
+  role?: $Enums.Role
+  credentials?: Prisma.user_credentialsCreateNestedOneWithoutUserInput
+  mood_logs?: Prisma.mood_logsCreateNestedManyWithoutUserInput
+  userSettings?: Prisma.user_settingsCreateNestedOneWithoutUserInput
+}
+
+export type usersUncheckedCreateWithoutTodo_itemsInput = {
+  user_id?: number
+  created_at?: Date | string
+  updated_at?: Date | string
+  email: string
+  name: string
+  password: string
+  gender?: $Enums.Gender
+  tanggal_lahir?: Date | string
+  usage_reason?: string | null
+  role?: $Enums.Role
+  credentials?: Prisma.user_credentialsUncheckedCreateNestedOneWithoutUserInput
+  mood_logs?: Prisma.mood_logsUncheckedCreateNestedManyWithoutUserInput
+  userSettings?: Prisma.user_settingsUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type usersCreateOrConnectWithoutTodo_itemsInput = {
+  where: Prisma.usersWhereUniqueInput
+  create: Prisma.XOR<Prisma.usersCreateWithoutTodo_itemsInput, Prisma.usersUncheckedCreateWithoutTodo_itemsInput>
+}
+
+export type usersUpsertWithoutTodo_itemsInput = {
+  update: Prisma.XOR<Prisma.usersUpdateWithoutTodo_itemsInput, Prisma.usersUncheckedUpdateWithoutTodo_itemsInput>
+  create: Prisma.XOR<Prisma.usersCreateWithoutTodo_itemsInput, Prisma.usersUncheckedCreateWithoutTodo_itemsInput>
+  where?: Prisma.usersWhereInput
+}
+
+export type usersUpdateToOneWithWhereWithoutTodo_itemsInput = {
+  where?: Prisma.usersWhereInput
+  data: Prisma.XOR<Prisma.usersUpdateWithoutTodo_itemsInput, Prisma.usersUncheckedUpdateWithoutTodo_itemsInput>
+}
+
+export type usersUpdateWithoutTodo_itemsInput = {
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  tanggal_lahir?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usage_reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  credentials?: Prisma.user_credentialsUpdateOneWithoutUserNestedInput
+  mood_logs?: Prisma.mood_logsUpdateManyWithoutUserNestedInput
+  userSettings?: Prisma.user_settingsUpdateOneWithoutUserNestedInput
+}
+
+export type usersUncheckedUpdateWithoutTodo_itemsInput = {
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+  tanggal_lahir?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usage_reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  credentials?: Prisma.user_credentialsUncheckedUpdateOneWithoutUserNestedInput
+  mood_logs?: Prisma.mood_logsUncheckedUpdateManyWithoutUserNestedInput
+  userSettings?: Prisma.user_settingsUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -781,10 +892,12 @@ export type usersUncheckedUpdateWithoutMood_logsInput = {
 
 export type UsersCountOutputType = {
   mood_logs: number
+  todo_items: number
 }
 
 export type UsersCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   mood_logs?: boolean | UsersCountOutputTypeCountMood_logsArgs
+  todo_items?: boolean | UsersCountOutputTypeCountTodo_itemsArgs
 }
 
 /**
@@ -804,6 +917,13 @@ export type UsersCountOutputTypeCountMood_logsArgs<ExtArgs extends runtime.Types
   where?: Prisma.mood_logsWhereInput
 }
 
+/**
+ * UsersCountOutputType without action
+ */
+export type UsersCountOutputTypeCountTodo_itemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.todo_itemsWhereInput
+}
+
 
 export type usersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   user_id?: boolean
@@ -819,6 +939,7 @@ export type usersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   credentials?: boolean | Prisma.users$credentialsArgs<ExtArgs>
   mood_logs?: boolean | Prisma.users$mood_logsArgs<ExtArgs>
   userSettings?: boolean | Prisma.users$userSettingsArgs<ExtArgs>
+  todo_items?: boolean | Prisma.users$todo_itemsArgs<ExtArgs>
   _count?: boolean | Prisma.UsersCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["users"]>
 
@@ -866,6 +987,7 @@ export type usersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   credentials?: boolean | Prisma.users$credentialsArgs<ExtArgs>
   mood_logs?: boolean | Prisma.users$mood_logsArgs<ExtArgs>
   userSettings?: boolean | Prisma.users$userSettingsArgs<ExtArgs>
+  todo_items?: boolean | Prisma.users$todo_itemsArgs<ExtArgs>
   _count?: boolean | Prisma.UsersCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type usersIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -877,6 +999,7 @@ export type $usersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     credentials: Prisma.$user_credentialsPayload<ExtArgs> | null
     mood_logs: Prisma.$mood_logsPayload<ExtArgs>[]
     userSettings: Prisma.$user_settingsPayload<ExtArgs> | null
+    todo_items: Prisma.$todo_itemsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     user_id: number
@@ -1286,6 +1409,7 @@ export interface Prisma__usersClient<T, Null = never, ExtArgs extends runtime.Ty
   credentials<T extends Prisma.users$credentialsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$credentialsArgs<ExtArgs>>): Prisma.Prisma__user_credentialsClient<runtime.Types.Result.GetResult<Prisma.$user_credentialsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   mood_logs<T extends Prisma.users$mood_logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$mood_logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$mood_logsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   userSettings<T extends Prisma.users$userSettingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$userSettingsArgs<ExtArgs>>): Prisma.Prisma__user_settingsClient<runtime.Types.Result.GetResult<Prisma.$user_settingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  todo_items<T extends Prisma.users$todo_itemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$todo_itemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$todo_itemsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1777,6 +1901,30 @@ export type users$userSettingsArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   include?: Prisma.user_settingsInclude<ExtArgs> | null
   where?: Prisma.user_settingsWhereInput
+}
+
+/**
+ * users.todo_items
+ */
+export type users$todo_itemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the todo_items
+   */
+  select?: Prisma.todo_itemsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the todo_items
+   */
+  omit?: Prisma.todo_itemsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.todo_itemsInclude<ExtArgs> | null
+  where?: Prisma.todo_itemsWhereInput
+  orderBy?: Prisma.todo_itemsOrderByWithRelationInput | Prisma.todo_itemsOrderByWithRelationInput[]
+  cursor?: Prisma.todo_itemsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Todo_itemsScalarFieldEnum | Prisma.Todo_itemsScalarFieldEnum[]
 }
 
 /**

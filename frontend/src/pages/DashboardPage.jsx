@@ -152,7 +152,7 @@ function DashboardPage() {
 
         <div className="grid gap-7 xl:grid-cols-2">
           <PredictionCard prediction={dashboard.prediction} />
-          <RecommendationCard recommendations={dashboard.recommendations} />
+          <RecommendationCard />
         </div>
       </div>
     </div>

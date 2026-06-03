@@ -13,6 +13,10 @@ import { GetCheckinHistoryUseCase } from '@/features/v1/dashboard/checkin/checki
 import { CheckinController } from '@/features/v1/dashboard/checkin/checkin.controller';
 import { CheckinHistoryController } from '@/features/v1/dashboard/checkin/checkin-history.controller';
 import { createCheckinRoutes } from '@/features/v1/dashboard/checkin/checkin.router';
+import { PrismaTodoRepository } from '@/infrastructure/dashboard/prisma-todo.repository';
+import { ListTodosUseCase, ToggleTodoUseCase, SyncTodosUseCase } from '@/features/v1/dashboard/todos/todo.usecase';
+import { TodoController } from '@/features/v1/dashboard/todos/todo.controller';
+import { createTodoRoutes } from '@/features/v1/dashboard/todos/todo.router';
 import { requireAccessToken } from '@/shared/middleware/require-access-token';
 
 export function createDashboardModule(prisma: PrismaClient): Router {
@@ -21,22 +25,30 @@ export function createDashboardModule(prisma: PrismaClient): Router {
 
     router.use(requireAccessToken(tokenService));
 
+    // Todo
+    const todoRepository = new PrismaTodoRepository(prisma);
+    const listTodosUseCase = new ListTodosUseCase(todoRepository);
+    const toggleTodoUseCase = new ToggleTodoUseCase(todoRepository);
+    const syncTodosUseCase = new SyncTodosUseCase(todoRepository);
+    const todoController = new TodoController(listTodosUseCase, toggleTodoUseCase);
+    router.use(createTodoRoutes(todoController));
+
     // Summary
     const summaryRepository = new PrismaSummaryRepository(prisma);
-    const getSummaryUseCase = new GetSummaryUseCase(summaryRepository);
+    const getSummaryUseCase = new GetSummaryUseCase(summaryRepository, syncTodosUseCase);
     const summaryController = new SummaryController(getSummaryUseCase);
     router.use(createSummaryRoutes(summaryController));
 
     // Check-in
     const predictionService = new HttpPredictionService();
     const checkinRepository = new PrismaCheckinRepository(prisma);
-    
+
     const createCheckinUseCase = new CreateCheckinUseCase(checkinRepository, predictionService);
     const checkinController = new CheckinController(createCheckinUseCase);
-    
+
     const getCheckinHistoryUseCase = new GetCheckinHistoryUseCase(checkinRepository);
     const checkinHistoryController = new CheckinHistoryController(getCheckinHistoryUseCase);
-    
+
     router.use(createCheckinRoutes(checkinController, checkinHistoryController));
 
     return router;
