@@ -93,7 +93,6 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/tracker"
           element={
@@ -107,6 +106,7 @@ function AppRoutes() {
           <Route path="factors-activities" element={<FactorsActivitiesStep />} />
           <Route path="note" element={<NoteStep />} />
         </Route>
+
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
