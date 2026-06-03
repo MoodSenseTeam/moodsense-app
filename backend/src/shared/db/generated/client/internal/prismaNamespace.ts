@@ -974,7 +974,8 @@ export const Todo_itemsScalarFieldEnum = {
   duration: 'duration',
   is_completed: 'is_completed',
   completed_at: 'completed_at',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  source: 'source'
 } as const
 
 export type Todo_itemsScalarFieldEnum = (typeof Todo_itemsScalarFieldEnum)[keyof typeof Todo_itemsScalarFieldEnum]

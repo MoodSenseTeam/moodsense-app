@@ -7,6 +7,7 @@ export interface TodoItem {
     is_completed: boolean;
     completed_at: string | null;
     created_at: string;
+    source: string;
 }
 
 export interface TodoRepository {
@@ -15,5 +16,10 @@ export interface TodoRepository {
         userId: number,
         items: Array<{ name: string; description: string; duration: string }>,
     ): Promise<void>;
+    create(
+        userId: number,
+        data: { name: string; description: string; duration: string },
+    ): Promise<TodoItem>;
     toggle(todoId: number, userId: number): Promise<TodoItem>;
+    delete(todoId: number, userId: number): Promise<void>;
 }

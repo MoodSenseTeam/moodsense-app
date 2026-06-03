@@ -14,7 +14,7 @@ import { CheckinController } from '@/features/v1/dashboard/checkin/checkin.contr
 import { CheckinHistoryController } from '@/features/v1/dashboard/checkin/checkin-history.controller';
 import { createCheckinRoutes } from '@/features/v1/dashboard/checkin/checkin.router';
 import { PrismaTodoRepository } from '@/infrastructure/dashboard/prisma-todo.repository';
-import { ListTodosUseCase, ToggleTodoUseCase, SyncTodosUseCase } from '@/features/v1/dashboard/todos/todo.usecase';
+import { ListTodosUseCase, CreateTodoUseCase, ToggleTodoUseCase, DeleteTodoUseCase, SyncTodosUseCase } from '@/features/v1/dashboard/todos/todo.usecase';
 import { TodoController } from '@/features/v1/dashboard/todos/todo.controller';
 import { createTodoRoutes } from '@/features/v1/dashboard/todos/todo.router';
 import { requireAccessToken } from '@/shared/middleware/require-access-token';
@@ -28,9 +28,11 @@ export function createDashboardModule(prisma: PrismaClient): Router {
     // Todo
     const todoRepository = new PrismaTodoRepository(prisma);
     const listTodosUseCase = new ListTodosUseCase(todoRepository);
+    const createTodoUseCase = new CreateTodoUseCase(todoRepository);
     const toggleTodoUseCase = new ToggleTodoUseCase(todoRepository);
+    const deleteTodoUseCase = new DeleteTodoUseCase(todoRepository);
     const syncTodosUseCase = new SyncTodosUseCase(todoRepository);
-    const todoController = new TodoController(listTodosUseCase, toggleTodoUseCase);
+    const todoController = new TodoController(listTodosUseCase, createTodoUseCase, toggleTodoUseCase, deleteTodoUseCase);
     router.use(createTodoRoutes(todoController));
 
     // Summary
