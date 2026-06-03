@@ -9,6 +9,7 @@ import MoodEnergyStep from "../pages/tracker/MoodEnergyStep";
 import FactorsActivitiesStep from "../pages/tracker/FactorsActivitiesStep";
 import NoteStep from "../pages/tracker/NoteStep";
 import ConstructionPage from "../pages/ConstructionPage";
+import PredictionPage from "../pages/PredictionPage";
 import TodoListPage from "../pages/TodoListPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import HistoryPage from "../pages/HistoryPage";
@@ -54,7 +55,7 @@ function AppRoutes() {
           path="/prediction"
           element={
             <ProtectedRoute>
-              <ConstructionPage />
+              <PredictionPage />
             </ProtectedRoute>
           }
         />

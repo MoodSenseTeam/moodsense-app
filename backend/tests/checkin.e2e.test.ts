@@ -34,9 +34,11 @@ describe('Check-in E2E Integration with ML API', () => {
         const repository: CheckinRepository = {
             create: createMock,
             hasCheckinToday: vi.fn().mockResolvedValue(false),
+            getHistory: vi.fn(),
         };
 
-        const useCase = new CreateCheckinUseCase(repository, predictionService);
+        const forecastCache = { get: vi.fn(), set: vi.fn(), invalidate: vi.fn() };
+        const useCase = new CreateCheckinUseCase(repository, predictionService, forecastCache);
         const result = await useCase.execute(42, validInput);
 
         // Assert E2E flow outcomes

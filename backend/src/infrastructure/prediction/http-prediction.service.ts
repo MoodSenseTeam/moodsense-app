@@ -1,4 +1,4 @@
-import type { PredictionService, PredictionInsight, PredictionFactors } from '@/shared/ports/prediction-service';
+import type { PredictionService, PredictionInsight, PredictionFactors, MoodForecast } from '@/shared/ports/prediction-service';
 
 export class HttpPredictionService implements PredictionService {
     private readonly apiUrl = process.env.ML_API_URL || 'http://localhost:8000';
@@ -264,6 +264,84 @@ export class HttpPredictionService implements PredictionService {
             }
 
             return { stressors, boosters };
+        }
+    }
+
+    async getForecast(params: {
+        weekly_trend: Array<{ date: string; average_mood: number }>;
+        average_mood: number;
+        sleep_quality: number;
+        check_in_streak: number;
+        latest_mood: string | null;
+    }): Promise<MoodForecast> {
+        try {
+            const response = await fetch(`${this.apiUrl}/api/v1/forecast`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(params),
+            });
+
+            if (!response.ok) {
+                throw new Error(`ML API returned status ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('ML Forecast request failed, utilizing rule-based fallback:', error);
+
+            // Rule-based fallback: simple projection based on trend direction
+            const trend = params.weekly_trend;
+            const scores = trend.map((p) => p.average_mood);
+            const firstHalf = scores.slice(0, Math.floor(scores.length / 2));
+            const secondHalf = scores.slice(Math.floor(scores.length / 2));
+            const firstAvg = firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length;
+            const secondAvg = secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length;
+            const direction = secondAvg > firstAvg + 0.3 ? 'meningkat' : secondAvg < firstAvg - 0.3 ? 'menurun' : 'stabil';
+
+            const lastScore = scores[scores.length - 1] || params.average_mood;
+            const forecasts = [];
+            const today = new Date();
+
+            for (let i = 1; i <= 5; i++) {
+                const adjustment = direction === 'meningkat' ? 0.3 * i : direction === 'menurun' ? -0.3 * i : 0;
+                const predicted = Math.max(1, Math.min(10, lastScore + adjustment));
+                const futureDate = new Date(today);
+                futureDate.setDate(today.getDate() + i);
+
+                const dayLabels = ['Besok', 'Lusa', '3 Hari Lagi', '4 Hari Lagi', '5 Hari Lagi'];
+                let label = 'Biasa';
+                if (predicted <= 2.5) label = 'Buruk';
+                else if (predicted <= 4.5) label = 'Kurang';
+                else if (predicted <= 6.5) label = 'Biasa';
+                else if (predicted <= 8.5) label = 'Baik';
+                else label = 'Luar Biasa';
+
+                forecasts.push({
+                    day: dayLabels[i - 1],
+                    date: futureDate.toISOString().slice(0, 10),
+                    predicted_mood: parseFloat(predicted.toFixed(1)),
+                    label,
+                    confidence: Math.max(0.3, 0.9 - (i - 1) * 0.12),
+                });
+            }
+
+            return {
+                forecasts,
+                trend_direction: direction,
+                trend_analysis: direction === 'meningkat'
+                    ? 'Tren mood menunjukkan peningkatan. Pertahankan kebiasaan baik yang sudah berjalan.'
+                    : direction === 'menurun'
+                    ? 'Tren mood menunjukkan sedikit penurunan. Ini saat yang tepat untuk memberi perhatian ekstra pada istirahat dan aktivitas positif.'
+                    : 'Tren mood cenderung stabil. Konsistensi adalah kunci untuk menjaga keseimbangan.',
+                prevention_tips: direction === 'menurun'
+                    ? ['Tidur minimal 7 jam malam ini untuk stabilkan mood besok.', 'Luangkan 10 menit untuk aktivitas yang kamu nikmati.', 'Bicarakan perasaanmu dengan teman atau keluarga.']
+                    : [],
+                boost_tips: direction !== 'menurun'
+                    ? ['Pertahankan rutinitas tidur yang konsisten.', 'Lanjutkan check-in harian untuk memantau perubahan.', 'Tambahkan aktivitas fisik ringan untuk menjaga endorfin.']
+                    : [],
+            };
         }
     }
 }

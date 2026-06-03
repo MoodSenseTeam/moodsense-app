@@ -27,6 +27,7 @@ model users {
   mood_logs     mood_logs[]
   userSettings  user_settings?
   todo_items    todo_items[]
+  moodForecast  mood_forecasts?
 }
 
 model user_credentials {
@@ -100,12 +101,23 @@ model todo_items {
   completed_at DateTime?
   created_at   DateTime  @default(now())
 
-  source       String    @default("AI") // AI | MANUAL
+  source String @default("AI") // AI | MANUAL
 
   user users @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@unique([user_id, name])
   @@map("todo_items")
+}
+
+model mood_forecasts {
+  forecast_id   Int      @id @default(autoincrement())
+  user_id       Int      @unique
+  forecast_data Json
+  generated_at  DateTime @default(now())
+
+  user users @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  @@map("mood_forecasts")
 }
 
 enum Role {
