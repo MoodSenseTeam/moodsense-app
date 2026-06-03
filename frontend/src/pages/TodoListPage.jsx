@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, CheckSquare, ListTodo, Plus, Square, Trash2, X } from "lucide-react";
+import { CheckSquare, ListTodo, Plus, Square, Trash2, X } from "lucide-react";
 import { useAuth } from "../contexts/useAuth";
 import { createTodo, deleteTodo, fetchTodos, toggleTodo } from "../lib/todos";
 
@@ -116,31 +116,22 @@ function TodoListPage() {
   const allDone = totalCount > 0 && completedCount === totalCount;
 
   return (
-    <div className="mx-auto max-w-3xl">
-      {/* Header */}
-      <button
-        type="button"
-        onClick={() => navigate("/dashboard")}
-        className="group mb-8 inline-flex items-center gap-2 text-sm font-medium text-[#60766b] hover:text-[#2b6a4f] dark:text-slate-400 dark:hover:text-emerald-300 transition-colors"
-      >
-        <ArrowLeft size={18} className="transition-transform group-hover:-translate-x-0.5" />
-        Kembali ke Dashboard
-      </button>
-
-      <div className="flex items-center justify-between gap-4 mb-2">
-        <div className="flex items-center gap-4">
-          <div className={`flex h-12 w-12 items-center justify-center rounded-2xl transition-colors ${allDone ? "bg-emerald-100 dark:bg-emerald-900/40" : "bg-[#edf8f2] dark:bg-emerald-900/30"}`}>
-            <ListTodo size={24} className={allDone ? "text-emerald-600 dark:text-emerald-400" : "text-[#2b6a4f] dark:text-emerald-400"} />
+    <div className="mx-auto max-w-330">
+      <header className="mb-8 pl-14 lg:pl-0">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className={`flex h-12 w-12 items-center justify-center rounded-2xl transition-colors ${allDone ? "bg-emerald-100 dark:bg-emerald-900/40" : "bg-[#edf8f2] dark:bg-emerald-900/30"}`}>
+              <ListTodo size={24} className={allDone ? "text-emerald-600 dark:text-emerald-400" : "text-[#2b6a4f] dark:text-emerald-400"} />
+            </div>
+            <div>
+              <h1 className="text-3xl font-medium tracking-tight text-[#1f3f31] dark:text-white md:text-4xl">Todo List</h1>
+              <p className="mt-2 text-base text-[#375446] dark:text-slate-300 md:text-lg">
+                Rekomendasi personal dari AI
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-[#1f3f31] dark:text-slate-100">Todo List</h1>
-            <p className="text-sm text-[#60766b] dark:text-slate-400">
-              Rekomendasi personal dari AI &mdash; reset setiap hari
-            </p>
-          </div>
-        </div>
 
-        <button
+          <button
           type="button"
           onClick={() => setShowForm(!showForm)}
           className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors ${
@@ -152,7 +143,8 @@ function TodoListPage() {
           {showForm ? <X size={18} /> : <Plus size={18} />}
           {showForm ? "Batal" : "Tambah"}
         </button>
-      </div>
+        </div>
+      </header>
 
       {/* Add Form */}
       {showForm && (

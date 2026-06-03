@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, CalendarCheck, Check } from "lucide-react";
 import { useAuth } from "../contexts/useAuth";
 import { submitCheckin } from "../lib/checkin";
 
@@ -22,20 +22,18 @@ const trackerSteps = [
   },
 ];
 
-const initialDraft = {
-  sleep_hours: 7.5,
-  activity_level: "MODERATE",
-  study_hours: 4,
-  social_score: 6,
-  how_you_feeling: "HAPPY",
-  notes: "",
-};
-
 function TrackerLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { accessToken } = useAuth();
-  const [draft, setDraft] = useState(initialDraft);
+  const [draft, setDraft] = useState(() => ({
+    sleep_hours: 7.5,
+    activity_level: "MODERATE",
+    study_hours: 4,
+    social_score: 6,
+    how_you_feeling: location.state?.preselectedMood || "HAPPY",
+    notes: "",
+  }));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -119,11 +117,17 @@ function TrackerLayout() {
   }, [currentStep, handleNext, handleSubmit]);
 
   return (
-    <div className="mx-auto max-w-340 px-6 py-10 md:px-10 md:py-16">
+    <div className="mx-auto max-w-340">
       <header className="mb-8 pl-14 lg:pl-0">
-        <h1 className="text-3xl font-medium tracking-tight text-[#1f3f31] dark:text-white md:text-4xl">Mood Tracker</h1>
-
-        <p className="mt-2 text-base text-[#375446] dark:text-slate-300 md:text-lg">Pantau kesehatan mentalmu setiap hari untuk hidup yang lebih baik.</p>
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#edf8f2] dark:bg-emerald-950/30">
+            <CalendarCheck size={24} className="text-[#2b6a4f] dark:text-emerald-400" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-medium tracking-tight text-[#1f3f31] dark:text-white md:text-4xl">Check-in</h1>
+            <p className="mt-2 text-base text-[#375446] dark:text-slate-300 md:text-lg">Catat suasana hati harianmu agar AI bisa memberikan rekomendasi yang tepat.</p>
+          </div>
+        </div>
       </header>
 
       <TrackerSteps currentStep={currentStep} />
