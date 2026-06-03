@@ -479,19 +479,17 @@ function HistoryPage() {
                         {/* Recommendation Detail */}
                         <div>
                           <h4 className="text-xs font-bold uppercase tracking-wider text-[#60766b] dark:text-slate-400">
-                            Rekomendasi Aktivitas (ML)
+                            Rekomendasi Aktivitas
                           </h4>
-                          <p className="mt-2 text-sm leading-relaxed text-[#1f3f31] dark:text-slate-200">
+                          <div className="mt-2 text-sm leading-relaxed text-[#1f3f31] dark:text-slate-200">
                             {log.prediction?.activity_suggestion ? (
-                              <span className="inline-block border-l-4 border-[#19c58f] pl-3">
-                                {log.prediction.activity_suggestion}
-                              </span>
+                              <ParsedRecommendation raw={log.prediction.activity_suggestion} />
                             ) : (
                               <span className="text-[#60766b] dark:text-slate-500">
                                 Rekomendasi belum tersedia karena prediksi belum dihitung.
                               </span>
                             )}
-                          </p>
+                          </div>
                         </div>
                       </div>
                     </td>
@@ -630,6 +628,128 @@ function HistoryPage() {
               </div>
             </div>
           </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ParsedRecommendation({ raw }) {
+  let data = null;
+  try {
+    data = typeof raw === "string" ? JSON.parse(raw) : raw;
+  } catch {
+    // fallback — render as plain text
+    return <p className="whitespace-pre-line italic text-[#60766b] dark:text-slate-400">{raw}</p>;
+  }
+
+  if (!data || typeof data !== "object") {
+    return <p className="whitespace-pre-line italic text-[#60766b] dark:text-slate-400">{raw}</p>;
+  }
+
+  const { ai_insight, recommendations, factors } = data;
+
+  return (
+    <div className="space-y-5">
+      {/* AI Insight */}
+      {ai_insight && (
+        <div className="rounded-xl border border-[#e2e8e4] bg-[#f8faf9] p-4 dark:border-slate-700 dark:bg-slate-900">
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#2b6a4f] dark:text-emerald-400 mb-1.5">
+            Insight AI
+          </p>
+          <p className="text-sm leading-relaxed text-[#375446] dark:text-slate-300">{ai_insight}</p>
+        </div>
+      )}
+
+      {/* Recommendations */}
+      {Array.isArray(recommendations) && recommendations.length > 0 && (
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#60766b] dark:text-slate-400 mb-2">
+            Rekomendasi
+          </p>
+          <div className="space-y-2">
+            {recommendations.map((rec, i) => (
+              <div
+                key={i}
+                className="rounded-xl border border-[#e2e8e4] bg-white p-3 dark:border-slate-700 dark:bg-slate-900"
+              >
+                <p className="text-sm font-semibold text-[#1f3f31] dark:text-white">
+                  {rec.name}
+                  {rec.duration && (
+                    <span className="ml-2 text-xs font-normal text-[#8aa397] dark:text-slate-500">
+                      · {rec.duration}
+                    </span>
+                  )}
+                </p>
+                {rec.description && (
+                  <p className="mt-1 text-xs leading-relaxed text-[#60766b] dark:text-slate-400">
+                    {rec.description}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Factors */}
+      {factors && (factors.stressors?.length > 0 || factors.boosters?.length > 0) && (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {factors.stressors?.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-red-500 dark:text-red-400 mb-2">
+                Pemicu
+              </p>
+              <div className="space-y-1.5">
+                {factors.stressors.map((item, i) => (
+                  <div
+                    key={i}
+                    className="rounded-lg border border-red-100 bg-red-50/50 p-2.5 dark:border-red-900/30 dark:bg-red-950/20"
+                  >
+                    <p className="text-xs font-semibold text-[#1f3f31] dark:text-slate-200">
+                      {item.name}
+                      {item.value && (
+                        <span className="ml-1 font-normal text-[#8aa397] dark:text-slate-500">
+                          ({item.value})
+                        </span>
+                      )}
+                    </p>
+                    {item.description && (
+                      <p className="mt-0.5 text-xs text-[#60766b] dark:text-slate-400">{item.description}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {factors.boosters?.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-500 dark:text-emerald-400 mb-2">
+                Pendukung
+              </p>
+              <div className="space-y-1.5">
+                {factors.boosters.map((item, i) => (
+                  <div
+                    key={i}
+                    className="rounded-lg border border-emerald-100 bg-emerald-50/50 p-2.5 dark:border-emerald-900/30 dark:bg-emerald-950/20"
+                  >
+                    <p className="text-xs font-semibold text-[#1f3f31] dark:text-slate-200">
+                      {item.name}
+                      {item.value && (
+                        <span className="ml-1 font-normal text-[#8aa397] dark:text-slate-500">
+                          ({item.value})
+                        </span>
+                      )}
+                    </p>
+                    {item.description && (
+                      <p className="mt-0.5 text-xs text-[#60766b] dark:text-slate-400">{item.description}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
