@@ -36,7 +36,16 @@ describe('GetSummaryUseCase', () => {
                 predicted_mood: 6,
                 confidence_score: 0.91,
             },
-            recommendations: ['Take a short walk'],
+            ai_insight: 'Keep studying',
+            recommendations: [
+                { name: 'Pomodoro', description: 'Study with Pomodoro', duration: '25 minutes' }
+            ],
+            factors: {
+                stressors: [],
+                boosters: [
+                    { name: 'Belajar', value: '4 jam', description: 'Belajar produktif' }
+                ]
+            }
         };
 
         const repository: SummaryRepository = {

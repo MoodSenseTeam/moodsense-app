@@ -79,15 +79,28 @@ export class PrismaSummaryRepository implements SummaryRepository {
         });
 
         const latestPrediction = logsWithPredictions[0]?.prediction ?? null;
-        const recommendations = Array.from(
-            new Set(
-                logsWithPredictions
-                    .map((log) => log.prediction?.activity_suggestion?.trim())
-                    .filter((suggestion): suggestion is string =>
-                        Boolean(suggestion),
-                    ),
-            ),
-        ).slice(0, 3);
+        let aiInsight: string | null = null;
+        let recommendations: Array<{ name: string; description: string; duration: string }> = [];
+        let factors: {
+            stressors: Array<{ name: string; value: string; description: string }>;
+            boosters: Array<{ name: string; value: string; description: string }>;
+        } | null = null;
+
+        if (latestPrediction) {
+            const suggestionRaw = latestPrediction.activity_suggestion;
+            try {
+                const parsed = JSON.parse(suggestionRaw);
+                if (parsed && typeof parsed === 'object' && 'ai_insight' in parsed) {
+                    aiInsight = parsed.ai_insight;
+                    recommendations = parsed.recommendations || [];
+                    factors = parsed.factors || null;
+                } else {
+                    aiInsight = suggestionRaw;
+                }
+            } catch (err) {
+                aiInsight = suggestionRaw;
+            }
+        }
 
         return {
             mood_prediction: latestPrediction
@@ -101,7 +114,9 @@ export class PrismaSummaryRepository implements SummaryRepository {
                       ),
                   }
                 : null,
+            ai_insight: aiInsight,
             recommendations,
+            factors,
         };
     }
 

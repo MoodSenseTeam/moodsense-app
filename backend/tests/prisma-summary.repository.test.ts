@@ -154,13 +154,26 @@ describe('PrismaSummaryRepository', () => {
     });
 
     it('builds insights from the latest prediction logs', async () => {
+        const mockCombined = JSON.stringify({
+            ai_insight: 'You feel good today',
+            recommendations: [
+                { name: 'Walk', description: 'Take a walk', duration: '10m' }
+            ],
+            factors: {
+                stressors: [],
+                boosters: [
+                    { name: 'Tidur', value: '8 jam', description: 'Tidur cukup' }
+                ]
+            }
+        });
+
         const findMany = vi
             .fn()
             .mockResolvedValueOnce([
                 {
                     prediction: {
                         mood_result: 'NORMAL',
-                        activity_suggestion: 'Take a short walk',
+                        activity_suggestion: mockCombined,
                         confidence_score: 0.876,
                     },
                 },
@@ -223,11 +236,16 @@ describe('PrismaSummaryRepository', () => {
                 predicted_mood: 6,
                 confidence_score: 0.88,
             },
+            ai_insight: 'You feel good today',
             recommendations: [
-                'Take a short walk',
-                'Drink water',
-                'Sleep earlier',
+                { name: 'Walk', description: 'Take a walk', duration: '10m' }
             ],
+            factors: {
+                stressors: [],
+                boosters: [
+                    { name: 'Tidur', value: '8 jam', description: 'Tidur cukup' }
+                ]
+            }
         });
     });
 
@@ -244,7 +262,9 @@ describe('PrismaSummaryRepository', () => {
 
         await expect(repository.getInsightsForUser(99)).resolves.toEqual({
             mood_prediction: null,
+            ai_insight: null,
             recommendations: [],
+            factors: null,
         });
     });
 });
