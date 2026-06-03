@@ -56,7 +56,8 @@ export const ModelName = {
   user_settings: 'user_settings',
   mood_logs: 'mood_logs',
   mood_predictions: 'mood_predictions',
-  todo_items: 'todo_items'
+  todo_items: 'todo_items',
+  mood_forecasts: 'mood_forecasts'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -164,12 +165,29 @@ export const Todo_itemsScalarFieldEnum = {
 export type Todo_itemsScalarFieldEnum = (typeof Todo_itemsScalarFieldEnum)[keyof typeof Todo_itemsScalarFieldEnum]
 
 
+export const Mood_forecastsScalarFieldEnum = {
+  forecast_id: 'forecast_id',
+  user_id: 'user_id',
+  forecast_data: 'forecast_data',
+  generated_at: 'generated_at'
+} as const
+
+export type Mood_forecastsScalarFieldEnum = (typeof Mood_forecastsScalarFieldEnum)[keyof typeof Mood_forecastsScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -186,4 +204,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
