@@ -24,9 +24,26 @@ export const summaryOverviewSchema = z.object({
 
 export type SummaryOverviewDto = z.infer<typeof summaryOverviewSchema>;
 
+const recommendationSchema = z.object({
+    name: z.string(),
+    description: z.string(),
+    duration: z.string(),
+});
+
+const factorSchema = z.object({
+    name: z.string(),
+    value: z.string(),
+    description: z.string(),
+});
+
 export const summaryInsightsSchema = z.object({
     mood_prediction: summaryPredictionSchema.nullable(),
-    recommendations: z.array(z.string()),
+    ai_insight: z.string().nullable(),
+    recommendations: z.array(recommendationSchema),
+    factors: z.object({
+        stressors: z.array(factorSchema),
+        boosters: z.array(factorSchema),
+    }).nullable(),
 });
 
 export type SummaryInsightsDto = z.infer<typeof summaryInsightsSchema>;

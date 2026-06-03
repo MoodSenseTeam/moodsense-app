@@ -14,6 +14,20 @@ const validInput = {
     notes: 'Felt good today',
 };
 
+const mockInsight = {
+    insight: 'Pertahankan ritme belajarmu saat ini! Cobalah berjalan kaki singkat di luar ruangan untuk menjaga kesegaran pikiran.',
+    recommendations: [
+        { name: 'Jalan Santai', description: 'Coba jalan kaki selama 10 menit.', duration: '10 menit' }
+    ]
+};
+
+const mockFactors = {
+    stressors: [],
+    boosters: [
+        { name: 'Tidur Cukup', value: '7.5 jam', description: 'Durasi tidur yang cukup mendukung fungsi kognitif.' }
+    ]
+};
+
 const createdCheckin: CreatedCheckinDto = {
     log_id: 1,
     user_id: 15,
@@ -28,7 +42,11 @@ const createdCheckin: CreatedCheckinDto = {
     prediction: {
         mood_result: 'NORMAL',
         confidence_score: 0.85,
-        activity_suggestion: 'Pertahankan ritme belajarmu saat ini! Cobalah berjalan kaki singkat di luar ruangan untuk menjaga kesegaran pikiran.',
+        activity_suggestion: JSON.stringify({
+            ai_insight: mockInsight.insight,
+            recommendations: mockInsight.recommendations,
+            factors: mockFactors,
+        }),
     },
 };
 
@@ -44,6 +62,8 @@ describe('CreateCheckinUseCase', () => {
                 predicted_mood: 'normal',
                 confidence: 0.85,
             }),
+            getInsight: vi.fn().mockResolvedValue(mockInsight),
+            getFactors: vi.fn().mockResolvedValue(mockFactors),
         };
 
         const useCase = new CreateCheckinUseCase(repository, predictionService);
@@ -57,10 +77,30 @@ describe('CreateCheckinUseCase', () => {
             activity_level: 'MODERATE',
             how_you_feeling: 'NORMAL',
         });
+        expect(predictionService.getInsight).toHaveBeenCalledWith({
+            sleep_hours: 7.5,
+            activity_level: 'MODERATE',
+            study_hours: 4,
+            social_score: 6,
+            how_you_feeling: 'NORMAL',
+            notes: 'Felt good today',
+        });
+        expect(predictionService.getFactors).toHaveBeenCalledWith({
+            sleep_hours: 7.5,
+            activity_level: 'MODERATE',
+            study_hours: 4,
+            social_score: 6,
+            how_you_feeling: 'NORMAL',
+            notes: 'Felt good today',
+        });
         expect(repository.create).toHaveBeenCalledWith(15, validInput, {
             mood_result: 'NORMAL',
             confidence_score: 0.85,
-            activity_suggestion: 'Pertahankan ritme belajarmu saat ini! Cobalah berjalan kaki singkat di luar ruangan untuk menjaga kesegaran pikiran.',
+            activity_suggestion: JSON.stringify({
+                ai_insight: mockInsight.insight,
+                recommendations: mockInsight.recommendations,
+                factors: mockFactors,
+            }),
         });
     });
 
@@ -72,6 +112,8 @@ describe('CreateCheckinUseCase', () => {
 
         const predictionService: PredictionService = {
             predict: vi.fn(),
+            getInsight: vi.fn(),
+            getFactors: vi.fn(),
         };
 
         const useCase = new CreateCheckinUseCase(repository, predictionService);
@@ -81,6 +123,7 @@ describe('CreateCheckinUseCase', () => {
         );
         expect(repository.hasCheckinToday).toHaveBeenCalledWith(15);
         expect(predictionService.predict).not.toHaveBeenCalled();
+        expect(predictionService.getInsight).not.toHaveBeenCalled();
         expect(repository.create).not.toHaveBeenCalled();
     });
 });

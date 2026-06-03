@@ -29,21 +29,37 @@ export class CreateCheckinUseCase {
 
         const moodResultUpper = prediction.predicted_mood.toUpperCase() as 'STRESS' | 'HAPPY' | 'NORMAL';
 
-        // 2. Generate customized activity suggestion
-        let activitySuggestion = 'Tetap jaga keseimbangan kesehatan fisik dan mental Anda.';
-        if (moodResultUpper === 'STRESS') {
-            activitySuggestion = 'Ambil jeda istirahat 15 menit, lakukan latihan pernapasan kotak (box breathing), atau dengarkan musik tenang.';
-        } else if (moodResultUpper === 'NORMAL') {
-            activitySuggestion = 'Pertahankan ritme belajarmu saat ini! Cobalah berjalan kaki singkat di luar ruangan untuk menjaga kesegaran pikiran.';
-        } else if (moodResultUpper === 'HAPPY') {
-            activitySuggestion = 'Luar biasa! Salurkan energi positifmu hari ini dengan berolahraga, bersosialisasi dengan teman, atau mendalami hobi.';
-        }
+        // 2. Get GenAI-powered insight and factors in parallel
+        const [insightRes, factorsRes] = await Promise.all([
+            this.predictionService.getInsight({
+                sleep_hours: input.sleep_hours,
+                activity_level: input.activity_level,
+                study_hours: input.study_hours,
+                social_score: input.social_score,
+                how_you_feeling: input.how_you_feeling,
+                notes: input.notes ?? undefined,
+            }),
+            this.predictionService.getFactors({
+                sleep_hours: input.sleep_hours,
+                activity_level: input.activity_level,
+                study_hours: input.study_hours,
+                social_score: input.social_score,
+                how_you_feeling: input.how_you_feeling,
+                notes: input.notes ?? undefined,
+            }),
+        ]);
+
+        const combinedSuggestion = JSON.stringify({
+            ai_insight: insightRes.insight,
+            recommendations: insightRes.recommendations,
+            factors: factorsRes,
+        });
 
         // 3. Write checkin and prediction atomically
         return this.checkinRepository.create(userId, input, {
             mood_result: moodResultUpper,
             confidence_score: prediction.confidence,
-            activity_suggestion: activitySuggestion,
+            activity_suggestion: combinedSuggestion,
         });
     }
 }

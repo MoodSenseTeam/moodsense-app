@@ -123,13 +123,13 @@ export function buildDashboardViewModel(summary, insights) {
           title: `Mood cenderung ${predictionTone.label}`,
           score: `${Math.round(prediction.confidence_score * 100)}%`,
           status: predictionTone.status,
-          factors: recommendations.slice(0, 2).join(" • ") || "Analisis dibaca dari riwayat check-in terbaru.",
+          factors: insights?.factors || null,
         }
       : null,
     recommendations,
-    insight: prediction
+    insight: insights?.ai_insight || (prediction
       ? `Rata-rata mood kamu ${formatDecimal(overview.average_mood)}/10 dengan prediksi ${predictionTone.label.toLowerCase()} dan tingkat keyakinan ${Math.round(prediction.confidence_score * 100)}%.`
-      : `Belum ada prediksi yang cukup, tetapi rata-rata mood minggu ini berada di ${formatDecimal(overview.average_mood)}/10.`,
+      : `Belum ada prediksi yang cukup, tetapi rata-rata mood minggu ini berada di ${formatDecimal(overview.average_mood)}/10.`),
   };
 }
 

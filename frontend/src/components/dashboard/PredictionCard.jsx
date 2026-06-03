@@ -7,7 +7,12 @@ function PredictionCard({ prediction }) {
   const title = prediction?.title || "Prediksi belum tersedia";
   const score = prediction?.score || "-";
   const status = prediction?.status || "Menunggu data";
-  const factors = prediction?.factors || "Tambahkan beberapa check-in agar prediksi makin akurat.";
+  const factors = prediction?.factors || null;
+
+  const hasFactors = factors && (
+    (factors.stressors && factors.stressors.length > 0) ||
+    (factors.boosters && factors.boosters.length > 0)
+  );
 
   return (
     <section className="rounded-2xl border border-[#e2e8e4] bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
@@ -40,9 +45,53 @@ function PredictionCard({ prediction }) {
       </div>
 
       <div className="mt-7">
-        <p className="text-xs text-[#60766b] dark:text-slate-400">Faktor utama:</p>
+        <p className="text-xs font-medium text-[#60766b] dark:text-slate-400 mb-3">Faktor utama:</p>
 
-        <p className="mt-2 text-sm leading-6 text-[#1f3f31] dark:text-slate-300">{factors}</p>
+        {hasFactors ? (
+          <div className="space-y-4">
+            {factors.stressors && factors.stressors.length > 0 && (
+              <div>
+                <p className="text-[11px] font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider mb-2">
+                  Pemicu Stres (Stressors)
+                </p>
+                <div className="space-y-2">
+                  {factors.stressors.map((s, idx) => (
+                    <div key={idx} className="rounded-xl border border-rose-100 bg-rose-50/30 p-3 dark:border-rose-950/20 dark:bg-rose-950/10">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-semibold text-rose-900 dark:text-rose-200">{s.name}</span>
+                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300">{s.value}</span>
+                      </div>
+                      <p className="mt-1 text-xs text-rose-700 dark:text-rose-300/80 leading-relaxed">{s.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {factors.boosters && factors.boosters.length > 0 && (
+              <div>
+                <p className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-2">
+                  Pendukung Mood (Boosters)
+                </p>
+                <div className="space-y-2">
+                  {factors.boosters.map((b, idx) => (
+                    <div key={idx} className="rounded-xl border border-emerald-100 bg-emerald-50/30 p-3 dark:border-emerald-950/20 dark:bg-emerald-950/10">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-semibold text-emerald-900 dark:text-emerald-200">{b.name}</span>
+                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300">{b.value}</span>
+                      </div>
+                      <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-300/80 leading-relaxed">{b.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <p className="text-sm leading-6 text-[#1f3f31] dark:text-slate-300">
+            Tambahkan beberapa check-in agar faktor pemicu stres dan pendukung mood Anda terdeteksi.
+          </p>
+        )}
       </div>
 
       <button type="button" onClick={() => navigate("/prediction")} className="mt-7 inline-flex items-center gap-2 text-sm font-medium text-[#2b6a4f] transition hover:gap-3 hover:text-[#245a43] dark:text-emerald-300 dark:hover:text-emerald-200">

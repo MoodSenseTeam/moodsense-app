@@ -50,7 +50,15 @@ describe('SummaryController', () => {
                 predicted_mood: 6,
                 confidence_score: 0.88,
             },
-            recommendations: ['Drink water', 'Take a short walk'],
+            ai_insight: 'Empathetic feedback here',
+            recommendations: [
+                { name: 'Water', description: 'Drink water', duration: '2 minutes' },
+                { name: 'Walk', description: 'Take a short walk', duration: '10 minutes' }
+            ],
+            factors: {
+                stressors: [],
+                boosters: []
+            }
         };
 
         const getSummaryUseCase = {
